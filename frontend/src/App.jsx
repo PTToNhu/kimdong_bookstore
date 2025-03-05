@@ -1,11 +1,11 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Home from '../components/Home'
-import Category from '../components/Category'
-import AboutUs from '../components/AboutUs'
-import Master_Classe from '../components/Master_Classe'
-import FAQ from '../components/FAQ'
-import Question from '../components/question'
+import Home from './components/Home'
+import Category from './components/Category'
+import AboutUs from './components/AboutUs/AboutUs'
+import Master_Classe from './components/Master_Classe/Master_Classe.jsx'
+import FAQ from './components/FAQ/FAQ'
+import Question from './components/Question/Question'
 
 function App() {
 
