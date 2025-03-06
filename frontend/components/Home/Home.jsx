@@ -3,15 +3,16 @@ import {useNavigate } from 'react-router-dom'
 import './home.css';
 
 const IMG = 200;
+const BanerM= 800;
 const Home = () => {
   const navigate = useNavigate(); 
-
   const handlePre = () => {
     navigate('/about_us'); 
   };
   const handleCat=()=>{
     navigate('/category');
   }
+  
   const [scrollPosition, setScrollPosition] = useState(0);
   const containerRef = useRef(null);
   const handleScroll = (scrollAmount) => {
@@ -23,12 +24,73 @@ const Home = () => {
   const containerRefB = useRef(null);
   const handleScrollB = (scrollAmount) => {
     const newScrollPositionB = scrollPositionB + scrollAmount;
-    setScrollPosition(newScrollPositionB);
+    setScrollPositionB(newScrollPositionB);
     containerRefB.current.scrollLeft = newScrollPositionB;
   };
+  const [scrollPositionN, setScrollPositionN] = useState(0);
+  const containerRefN = useRef(null);
+  const handleScrollN = (scrollAmount) => {
+    if (containerRefN.current) {
+      const newScrollPositionN = scrollPositionN + scrollAmount;
+      setScrollPositionN(newScrollPositionN);
+      containerRefN.current.scrollLeft = newScrollPositionN;
+    }
+     
+  };
+  useEffect (()=>{
+    console.log(containerRefN.current.scrollLeft);
+    const container = containerRefN.current;
+    const maxScroll = container.scrollWidth - container.clientWidth;
+
+    const interval = setInterval(()=>{
+      if (!containerRefN.current) return;
+      if (scrollPositionN >= maxScroll) {
+        // Nếu đến cuối slider, dừng 2s rồi quay lại đầu
+        setTimeout(() => {
+          setScrollPositionN(0);
+          container.scrollLeft = 0;
+        }, 2000);
+      } else {
+        handleScrollN(BanerM);
+      }
+    }, 2000);
+  
+    
+    // console.log("if it works, this line should be shown");
+    return ()=> {clearInterval(interval)};
+    
+  }, [scrollPositionN]);
   const newsData = [
     {
       id: 1,
+      title: "Quyền lực của đất đai",
+      linkadr: "https://nhanam.vn/",
+      date: "Chủ Nhật, 03/03/2024",
+      img: "https://scontent.fhan14-3.fna.fbcdn.net/v/t39.30808-6/480203269_1042894241211643_9180551152830458713_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=km4jnMAsEG0Q7kNvgGuogyJ&_nc_oc=AdiYxOifphGQhg4dhbZ67v7ZhtDPFKL-WscxXH4xfuCpxImDBhrWU4RTX5y26D8F-Ac&_nc_zt=23&_nc_ht=scontent.fhan14-3.fna&_nc_gid=ACelN-4fLXS991V7UmtSN0W&oh=00_AYD83bcdfp2Tij-zEUC_hUPgCpX70xQ-Y_KjvJh5gRFu2A&oe=67CB362E"
+    },
+    {
+      id: 2,
+      title: "xyx",
+      linkadr: "https://nhanam.vn/",
+      date: "Chủ Nhật, 03/03/2024",
+      img: "https://scontent.fhan14-3.fna.fbcdn.net/v/t39.30808-6/480203269_1042894241211643_9180551152830458713_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=km4jnMAsEG0Q7kNvgGuogyJ&_nc_oc=AdiYxOifphGQhg4dhbZ67v7ZhtDPFKL-WscxXH4xfuCpxImDBhrWU4RTX5y26D8F-Ac&_nc_zt=23&_nc_ht=scontent.fhan14-3.fna&_nc_gid=ACelN-4fLXS991V7UmtSN0W&oh=00_AYD83bcdfp2Tij-zEUC_hUPgCpX70xQ-Y_KjvJh5gRFu2A&oe=67CB362E"
+    },
+    {
+      id: 3,
+      title: "Quyền lực của đất đai",
+      linkadr: "https://nhanam.vn/",
+      date: "Chủ Nhật, 03/03/2024",
+      img: "https://scontent.fhan14-3.fna.fbcdn.net/v/t39.30808-6/480203269_1042894241211643_9180551152830458713_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=km4jnMAsEG0Q7kNvgGuogyJ&_nc_oc=AdiYxOifphGQhg4dhbZ67v7ZhtDPFKL-WscxXH4xfuCpxImDBhrWU4RTX5y26D8F-Ac&_nc_zt=23&_nc_ht=scontent.fhan14-3.fna&_nc_gid=ACelN-4fLXS991V7UmtSN0W&oh=00_AYD83bcdfp2Tij-zEUC_hUPgCpX70xQ-Y_KjvJh5gRFu2A&oe=67CB362E"
+    },
+    {
+      id: 4,
+      title: "Quyền lực của đất đai",
+      linkadr: "https://nhanam.vn/",
+      date: "Chủ Nhật, 03/03/2024",
+      img: "https://scontent.fhan14-3.fna.fbcdn.net/v/t39.30808-6/480203269_1042894241211643_9180551152830458713_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=km4jnMAsEG0Q7kNvgGuogyJ&_nc_oc=AdiYxOifphGQhg4dhbZ67v7ZhtDPFKL-WscxXH4xfuCpxImDBhrWU4RTX5y26D8F-Ac&_nc_zt=23&_nc_ht=scontent.fhan14-3.fna&_nc_gid=ACelN-4fLXS991V7UmtSN0W&oh=00_AYD83bcdfp2Tij-zEUC_hUPgCpX70xQ-Y_KjvJh5gRFu2A&oe=67CB362E"
+    },
+    {
+      id: 5,
       title: "Quyền lực của đất đai",
       linkadr: "https://nhanam.vn/",
       date: "Chủ Nhật, 03/03/2024",
@@ -125,20 +187,37 @@ const Home = () => {
 
   return (
     <div className="homepage">
-
+      <div className="homepage-row1">
       <div className="news-slider">
-        <div className="news-wrapper" >
+        <div className="news-wrapper" ref={containerRefN}>
           {newsData.map((news) => (
-            <div key={news.id} className="news-card">
-              <a href={news.linkadr} target="_blank" rel="noopener noreferrer">
-                <img src={news.img} alt={news.title} />
+            <div className="news-card">
+              <div className="baner-img-container"><img src={news.img} alt={news.title} /></div>
                 <p className="title20">{news.title}</p>
                 <p>{news.date}</p>
-              </a>
+              
             </div>
           ))}
         </div>
+        <div className="baner-button">
+        <button onClick={() => handleScrollN(-BanerM)}>{"<"}</button>
+        <button onClick={() => handleScrollN(BanerM)}>{">"}</button>
+        </div>
+        
       </div>
+      <div className="posts">
+          {newsData.map((post) => (
+            <div className="post-card">
+              <div className="post-img-container"><img src={post.img} alt={post.title} /></div>
+              <div className="postTitle">
+              <p className="title25">{post.title}</p>
+              <p>{post.date}</p>
+               </div> 
+            </div>
+          ))}
+      </div>
+      </div>
+      
       <div className="authors-container">
         <div className="row1">
           <div classNamw="col1"><p className="title20">Các tác giả</p></div>
@@ -150,7 +229,7 @@ const Home = () => {
           <button onClick={() => handleScroll(-IMG)}>{"<"}</button>
           <div className="container" ref={containerRef}>
             {listWriters.map((writer) => (
-              <div class="card">
+              <div className="card">
                 <div className="writer-img-container">
                   <img src={writer.img} alt={writer.name}></img>
                 </div>
@@ -181,7 +260,7 @@ const Home = () => {
           <button onClick={() => handleScrollB(-IMG)}>{"<"}</button>
           <div className="container" ref={containerRefB}>
             {incgBooks.map((book) => (
-              <div class="card">
+              <div className="card">
                 <div className="writer-img-container">
                   <img src={book.img} alt={"img"}></img>
                 </div>
