@@ -1,17 +1,29 @@
-import './App.css'
 import {BrowserRouter, Routes, Route} from "react-router-dom"
-import Home from '../components/Home'
-import Category from '../components/Category'
+// import Home from '../components/Home'
+// import Category from '../components/Category'
+import Admin from './../components/app/pages/Admin/index';
+import Product  from "./../components/app/pages/Product/product";
+import Main from './../components/app/pages/main';
+import React from 'react';
+// import Home from '../components/Home'
+// import Category from '../components/Category'
+import "./App.css"
 
 function App() {
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<Home />} />
-        <Route path="/category" element={<Category />} />
+        <Route index element={<Main />} />
+        {/* <Route path="/category" element={<Category />} /> */}
+
+        <Route path="/admin*" element={<Admin />} />
+          <Route path="/main*" element={<Main />} />
+          <Route path="/Product/:page?/:name?" element={<Product />} />
+          {/* <Route path="/Products/:name?" element={<Product />} /> */}
       </Routes>
     </BrowserRouter>
+
   )
 }
 
