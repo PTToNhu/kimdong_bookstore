@@ -23,7 +23,6 @@ export default function Images() {
     return (
         <header className=''>
             <Swiper
-                spaceBetween={30}
                 centeredSlides={true}
                 autoplay={{
                   delay: 2500,
@@ -34,7 +33,7 @@ export default function Images() {
                 }}
                 navigation={true}
                 modules={[Autoplay, Pagination, Navigation]}
-                className="w-screen"
+                className="w-screen fit overflow-hidden"
             >
                 {images.map((image, index) => (
                     <SwiperSlide key={index}>

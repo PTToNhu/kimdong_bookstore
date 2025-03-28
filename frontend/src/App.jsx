@@ -14,13 +14,13 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<Main />} />
-        {/* <Route path="/category" element={<Category />} /> */}
+          <Route index element={<Main />} />
+          {/* <Route path="/category" element={<Category />} /> */}
 
-        <Route path="/admin*" element={<Admin />} />
+          <Route path="/admin*" element={<Admin />} />
           <Route path="/main*" element={<Main />} />
           <Route path="/Product/:page?/:name?" element={<Product />} />
-          {/* <Route path="/Products/:name?" element={<Product />} /> */}
+          <Route path="/Products/:name?" element={<Product />} />
       </Routes>
     </BrowserRouter>
 
