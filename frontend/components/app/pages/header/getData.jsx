@@ -4,7 +4,7 @@ export function Data(url) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch(`https://localhost/BTL_web_1/src/app/BackEnd/php/uploads/getSearch.php?&url=${encodeURIComponent(url)}`)
+    fetch(`http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/getSearch.php?&url=${encodeURIComponent(url)}`)
       .then((response) => response.json())
       .then((data) => {
         setData(data);

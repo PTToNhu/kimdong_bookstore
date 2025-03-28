@@ -10,9 +10,8 @@ export default function Admin() {
     return (
         <div className="flex w-[100%]">
             <Navbar/>
-            <div className='w-full'>
+            <div className='w-full px-[30px] flex justify-center items-center'>
                 <Routes>
-                    <Route index element={<div className='w-full'>Admin Dashboard</div>} />
                     <Route path="/input" element={<Input />} />
                     <Route path="/post/:Status?" element={<Post />} />
                     <Route path="/post/edit/:number?" element={<Edit />} />

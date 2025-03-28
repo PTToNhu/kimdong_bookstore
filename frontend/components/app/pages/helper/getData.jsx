@@ -7,7 +7,7 @@ export function useData(img = [], url) {
   useEffect(() => {
       const fetchData = async () => {
           try {
-              const response = await fetch(`https://localhost/BTL_web_1/src/app/BackEnd/php/uploads/${url}.php`);
+              const response = await fetch(`http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/${url}.php`);
               if (!response.ok) {
                   throw new Error('Network response was not ok');
               }

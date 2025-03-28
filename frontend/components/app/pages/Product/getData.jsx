@@ -7,7 +7,7 @@ export function useData(img = [], url, variable) {
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const response = await fetch(`https://localhost/BTL_web_1/src/app/BackEnd/php/uploads/Data.php?&url=${encodeURIComponent(url)}&variable=${encodeURIComponent(variable)}`);
+            const response = await fetch(`http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/Data.php?&url=${encodeURIComponent(url)}&variable=${encodeURIComponent(variable)}`);
             const result = await response.json();
             setData(result);
         } catch (error) {

@@ -10,8 +10,8 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
     const [currentPage, setCurrentPage] = useState(1);
     const pagination = {
         totalItems: data.length,
-        totalItemsPerPage: 10,
-        pageRanges: 10
+        totalItemsPerPage: 5,
+        pageRanges: 3
     };
 
     const totalItems = pagination.totalItems;
@@ -75,7 +75,7 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
                 <li key={i}>
                     <div 
                         onClick={() => handleClickI(i)} 
-                        className="flex items-center justify-center p-5 m-3 h-8 leading-tight text-gray-500 bg-white border rounded-lg border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        className="flex items-center justify-center px-3 m-1 h-8 leading-tight text-gray-500 bg-white border rounded-lg border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                     >
                         {i}
                     </div>
@@ -87,7 +87,7 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
                     <div 
                         onClick={() => handleClickI(i)}
                         aria-current="page" 
-                        className="flex items-center justify-center p-5 m-3 h-8 text-blue-600 border border-gray-300 rounded-lg bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+                        className="flex items-center justify-center px-3 m-1 h-8 text-blue-600 border border-gray-300 rounded-lg bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
                     >
                         {i}
                     </div>
@@ -98,14 +98,14 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
 
     xhtmlStart.push(
         <li onClick={handleClickStart}>
-            <div className="flex items-center max-sm:hidden justify-center p-5 m-3 h-8  leading-tight text-gray-500 bg-white border border-e-0 rounded-lg border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            <div className="flex items-center max-sm:hidden justify-center px-3 m-1 h-8  leading-tight text-gray-500 bg-white border border-e-0 rounded-lg border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                 Start
             </div>
         </li>
     );
     xhtmlPrevious.push(
         <li onClick={handleClickPrev}>
-            <div className="flex items-center justify-center p-5 m-3 h-8  leading-tight text-gray-500 bg-white rounded-lg border border-e-0 border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            <div className="flex items-center justify-center px-3 m-1 h-8  leading-tight text-gray-500 bg-white rounded-lg border border-e-0 border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                 &#60;
             </div>
         </li>
@@ -113,14 +113,14 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
 
     xhtmlNext.push(
         <li onClick={handleClickNext}>
-            <div className="flex items-center justify-center p-5 m-3 h-8 leading-tight text-white bg-black border rounded-lg border-gray-300hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            <div className="flex items-center justify-center px-3 m-1 h-8 leading-tight text-white bg-black border rounded-lg border-gray-300hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                 &#62;
             </div>
         </li>
     );
     xhtmlEnd.push(
         <li onClick={handleClickEnd}>
-            <div className="flex max-sm:hidden items-center max-sm:hiden justify-center p-5 m-3 h-8 leading-tight text-white bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            <div className="flex max-sm:hidden items-center max-sm:hiden justify-center px-3 m-1 h-8 leading-tight text-white bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                 End
             </div>
         </li>
@@ -128,7 +128,7 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
 
 
     if (max < totalPages) {
-        xhtmlPages.push(<li key="end-ellipsis" className='flex items-center justify-center p-5 m-3 h-8 leading-tight text-white bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>...</li>);
+        xhtmlPages.push(<li key="end-ellipsis" className='flex items-center justify-center px-3 m-1 h-8 leading-tight text-white bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>...</li>);
     }
 
     let index = (currentPage - 1) * totalItemsPerPage;
@@ -158,8 +158,8 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
                 <li className="w-[30%] px-[2%]">{element.name}</li>
                 <li className="w-[13%]">{formatPrice(element.gia_goc)}</li>
                 <li className="w-[10%] px-[1.5%]">{formatPrice(element.gia)}</li>
-                <li className="w-[10%] flex items-center justify-center">{element.giam_gia}</li>
-                <li class="checkbox-wrapper-8 w-[8%]  cursor-pointer ml-[3%] rounded-lg flex items-center justify-center" >
+                <li className="w-[10%] pl-[1%] flex items-center justify-center">{element.giam_gia}</li>
+                <li class="checkbox-wrapper-8 w-[10%]  cursor-pointer ml-[3%] rounded-lg flex items-center justify-center" >
                     <input class="tgl tgl-skewed" onClick={() => handleStatusChange(element.id)} id={index} checked={element.Status === "Active" ? true : false} type="checkbox"/>
                     <label class="tgl-btn" data-tg-off="InActive" data-tg-on="Active"  for={index}></label>
                 </li>
@@ -196,12 +196,12 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
             {getData()}
             <div className='flex relative h-[70px] w-full border-t border-[#D0D1D3]'>
                 <div className='flex  relative items-center text-[20px] '>
-                    <p className='ml-[10px]'> Tổng số sản phẩm được tìm thấy: {results.length}</p>
+                    <p className='ml-[10px]'> Tổng sản phẩm: {results.length}</p>
                     <p className='ml-[50px]'> Active: {countStatus.active}</p>
                     <p className='ml-[50px]'> Inactive: {countStatus.inactive}</p>
                 </div>
                 <nav className='absolute right-0'>
-                    <ul className="inline-flex text-[30px] max-sm:text-[15px] max-sm:w-[30]">
+                    <ul className="inline-flex text-[15px] max-sm:text-[15px] max-sm:w-[30]">
                         {xhtmlStart}
                         {xhtmlPrevious}
                         {xhtmlPages}

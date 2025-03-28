@@ -169,7 +169,7 @@ export default function Search(fetchedData, checkedItems, handleCheckboxChange, 
     ));
 
     input.push(
-        <div className={"w-[600px] z-0"}>
+        <div className={"w-[400px] z-0"}>
             <div className='flex items-center z-50 bg-[#F8F8F8] w-[100%] relative'>
                 <input
                     onKeyUp={test}
