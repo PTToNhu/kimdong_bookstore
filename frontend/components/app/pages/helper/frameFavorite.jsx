@@ -1,9 +1,7 @@
 import './style/frame.css';
 import React, { useRef, useEffect, useState } from 'react';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const FFrame  = ({ item, index, max_index, childWidth }) => {
+const Frame  = ({ item, index, max_index, childWidth }) => {
     let totalView = [];
     let oneView = [];
 
@@ -22,7 +20,7 @@ const FFrame  = ({ item, index, max_index, childWidth }) => {
 
     let count = 0;
 
-    if (childWidth < 640) {
+    if (childWidth < 1024) {
         count = 2;
     } else if (childWidth < 1080) {
         count = 3;
@@ -93,8 +91,8 @@ const FFrame  = ({ item, index, max_index, childWidth }) => {
     }
 
     return (
-        <div className='flex min-h-[100px] justify-center  content-center'>
-            <div className={`2xl:w-[1200px] xl:w-[900px] lg:w-[full]  md:w-[full]  sm:w-[full] max-sm:w-[400px] `}>
+        <div className='flex justify-center content-center'>
+            <div className={`xl:w-[900px] lg:w-[full] md:w-[full] max-lg:w-[full] sm:w-[full]  `}>
                 <ul>
                     {totalView}
                 </ul>
@@ -103,4 +101,4 @@ const FFrame  = ({ item, index, max_index, childWidth }) => {
     );
 };
 
-export default FFrame;
+export default Frame;

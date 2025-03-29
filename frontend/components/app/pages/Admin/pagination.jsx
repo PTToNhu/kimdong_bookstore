@@ -10,8 +10,8 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
     const [currentPage, setCurrentPage] = useState(1);
     const pagination = {
         totalItems: data.length,
-        totalItemsPerPage: 5,
-        pageRanges: 3
+        totalItemsPerPage: 10,
+        pageRanges: 30
     };
 
     const totalItems = pagination.totalItems;
@@ -143,43 +143,93 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
     edit ? type = "radio" : type = "checkbox";
 
     function getData() {
-        return data.slice(index, index + max_index).map((element, index) => (
-            <ul className={`flex text-[20px] py-2  ${index % 2 === 0 ? "bg-[#E0E3E7]" : ""}`} key={element.id}>
-                <li className="w-[2%] px-[2%]">
-                    <input type={type} className="size-4 rounded-[50%] cursor-pointer"
-                        checked={checkedItems[index]}
-                        onChange={() => {
-                            handleCheckboxChange(index, results);
-                        }}
-                        name = "isRadio"
-                    />
-                </li>
-                <li className="w-[5%] px-[2%]">{element.id}</li>
-                <li className="w-[30%] px-[2%]">{element.name}</li>
-                <li className="w-[13%]">{formatPrice(element.gia_goc)}</li>
-                <li className="w-[10%] px-[1.5%]">{formatPrice(element.gia)}</li>
-                <li className="w-[10%] pl-[1%] flex items-center justify-center">{element.giam_gia}</li>
-                <li class="checkbox-wrapper-8 w-[10%]  cursor-pointer ml-[3%] rounded-lg flex items-center justify-center" >
-                    <input class="tgl tgl-skewed" onClick={() => handleStatusChange(element.id)} id={index} checked={element.Status === "Active" ? true : false} type="checkbox"/>
-                    <label class="tgl-btn" data-tg-off="InActive" data-tg-on="Active"  for={index}></label>
-                </li>
-                <li className="w-[10%] pl-[7.5%] flex items-center justify-center cursor-pointer" onClick={() => toggleModal(index)}>
-                    <FontAwesomeIcon className="size-7" icon={faBars} />
-                </li>
-                {open[index] && (
-                    <Modal open={open[index]} onClose={() => toggleModal(index)}>
-                        <ul className="w-[500px] text-[30px] text-white">
-                            <li className="px-[2%]">Tập: <label className="text-[red]">{element.tap}</label></li>
-                            <li className="px-[2%] bg-[#2D2F39]">Tác giả: <label className="text-[red]">{element.tac_gia}</label></li>
-                            <li className="px-[2%]">Đối tượng: <label className="text-[red]">{element.doi_tuong}</label></li>
-                            <li className="px-[2%] bg-[#2D2F39]">Khuôn khổ: <label className="text-[red]">{element.khuon_kho}</label></li>
-                            <li className="px-[2%]">Số trang: <label className="text-[red]">{element.Page}</label></li>
-                            <li className="px-[2%] bg-[#2D2F39]">Trọng lượng: <label className="text-[red]">{element.trong_luong}</label></li>
-                        </ul>
-                    </Modal>
-                )}
-            </ul>
-        ));
+        // return data.slice(index, index + max_index).map((element, index) => (
+        //     <ul className={`flex text-[20px] py-2  ${index % 2 === 0 ? "bg-[#E0E3E7]" : ""}`} key={element.id}>
+        //         <li className="w-[2%] px-[2%]">
+        //             <input type={type} className="size-4 rounded-[50%] cursor-pointer"
+        //                 checked={checkedItems[index]}
+        //                 onChange={() => {
+        //                     handleCheckboxChange(index, results);
+        //                 }}
+        //                 name = "isRadio"
+        //             />
+        //         </li>
+        //         <li className="w-[5%] px-[2%]">{element.id}</li>
+        //         <li className="w-[30%] px-[2%]">{element.name}</li>
+        //         <li className="w-[13%]">{formatPrice(element.gia_goc)}</li>
+        //         <li className="w-[10%] px-[1.5%]">{formatPrice(element.gia)}</li>
+        //         <li className="w-[10%] pl-[1%] flex items-center justify-center">{element.giam_gia}</li>
+        //         <li class="checkbox-wrapper-8 w-[10%]  cursor-pointer ml-[3%] rounded-lg flex items-center justify-center" >
+        //             <input class="tgl tgl-skewed" onClick={() => handleStatusChange(element.id)} id={index} checked={element.Status === "Active" ? true : false} type="checkbox"/>
+        //             <label class="tgl-btn" data-tg-off="InActive" data-tg-on="Active"  for={index}></label>
+        //         </li>
+        //         <li className="w-[10%] pl-[7.5%] flex items-center justify-center cursor-pointer" onClick={() => toggleModal(index)}>
+        //             <FontAwesomeIcon className="size-7" icon={faBars} />
+        //         </li>
+        //         {open[index] && (
+        //             <Modal open={open[index]} onClose={() => toggleModal(index)}>
+        //                 <ul className="w-[500px] text-[30px] text-white">
+        //                     <li className="px-[2%]">Tập: <label className="text-[red]">{element.tap}</label></li>
+        //                     <li className="px-[2%] bg-[#2D2F39]">Tác giả: <label className="text-[red]">{element.tac_gia}</label></li>
+        //                     <li className="px-[2%]">Đối tượng: <label className="text-[red]">{element.doi_tuong}</label></li>
+        //                     <li className="px-[2%] bg-[#2D2F39]">Khuôn khổ: <label className="text-[red]">{element.khuon_kho}</label></li>
+        //                     <li className="px-[2%]">Số trang: <label className="text-[red]">{element.Page}</label></li>
+        //                     <li className="px-[2%] bg-[#2D2F39]">Trọng lượng: <label className="text-[red]">{element.trong_luong}</label></li>
+        //                 </ul>
+        //             </Modal>
+        //         )}
+        //     </ul>
+        // ));
+        const Data = [];
+        const temp = index + max_index;
+        for(index;index < temp;index++){
+            if(index < data.length){
+                Data.push(
+                    <ul className={`flex h-[56px] text-[20px] py-2  ${index % 2 === 0 ? "bg-[#E0E3E7]" : ""}`} key={data[index].id}>
+                        <li className="w-[2%] px-[2%]">
+                            <input type={type} className="size-4 rounded-[50%] cursor-pointer"
+                                checked={checkedItems[index]}
+                                onChange={() => {
+                                    handleCheckboxChange(index, results);
+                                }}
+                                name = "isRadio"
+                            />
+                        </li>
+                        <li className="w-[5%] px-[2%]">{data[index].id}</li>
+                        <li className="w-[30%] px-[2%]">{data[index].name}</li>
+                        <li className="w-[13%]">{formatPrice(data[index].gia_goc)}</li>
+                        <li className="w-[10%] px-[1.5%]">{formatPrice(data[index].gia)}</li>
+                        <li className="w-[10%] pl-[1%] flex items-center justify-center">{data[index].giam_gia}</li>
+                        <li class="checkbox-wrapper-8 w-[10%]  cursor-pointer ml-[3%] rounded-lg flex items-center justify-center" >
+                            <input class="tgl tgl-skewed" onClick={() => handleStatusChange(data[index].id)} id={index} checked={data[index].Status === "Active" ? true : false} type="checkbox"/>
+                            <label class="tgl-btn" data-tg-off="InActive" data-tg-on="Active"  for={index}></label>
+                        </li>
+                        <li className="w-[10%] pl-[7.5%] flex items-center justify-center cursor-pointer" onClick={() => toggleModal(index)}>
+                            <FontAwesomeIcon className="size-7" icon={faBars} />
+                        </li>
+                        {open[index] && (
+                            <Modal open={open[index]} onClose={() => toggleModal(index)}>
+                                <ul className="w-[500px] text-[30px] text-white">
+                                    <li className="px-[2%]">Tập: <label className="text-[red]">{data[index].tap}</label></li>
+                                    <li className="px-[2%] bg-[#2D2F39]">Tác giả: <label className="text-[red]">{data[index].tac_gia}</label></li>
+                                    <li className="px-[2%]">Đối tượng: <label className="text-[red]">{data[index].doi_tuong}</label></li>
+                                    <li className="px-[2%] bg-[#2D2F39]">Khuôn khổ: <label className="text-[red]">{data[index].khuon_kho}</label></li>
+                                    <li className="px-[2%]">Số trang: <label className="text-[red]">{data[index].Page}</label></li>
+                                    <li className="px-[2%] bg-[#2D2F39]">Trọng lượng: <label className="text-[red]">{data[index].trong_luong}</label></li>
+                                </ul>
+                            </Modal>
+                        )}
+                    </ul>
+                    );
+            }
+            else{
+                Data.push(
+                    <ul className={`flex h-[56px] py-2  ${index % 2 === 0 ? "bg-[#E0E3E7]" : ""}`}>
+                    </ul>
+                );
+            }
+        }
+        return Data;
     }
 
     const countStatus = results.reduce((accumulator, item) => {

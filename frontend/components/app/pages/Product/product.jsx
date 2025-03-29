@@ -17,6 +17,44 @@ import { useData } from './getData';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { ChevronUp } from "react-feather";
+import { faSquareXmark } from '@fortawesome/free-solid-svg-icons';
+import Search from './../header/search'
+
+let category = [
+    "Tất cả sản phẩm",
+    "Lịch sử truyền thống",
+    "Văn học Việt Nam",
+    "Văn học nước ngoài",
+    "Kiến thức, khoa học",
+    "Truyện tranh",
+    "Wings Books"
+];
+
+let linkCategory = [
+    "/main/Tat_ca_san_pham",
+    "/main/Lich_su_truyen_thong",
+    "/main/Van_hoc_Viet_Nam",
+    "/main/Van_hoc_nuoc_ngoai",
+    "/main/Kien_thuc_khoa_hoc",
+    "/main/Truyen_tranh",
+    "/main/Wings_book",
+];
+
+const listCategoryMenu = category.map((element, index) => {
+    if (index !== category.length - 1) {
+        return (
+            <li key={index} className="text-white font-mono pt-[5px] hover:text-[red]">
+                <a className="pl-[5px] ml-[10px]" href={linkCategory[index]}>{element}</a>
+            </li>
+        );
+    } else {
+        return (
+            <li key={index} className="text-white font-mono pt-[5px] hover:text-[red]">
+                <a className="pl-[5px] ml-[10px]" href={linkCategory[index]}>{element}</a>
+            </li>
+        );
+    }
+});
 
 export default function Product() {
     const location = useLocation();
@@ -30,7 +68,7 @@ export default function Product() {
     const chillSwiperRef = useRef(null);
     const [from, setFrom] = useState(0);
     const [to, setTo] = useState(3);
-
+    const [menu, setMenu] = useState(false);
     const [img, setImages] = useState([]);
     let image = [];
 
@@ -186,68 +224,145 @@ export default function Product() {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
+    function handleClickX() {
+        setMenu(false);
+    }
+
+    function handleClickMenu() {
+        setMenu(true);
+    }
+
     return (
-        <div className="h-screen bg-cover w-[100%] bg-center"
+        <div className="h-[2000px] bg-cover w-[100%] bg-center"
             ref={parentRef}
             style={{
-                backgroundImage: `url(${bg})`,
-                backgroundAttachment: 'fixed',
+                backgroundImage: window.innerWidth >= 1024 ? `url(${bg})` : 'none',
+                backgroundAttachment: 'fixed ',
             }}
         >
-            <Header childWidth={childWidth} />
-            <div className="bg-cover mt-[70px] bg-center h-screen w-[100%] max-lg:pt-[100px] lg:px-[30px] container mx-auto flex justify-center border bg-[white] border-black">
-                <div className="w-[100%] flex justify-center mt-[110px] content-center max-lg:block">
-                    <div className="w-[10%] h-[715px] relative">
+            <Header childWidth={childWidth} menu={menu} handleClickMenu={handleClickMenu}/>
+            <div className={`fixed bg-black md:hidden z-150 h-screen opacity-80 w-[300px] top-0 transition-transform duration-700 delay-150 right-0 ${menu ? 'translate-x-0' : 'translate-x-[500px]'}`}>
+                <p className="absolute right-[10px] top-[10px]">
+                    <FontAwesomeIcon 
+                        className="text-[30px] text-red-500" 
+                        onClick={handleClickX} 
+                        icon={faSquareXmark} 
+                    />
+                </p>
+                <div className="mt-[70px] md:hidden">
+                    <Search></Search>
+                    <ul className="text-[20px]">
+                        {listCategoryMenu}
+                    </ul>
+                </div>
+            </div>
+            <div className="bg-cover max-sm:mt-[0px] mt-[70px] bg-center h-screen w-[100%] max-lg:pt-[100px] lg:px-[30px] container mx-auto flex justify-center bg-[white]">
+                <div className="w-[100%] flex justify-center lg:mt-[110px] content-center max-lg:block">
+                    {window.innerWidth < 1024 && (
+                        <div className="flex"> 
+                            <div className="w-[10%] max-lg:w-[20%] h-[715px] relative max-sm:hidden">
+                            <Swiper
+                                modules={[A11y]}
+                                spaceBetween={30}
+                                slidesPerView={3}
+                                onSwiper={(swiper) => (chillSwiperRef.current = swiper)}
+                                direction="vertical"
+                                className="max-xl:h-[715px]"
+                            >
+                                <div className="flex w-full absolute top-0 z-20 cursor-pointer justify-center" onClick={handleDown}>
+                                    <FontAwesomeIcon className="flex justify-center items-center text-white bottom-0 h-[30px] w-[30px] cursor-pointer bg-opacity-50 bg-[red]" icon={faChevronUp} />
+                                </div>
+                                {image.map((img, index) => {
+                                    return (
+                                        <SwiperSlide>
+                                            <div className={`relative transition-transform duration-500 ${index === 0 ? 'slide-up' : ''}`}>
+                                                <img
+                                                    className="w-full object-contain mb-[20px] cursor-pointer"
+                                                    onClick={() => handleClick(index)}
+                                                    src={img}
+                                                    alt={`Image ${index}`}
+                                                />
+                                                <p className="absolute top-0 text-white h-[30px] w-[30px] bg-[#77CBDE] font-bold flex items-center justify-center">{index + 1}</p>
+                                            </div>
+                                        </SwiperSlide>
+                                    );
+                                })}
+                                <div className="flex w-full z-50 absolute bottom-0 justify-center" onClick={handleUp}>
+                                    <FontAwesomeIcon className="flex justify-center items-center text-white bottom-0 h-[30px] w-[30px] cursor-pointer bg-opacity-50 bg-[red]" icon={faChevronDown} />
+                                </div>
+                            </Swiper>
+                            <p className="w-full flex justify-center items-center font-bold text-[red]">từ {from + 1} đến {from + to}</p>
+                        </div>
                         <Swiper
-                            modules={[Scrollbar, A11y]}
                             spaceBetween={30}
-                            slidesPerView={3}
-                            scrollbar={{ draggable: true }}
-                            onSwiper={(swiper) => (chillSwiperRef.current = swiper)}
-                            direction="vertical"
-                            style={{ height: '600px' }}
+                            centeredSlides={true}
+                            navigation={true}
+                            modules={[Navigation, Pagination]}
+                            className="lg:w-[39%] sm:w-[70%] lg:h-[715px] max-lg:h-[600px] max-sm:w-[90%] max-sm:mt-[5%]"
+                            onSwiper={(swiper) => (swiperRef.current = swiper)}
+                            pagination={{ clickable: true }}
                         >
-                            <div className="flex w-full absolute top-0 z-20 cursor-pointer justify-center" onClick={handleDown}>
-                                <FontAwesomeIcon className="flex justify-center items-center text-white bottom-0 h-[30px] w-[30px] cursor-pointer bg-opacity-50 bg-[red]" icon={faChevronUp} />
-                            </div>
-                            {image.map((img, index) => {
-                                return (
-                                    <SwiperSlide>
-                                        <div className={`relative transition-transform duration-500 ${index === 0 ? 'slide-up' : ''}`}>
-                                            <img
-                                                className="w-full object-contain mb-[20px] cursor-pointer"
-                                                onClick={() => handleClick(index)}
-                                                src={img}
-                                                alt={`Image ${index}`}
-                                            />
-                                            <p className="absolute top-0 text-white h-[30px] w-[30px] bg-[#77CBDE] font-bold flex items-center justify-center">{index + 1}</p>
-                                        </div>
-                                    </SwiperSlide>
-                                );
-                            })}
-                            <div className="flex w-full z-50 absolute bottom-0 justify-center" onClick={handleUp}>
-                                <FontAwesomeIcon className="flex justify-center items-center text-white bottom-0 h-[30px] w-[30px] cursor-pointer bg-opacity-50 bg-[red]" icon={faChevronDown} />
-                            </div>
+                            {image.map((img, ind) => (
+                                <SwiperSlide key={ind} className="flex content-center relative items-center justify-center">
+                                    <img className="w-full object-contain size-full" src={img} />
+                                </SwiperSlide>
+                            ))}
                         </Swiper>
-                        <p className="w-full flex justify-center items-center font-bold text-[red]">từ {from + 1} đến {from + to}</p>
                     </div>
-                    <Swiper
-                        spaceBetween={30}
-                        centeredSlides={true}
-                        navigation={true}
-                        modules={[Navigation, Pagination]}
-                        className="lg:w-[39%] sm:w-[70%] h-[715px] max-sm:w-[90%] max-sm:mt-[5%]"
-                        onSwiper={(swiper) => (swiperRef.current = swiper)}
-                        pagination={{ clickable: true }}
-                        scrollbar={{ draggable: true }}
-                    >
-                        {image.map((img, ind) => (
-                            <SwiperSlide key={ind} className="flex content-center relative items-center justify-center">
-                                <img className="w-full object-contain size-full" src={img} />
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
-                    <div className="lg:w-[50%] max-lg:w-[100%] font-mono h-[715px] lg:pl-[20px] max-lg:px-[20px] rounded-3xl block relative max-lg:text-[14px]">
+                    )}
+                    {window.innerWidth >= 1024 && (
+                        <div className="w-[10%] max-lg:w-[20%] h-[715px] relative">
+                            <Swiper
+                                modules={[Scrollbar, A11y]}
+                                spaceBetween={30}
+                                slidesPerView={3}
+                                onSwiper={(swiper) => (chillSwiperRef.current = swiper)}
+                                direction="vertical"
+                                className="xl:h-[715px] max-xl:h-[500px]"
+                            >
+                                <div className="flex w-full absolute top-0 z-20 cursor-pointer justify-center" onClick={handleDown}>
+                                    <FontAwesomeIcon className="flex justify-center items-center text-white bottom-0 h-[30px] w-[30px] cursor-pointer bg-opacity-50 bg-[red]" icon={faChevronUp} />
+                                </div>
+                                {image.map((img, index) => {
+                                    return (
+                                        <SwiperSlide>
+                                            <div className={`relative transition-transform duration-500 ${index === 0 ? 'slide-up' : ''}`}>
+                                                <img
+                                                    className="w-full object-contain mb-[20px] cursor-pointer"
+                                                    onClick={() => handleClick(index)}
+                                                    src={img}
+                                                    alt={`Image ${index}`}
+                                                />
+                                                <p className="absolute top-0 text-white h-[30px] w-[30px] bg-[#77CBDE] font-bold flex items-center justify-center">{index + 1}</p>
+                                            </div>
+                                        </SwiperSlide>
+                                    );
+                                })}
+                                <div className="flex w-full z-50 absolute bottom-0 justify-center" onClick={handleUp}>
+                                    <FontAwesomeIcon className="flex justify-center items-center text-white bottom-0 h-[30px] w-[30px] cursor-pointer bg-opacity-50 bg-[red]" icon={faChevronDown} />
+                                </div>
+                            </Swiper>
+                            <p className="w-full flex justify-center items-center font-bold text-[red]">từ {from + 1} đến {from + to}</p>
+                        </div>
+                         )}
+                        {window.innerWidth >= 1024 && (
+                        <Swiper
+                            spaceBetween={30}
+                            centeredSlides={true}
+                            navigation={true}
+                            modules={[Navigation, Pagination]}
+                            className="lg:w-[39%] sm:w-[70%] 2xl:h-[715px] xl:h-[600px] max-xl:h-[500px] max-sm:w-[90%] max-sm:mt-[5%]"
+                            onSwiper={(swiper) => (swiperRef.current = swiper)}
+                            pagination={{ clickable: true }}
+                        >
+                            {image.map((img, ind) => (
+                                <SwiperSlide key={ind} className="flex content-center relative items-center justify-center">
+                                    <img className="w-full object-contain size-full" src={img} />
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    )}
+                    <div className="lg:w-[50%] max-lg:mt-[30px] max-lg:w-[100%] font-mono h-[715px] lg:pl-[20px] max-lg:px-[20px] rounded-3xl block relative max-lg:text-[14px]">
                         <div className="items-center break-words">
                             <div className="break-words font-sans-serif">
                                 <label className="sm:text-[30px] max-sm:text-[20px] block break-words">
@@ -270,16 +385,17 @@ export default function Product() {
                                 </div>
                             </div>
                         </div>
+                        
                         <div className="relative">
                             <div>
                                 <div className="border-t-2 border-black w-full my-2"></div>
-                                <div className="2xl:flex xl:block">
-                                    <div className="xl:flex">
+                                <div className="2xl:flex ">
+                                    <div className="flex">
                                         <div >
                                             <label className="text-[red] sm:text-[25px] max-sm:text-[14px] mr-[30px]"><strong>{formatPrice((parseInt(element.gia)))}</strong></label>
                                         </div>
                                         <div >
-                                            <label className="text-gray-400 sm:text-[25px] max-sm:text-[14px] line-through" id="original-price"><strong>{formatPrice(parseInt(element.gia_goc))}</strong></label>
+                                            <label className="text-gray-400 max-2xl:absolute max-2xl:right-0 sm:text-[25px] max-sm:text-[14px] line-through" id="original-price"><strong>{formatPrice(parseInt(element.gia_goc))}</strong></label>
                                         </div>
                                     </div>
                                     <div >
@@ -305,7 +421,7 @@ export default function Product() {
                                     <label className="sm:text-[30px] max-sm:text-[20px]">Trọng lượng: <strong className="text-[red]">{formatGram(element.trong_luong)} gram</strong></label>
                                 </li>
                             </div>
-                            <div className="left-[72%] top-[130px] xl:absolute lg:block lg:mt-[20px] max-lg:block max-lg:w-[100%] ">
+                            <div className="left-[72%] xl:translate-y-[40px] xl:-translate-x-[20px] transform- top-[130px] xl:absolute lg:block lg:mt-[20px] max-lg:block max-lg:w-[100%] ">
                                 <p className="sm:text-[30px] max-sm:text-[20px]">Số lượng</p>
                                 <ul className="flex border border-[#8A8C91] xl:w-[200px] lg:w-[100%] h-[50px] mt-[20px] max-lg:w-[100%]">
                                     <li className="w-[25%] flex items-center justify-center border border-[#8A8C91] cursor-pointer" onClick={HandleMinus}>

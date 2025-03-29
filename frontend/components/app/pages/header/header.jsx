@@ -8,6 +8,7 @@ import Search from './search'
 import React, { useRef, useEffect, useState } from 'react';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import './css/style.css';
@@ -15,6 +16,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import { faSquareXmark } from '@fortawesome/free-solid-svg-icons';
 
 let category = [
     "Tất cả sản phẩm",
@@ -54,6 +56,23 @@ const listCategory = category.map((element, index) => {
     }
 });
 
+const listCategoryMenu = category.map((element, index) => {
+    if (index !== category.length - 1) {
+        return (
+            <li key={index} className="text-white font-mono pt-[5px] hover:text-[red]">
+                <a className="pl-[5px] ml-[10px]" href={linkCategory[index]}>{element}</a>
+            </li>
+        );
+    } else {
+        return (
+            <li key={index} className="text-white font-mono pt-[5px] hover:text-[red]">
+                <a className="pl-[5px] ml-[10px]" href={linkCategory[index]}>{element}</a>
+            </li>
+        );
+    }
+});
+
+
 
 export default function Header(item) {
     const [isVisible, setIsVisible] = useState(true);
@@ -64,8 +83,10 @@ export default function Header(item) {
     const [listStore, setListStore] = useState(false);
     const resultsRef1 = useRef();
     const resultsRef2 = useRef();
+    const resultsRef3 = useRef();
     const [images, setImages] = useState([]);
-
+    const [category, setCategory] = useState(false);
+    
     useEffect(() => {
       async function loadImages() {
         const imagePaths = import.meta.glob('../../BackEnd/php/images/tat_ca_san_pham/**/*.{jpg,jpeg,png,gif,svg,webp}');
@@ -214,15 +235,18 @@ export default function Header(item) {
             >
                 {favourite.length > 0 && favourite.map((element, index) => (
                     <SwiperSlide className="m-0" key={index}> 
-                        <a className="fit object-cover flex items-center" href={`/Product/tat_ca_san_pham/${element.id}`}>
-                            <img className="h-[100px]" src={imageFavorite[index]}></img>
-                            <div className="ml-2 w-[160px]">
-                                <p className="text-[14px]">{element.name}</p>
-                                <p className="text-[14px]">Tập: {element.tap}</p>
-                                <p className="text-[14px]">Giá sản phẩm: {formatPrice(element.gia)}</p>
-                            </div>
-                            <div className="text-[red] cursor-pointer" onClick={() => {handleClickFavorite(element.id)}}>x</div>
-                        </a>
+                        <div className="flex">
+                            <a className="fit object-cover flex items-center" href={`/Product/tat_ca_san_pham/${element.id}`}>
+                                <img className="h-[100px]" src={imageFavorite[index]}></img>
+                                <div className="ml-2 w-[160px]">
+                                    <p className="text-[14px]">{element.name}</p>
+                                    <p className="text-[14px]">Tập: {element.tap}</p>
+                                    <p className="text-[14px]">Giá sản phẩm: {formatPrice(element.gia)}</p>
+                                </div>
+                                
+                            </a>
+                            <div className="text-[red] cursor-pointer flex items-center" onClick={() => {handleClickFavorite(element.id)}}>x</div>
+                        </div>
                     </SwiperSlide>
                 ))}
             </Swiper>
@@ -276,6 +300,9 @@ export default function Header(item) {
         if (resultsRef2.current && !resultsRef2.current.contains(event.target)) {
             setListStore(false);
         }
+        if (resultsRef3.current && !resultsRef3.current.contains(event.target)) {
+            setCategory(false);
+        }
     };
     
     useEffect(() => {
@@ -292,49 +319,65 @@ export default function Header(item) {
     function ClickStore(){
         setListStore(!listStore);
     }
+
+    function clickCategory(){
+        setCategory(!category);
+    }
     
     return (
         <div className="z-100">
             <header id="yourElementId" className={`fixed z-50 w-full top-0 left-0 transition-transform duration-700 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
-                <div className="flex z-50 pl-[100px] bg-[white] items-center">
+                <div className="flex z-50 sm:pl-[100px] max-sm:pl-[30px] bg-[white] items-center">
                     <div className="logo flex items-center">
                         <img src={logoDark} className="h-[50px] my-[10px] mr-[50px]" alt="Logo" />
                     </div>
-                    <ul className={`absolute z-100 block w-[45%] right-[500px]`}>
+                    <ul className={`absolute z-100 max-md:hidden block w-[45%] right-[500px]`}>
                         <form className="mr-10 w-full">
                             <Search childWidth={item.childWidth}/>
                         </form>
                     </ul>
 
-                    <ul  className="absolute flex p-[30px] pt-[10px] pb-[10px] text-[#009981] text-[20px] right-[3%]">
-                        <li className="text-[30px] px-[20px] hover:text-[red] cursor-pointer mx-[5px] relative rounded-lg transition delay-150 duration-300 ease-in-out hover:bg-[#EEFFF7]">
+                    <ul className="absolute flex p-[30px] pt-[10px] pb-[10px] text-[#009981] text-[20px] right-[3%]">
+                        <li className="text-[30px] sm:px-[20px] max-sm:mr-[10px] hover:text-[red] cursor-pointer mx-[5px] sm:relative rounded-lg transition delay-150 duration-300 ease-in-out hover:bg-[#EEFFF7]">
                             <FontAwesomeIcon onClick={ClickFavorite} icon={faHeart} />
-                            <p className="absolute top-[-10px] h-[25px] w-[25px] flex items-center justify-center rounded-[50%] bg-[red] right-0 text-white text-[15px]">{favourite.length || 0}</p>
+                            <div className="max-sm:relative">
+                                <p className="absolute top-[0px] max-sm:top-[-50px] h-[25px] w-[25px] flex items-center justify-center rounded-[50%] bg-[red] max-sm:-right-3  right-0 text-white text-[15px]">{favourite.length || 0}</p>
+                            </div>
                             {listFavourite && ListFavourite()}
                         </li>
-                        <li className="text-[30px] px-[20px] hover:text-[red] cursor-pointer mx-[5px] relative rounded-lg hover:bg-[#EEFFF7]">
+                        <li className="text-[30px] px-[20px] max-sm:mr-[20px] hover:text-[red] cursor-pointer mx-[5px] sm:relative rounded-lg hover:bg-[#EEFFF7]">
                             <FontAwesomeIcon onClick={ClickStore} icon={faBagShopping} />
-                            <p className="absolute top-[-10px] h-[25px] w-[25px] flex items-center justify-center rounded-[50%] bg-[red] right-0 text-white text-[15px]">{store.length || 0}</p>
+                            <div className="max-sm:relative">
+                                <p className="absolute top-[0px] max-sm:top-[-50px] h-[25px] w-[25px] flex items-center justify-center rounded-[50%] bg-[red] max-sm:-right-3 right-0 text-white text-[15px]">{store.length || 0}</p>
+                            </div>
                             {listStore && ListStore()}
                         </li>
-                        <li className="text-[30px] px-[20px] hover:text-[red] cursor-pointer mx-[5px] rounded-lg hover:bg-[#EEFFF7]">
+                        <li className="text-[30px] max-sm:hidden px-[20px] hover:text-[red] cursor-pointer mx-[5px] rounded-lg hover:bg-[#EEFFF7]">
                             <FontAwesomeIcon icon={faUser} />
                         </li>
                     </ul>
+                    <ul className="absolute sm:hidden right-[20px] pl-2" onClick={item.handleClickMenu}>
+                        <FontAwesomeIcon icon={faBars} />
+                    </ul>
                 </div>
                 
-                <div className={`h-[50px] w-full bg-[black] flex items-center justify-center transition-transform duration-700 ${isVisible ? 'translate-y-0' : 'translate-y-[50px]'}`}>
+                <div className={`h-[51px] max-sm:hidden w-full bg-[black] flex items-center justify-center transition-transform duration-700 ${isVisible ? 'translate-y-0' : 'translate-y-[50px]'}`}>
                     <div className="flex items-center text-[20px] h-full relative w-[1400px] justify-center">
-                            <div className="flex items-center w-[300px] absolute left-0 h-full  bg-[#15A78A] group">
-                                <i className="px-[15px] rounded-lg">
+                            <div ref={resultsRef3} className="flex  items-center w-[300px] absolute left-0 h-full group bg-[#15A78A] ">
+                                <i className="px-[15px] rounded-lg " onClick={clickCategory}>
                                     <FontAwesomeIcon className="text-[white] font-bold" icon={faList} />
                                     <label className="text-white font-normal px-[10px]" style={{ fontStyle: 'normal' }}>Danh mục sản phẩm</label>
                                 </i>
                                 <ul className="absolute bg-white left-0 w-[300px] text-[23px] top-[50px] px-[15px] items-center hidden group-hover:block">
                                     {listCategory}
                                 </ul>
+                                {category && 
+                                    <ul className="absolute bg-white left-0 w-[300px] text-[23px] top-[50px] px-[15px] items-center">
+                                        {listCategory}
+                                    </ul>
+                                }
                             </div>
-                            <ul className="text-white flex text-[20px]">
+                            <ul className="text-white flex text-[20px] max-lg:hidden">
                                 <li className="px-[10px] hover:text-[#15A78A] cursor-pointer">HOME <FontAwesomeIcon icon={faChevronDown} /></li>
                                 <li className="px-[10px] hover:text-[#15A78A] cursor-pointer">SHOP <FontAwesomeIcon icon={faChevronDown} /></li>
                                 <li className="px-[10px] hover:text-[#15A78A] cursor-pointer">PRODUCT <FontAwesomeIcon icon={faChevronDown} /></li>

@@ -11,12 +11,51 @@ import Favorite  from "./total/Favorite";
 import { Routes, Route, useLocation } from 'react-router-dom';
 import React, { useEffect, useRef, useState } from 'react';
 import bg from './images/nen2.jpg';
+import { faSquareXmark } from '@fortawesome/free-solid-svg-icons';
+import Search from './header/search'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+let category = [
+  "Tất cả sản phẩm",
+  "Lịch sử truyền thống",
+  "Văn học Việt Nam",
+  "Văn học nước ngoài",
+  "Kiến thức, khoa học",
+  "Truyện tranh",
+  "Wings Books"
+];
+
+let linkCategory = [
+  "/main/Tat_ca_san_pham",
+  "/main/Lich_su_truyen_thong",
+  "/main/Van_hoc_Viet_Nam",
+  "/main/Van_hoc_nuoc_ngoai",
+  "/main/Kien_thuc_khoa_hoc",
+  "/main/Truyen_tranh",
+  "/main/Wings_book",
+];
 
 const Main = () => {
   const location = useLocation();
   const pathParts = location.pathname;
   const headerRef = useRef(null);
+  const [menu, setMenu] = useState(false);
+
+  const listCategoryMenu = category.map((element, index) => {
+    if (index !== category.length - 1) {
+        return (
+            <li key={index} className="text-white font-mono pt-[5px] hover:text-[red]">
+                <a className="pl-[5px] ml-[10px]" href={linkCategory[index]}>{element}</a>
+            </li>
+        );
+    } else {
+        return (
+            <li key={index} className="text-white font-mono pt-[5px] hover:text-[red]">
+                <a className="pl-[5px] ml-[10px]" href={linkCategory[index]}>{element}</a>
+            </li>
+        );
+    }
+});
 
   let resultLocation = "";
 
@@ -57,7 +96,14 @@ const Main = () => {
         window.removeEventListener('resize', updateChildWidth);
       };
     }, []);
-  
+
+  function handleClickX() {
+    setMenu(false);
+  }
+
+  function handleClickMenu() {
+    setMenu(true);
+  }
 
   return (
     <div 
@@ -68,13 +114,28 @@ const Main = () => {
         backgroundAttachment: 'fixed',
       }}
     >
-      <Header childWidth={childWidth}/>
-      <div className="flex mt-[120px]">
+      <Header childWidth={childWidth} menu={menu} handleClickMenu={handleClickMenu}/>
+      <div className={`fixed bg-black md:hidden z-150 h-screen opacity-80 w-[300px] top-0 transition-transform duration-700 delay-150 right-0 ${menu ? 'translate-x-0' : 'translate-x-[500px]'}`}>
+          <p className="absolute right-[10px] top-[10px]">
+              <FontAwesomeIcon 
+                  className="text-[30px] text-red-500" 
+                  onClick={handleClickX} 
+                  icon={faSquareXmark} 
+              />
+          </p>
+          <div className="mt-[70px] md:hidden">
+              <Search></Search>
+              <ul className="text-[20px]">
+                  {listCategoryMenu}
+              </ul>
+          </div>
+      </div>
+      <div className="flex mt-[120px] max-sm:mt-[70px]">
         <Images />
       </div>
       <div className={`main flex w-[100%] justify-center mt-[50px] `}>
         <div className='w-[1200px] flex'>
-          <div className='w-[100%] container mx-auto px-10 '>
+          <div className='w-[100%] container mx-auto'>
             <Routes>
               <Route path="/" element={<Tat_ca_san_pham Width={childWidth}/>} />
               <Route path="/Tat_ca_san_pham/:pageNumber?" element={<Tat_ca_san_pham resultLocation="/main/Tat_ca_san_pham" Width={childWidth} />} />

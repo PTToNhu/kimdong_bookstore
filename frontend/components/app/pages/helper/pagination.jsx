@@ -414,9 +414,9 @@ export const Test = (item) => {
   return (
     <div>
       <div>
-        <div className="2xl:w-[full] xl:w-[full] flex px-6 lg:w-[full] items-center md:w-[full]  sm:w-[full] max-sm:w-[400px] relative mb-[50px] text-[30px]">
+        <div className="2xl:w-[full] xl:w-[full] sm:flex max-sm:px-6 lg:w-[full] items-center md:w-[full]  sm:w-[full] relative mb-[50px] text-[30px]">
           {linkCategory[location]}
-          <div className="absolute right-0 h-full flex items-center">
+          <div className="absolute right-0 h-full flex  items-center">
             <p className="text-[20px] mr-2">Sắp xếp</p>
             <Select
               className="h-full text-[15px] w-[170px] border-0 focus:outline-none focus:border-0 rounded-none"
@@ -427,7 +427,7 @@ export const Test = (item) => {
           </div>
         </div>
         <div className="flex">
-          <header className={` min-w-[250px] `}>
+          <header className={` min-w-[250px] max-sm:hidden`}>
             {/* // ${
                 //     lastScrollY.current <= 500 ? 'opacity-0 transform translate-y-10' :
                 //     lastScrollY.current <= 600 ? 'top-[35%] opacity-100 transform translate-y-0' :
@@ -457,7 +457,6 @@ export const Test = (item) => {
               </div>
             </div>
             <div className="font-medium bg-white">
-              <div>
                 <p className="flex pt-[10px] pl-[10px] bg-[red] pb-[10px] relative text-[20px] items-center text-[white]">
                   Sắp xếp
                   <FontAwesomeIcon
@@ -473,7 +472,6 @@ export const Test = (item) => {
                 >
                   {listSort}
                 </ul>
-              </div>
             </div>
           </header>
           <div className="flex justify-end">

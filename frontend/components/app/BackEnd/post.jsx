@@ -208,7 +208,7 @@ export default function Post() {
             const updatedData = data.map((element) => {
                 if (element.id === id) {
                     const newStatus = element.Status === "Active" ? "Inactive" : "Active";
-                    fetch(`https://localhost/BTL_web_1/src/app/BackEnd/php/uploads/setStatus.php?&url=${encodeURIComponent(element.Page)}&variable=${encodeURIComponent(newStatus)}&id=${encodeURIComponent(id)}`)
+                    fetch(`http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/setStatus.php?&url=${encodeURIComponent(element.Page)}&variable=${encodeURIComponent(newStatus)}&id=${encodeURIComponent(id)}`)
                         .then((response) => response.json())
                         .then((data) => {
                         })
@@ -275,7 +275,7 @@ export default function Post() {
             for (let index = 0; index < checkedItems.length; index++) {
                 if (checkedItems[index] === true) {
                     try {
-                        const response = fetch(`https://localhost/BTL_web_1/src/app/BackEnd/php/uploads/delete.php?&id=${encodeURIComponent(data[index].id)}`);
+                        const response = fetch(`http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/delete.php?&id=${encodeURIComponent(data[index].id)}`);
                         const result = response.json();
                     } catch (error) {
                         console.error("Error deleting item:", error);
