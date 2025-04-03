@@ -1,0 +1,4 @@
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=yourpassword
+JWT_SECRET_KEY=your_secret_key

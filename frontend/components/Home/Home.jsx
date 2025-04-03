@@ -38,7 +38,7 @@ const Home = () => {
      
   };
   useEffect (()=>{
-    console.log(containerRefN.current.scrollLeft);
+    // console.log(containerRefN.current.scrollLeft);
     const container = containerRefN.current;
     const maxScroll = container.scrollWidth - container.clientWidth;
 
@@ -210,8 +210,8 @@ const Home = () => {
             <div className="post-card">
               <div className="post-img-container"><img src={post.img} alt={post.title} /></div>
               <div className="postTitle">
-              <p className="title25">{post.title}</p>
-              <p>{post.date}</p>
+                <p className="title25">{post.title}</p>
+                <p>{post.date}</p>
                </div> 
             </div>
           ))}

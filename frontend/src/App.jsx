@@ -8,12 +8,14 @@ import FAQ from '../components/FAQ'
 import Question from '../components/question'
 import Login from '../components/Login/login'
 import Contact from '../components/ContactUs/contact'
+
 function App() {
 
   return (
     <BrowserRouter>
       <Routes>
         <Route index element={<Home />} />
+        <Route path="/" element={<Home/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/contact" element={<Contact/>} />
         <Route path="/about_us" element={<AboutUs />} />
