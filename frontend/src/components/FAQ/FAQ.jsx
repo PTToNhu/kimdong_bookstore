@@ -25,12 +25,12 @@ const FAQ = () => {
             </div>
             <div class="flex justify-center lg:space-x-4 space-x-2 bg-gray-100 lg:p-4 p-2 rounded-b-lg shadow-md">
                 <div>
-                    <a href="/FAQ">
+                    <a href="/faq">
                         <p class="lg:px-5 px-3 font-bold lg:text-sm text-[18px] text-gray-700 hover:text-amber-600 transition duration-300">Tính năng</p>
                     </a>
                 </div>
                 <div>
-                    <a href="/FAQ/question">
+                    <a href="/faq/question">
                         <p class="lg:px-5 px-3 font-bold lg:text-sm text-[18px] text-gray-700 hover:text-amber-600 transition duration-300">Câu hỏi thường gặp</p>
                     </a>
                 </div>
@@ -39,15 +39,17 @@ const FAQ = () => {
                 <div className="bg-white p-8">
                     <div className="grid lg:grid-cols-3  md:grid-cols-2 grid-cols-1 md:gap-3 gap-2 lg:gap-4">
                         {figures.map((item, index) => (
-                            <div
+                            <a
+                                href="./faq/feature"
                                 key={index}
                                 className="group cursor-pointer flex flex-col items-center justify-center bg-center w-full  aspect-square  overflow-hidden relative"
                                 style={{ backgroundImage: `url(${item.icon})`, backgroundSize: 'cover' }} // Đảm bảo ảnh bao phủ
                             >
-                                <h3 className="group-hover:text-red-700 absolute bottom-4 text-3xl font-semibold text-gray-700 text-center bg-white bg-opacity-75 w-full">
+                                <h3
+                                    className="group-hover:text-red-700 absolute bottom-4 text-3xl font-semibold text-gray-700 text-center bg-white bg-opacity-75 w-full">
                                     {item.title}
                                 </h3>
-                            </div>
+                            </a>
                         ))}
                     </div>
                 </div>

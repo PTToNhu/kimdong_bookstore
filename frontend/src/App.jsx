@@ -6,6 +6,8 @@ import AboutUs from './components/AboutUs/AboutUs'
 import Master_Classe from './components/Master_Classe/Master_Classe.jsx'
 import FAQ from './components/FAQ/FAQ'
 import Question from './components/Question/Question'
+import Cmt from './components/Cmt/Cmt.jsx'
+import Feature from './components/Feature/Feature.jsx'
 
 function App() {
 
@@ -17,6 +19,8 @@ function App() {
         <Route path="/about_us/master_classe" element={<Master_Classe />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/faq/question" element={<Question />} />
+        <Route path="/faq/feature" element={<Feature />} />
+        <Route path="/faq/question/comment" element={<Cmt />} />
         <Route path="/category" element={<Category />} />
       </Routes>
     </BrowserRouter>

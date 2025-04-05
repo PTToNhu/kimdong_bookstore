@@ -37,12 +37,12 @@ const Question = () => {
             </div>
             <div class="flex justify-center space-x-4 bg-gray-100 lg:p-4 p-2 rounded-lg shadow-md">
                 <div>
-                    <a href="/FAQ">
+                    <a href="/faq">
                         <p class="lg:px-5  px-3 font-bold text-sm text-gray-700 hover:text-amber-600 transition duration-300">Tính năng</p>
                     </a>
                 </div>
                 <div>
-                    <a href="/FAQ/question">
+                    <a href="/faq/question">
                         <p class="lg:px-5  px-3 font-bold text-sm text-gray-700 hover:text-amber-600 transition duration-300">Câu hỏi thường gặp</p>
                     </a>
                 </div>
@@ -63,8 +63,8 @@ const Question = () => {
                     <div className="lg:p-4">
                         {faqs.map((faq, index) => (
                             <div key={index} className="border border-gray-300 rounded-lg p-4 lg:mb-4 mb-2">
-                                <a href="./">
-                                    <div className="font-semibold lg:text-2xl text-[16px] md:text-lg">{faq.title}</div>
+                                <a href="/faq/question/comment">
+                                    <div className="fontfont-semibold lg:text-2xl text-[16px] md:text-lg">{faq.title}</div>
                                 </a>
                                 <div className="flex space-x-4 overflow-hidden lg:mt-2 mt-1">
                                     <span className="flex items-center space-x-1">
