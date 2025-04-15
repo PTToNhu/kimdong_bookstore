@@ -1,6 +1,7 @@
 import React from 'react'
 import {useNavigate } from 'react-router-dom'
 import './contact.css'
+import Footer from '../footer/footer'
 const Contact = () => {
     return(
         <div className="pageContact">
@@ -45,7 +46,7 @@ const Contact = () => {
                 </div>
                 <button type="submit">Gửi liên hệ</button>
             </div>
-
+            <Footer/>
         </div>
     )
 }

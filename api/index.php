@@ -16,6 +16,18 @@ if ($relative_uri == "/login" && $_SERVER['REQUEST_METHOD'] == "POST") {
     
     $controller->login();
 }
+else if($relative_uri == "/home/listAuthor" && $_SERVER['REQUEST_METHOD'] == "GET"){
+    $controller = new Home();
+    $controller->getListAuthor();
+}
+else if($relative_uri == "/home/listPost" && $_SERVER['REQUEST_METHOD'] == "GET"){
+    $controller = new Home();
+    $controller->getListPost();
+}
+else if($relative_uri == "/home/listBook" && $_SERVER['REQUEST_METHOD'] == "GET"){
+    $controller = new Home();
+    $controller->getListBook();
+}
 else {
     http_response_code(404);
     echo json_encode(["message" => "API not exist"]);
