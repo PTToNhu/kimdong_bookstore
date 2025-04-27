@@ -35,7 +35,6 @@ export default function Post() {
     const [data, setData] = useState([]);
     let fetchedData = null;
     const [Link, setLink] = useState("/admin/post/All");
-    const [open, setOpen] = useState([false, false, false]);
     const [checkedItems, setCheckedItems] = useState(Array(data.length).fill(false));
     const [allChecked, setAllChecked] = useState(false);
     const [Category, setCategory] = useState(false);
@@ -76,7 +75,7 @@ export default function Post() {
     } else if (pathParts === "InActive") {
         fetchedData = Data(linkcategory[index], "InActive")
     }
-
+    const [open, setOpen] = useState(Array(data.length).fill(false));
     useEffect(() => {
         if (fetchedData) {
             setData(fetchedData);
@@ -245,6 +244,7 @@ export default function Post() {
                     edit={edit}
                     setID={setID}
                     results={data}
+                    handleCheckAll={handleCheckAll}
                 />
             );
         } else {
@@ -383,16 +383,7 @@ export default function Post() {
                             {input}
                         </div>
                     </div>
-                    <ul className="flex py-[20px] text-[20px] shadow-2xl rounded-t-lg ">
-                        <li className="w-[2%] px-[2%]"><input type="checkbox" disabled={edit} className="size-4 cursor-pointer" onClick={() => handleCheckAll()} /></li>
-                        <li className="w-[5%] px-[2%]">ID</li>
-                        <li className="w-[30%] px-[2%]">Name</li>
-                        <li className="w-[13%]">Giá gốc</li>
-                        <li className="w-[10%] px-[2%]">Giá</li>
-                        <li className="w-[10%] pl-[1%]">Giảm giá</li>
-                        <li className="w-[10%] px-[5%]">Status</li>
-                        <li className="w-[10%] ml-[8%]" >Thêm</li>
-                    </ul>
+
                     {results.length > 0 ? SecrchResult : result}
                 </div>
             </div>

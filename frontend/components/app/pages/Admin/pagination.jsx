@@ -6,7 +6,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import Modal from "../helper/modal";
 import React, { useState } from 'react';
 import "./style/style.css"
-const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, formatPrice, handleStatusChange, toggleModal, open, edit, setID, results}) => {
+const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, formatPrice, handleStatusChange, toggleModal, open, edit, setID, results, handleCheckAll}) => {
     const [currentPage, setCurrentPage] = useState(1);
     const pagination = {
         totalItems: data.length,
@@ -141,95 +141,83 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
     let type;
 
     edit ? type = "radio" : type = "checkbox";
-
+    
     function getData() {
-        // return data.slice(index, index + max_index).map((element, index) => (
-        //     <ul className={`flex text-[20px] py-2  ${index % 2 === 0 ? "bg-[#E0E3E7]" : ""}`} key={element.id}>
-        //         <li className="w-[2%] px-[2%]">
-        //             <input type={type} className="size-4 rounded-[50%] cursor-pointer"
-        //                 checked={checkedItems[index]}
-        //                 onChange={() => {
-        //                     handleCheckboxChange(index, results);
-        //                 }}
-        //                 name = "isRadio"
-        //             />
-        //         </li>
-        //         <li className="w-[5%] px-[2%]">{element.id}</li>
-        //         <li className="w-[30%] px-[2%]">{element.name}</li>
-        //         <li className="w-[13%]">{formatPrice(element.gia_goc)}</li>
-        //         <li className="w-[10%] px-[1.5%]">{formatPrice(element.gia)}</li>
-        //         <li className="w-[10%] pl-[1%] flex items-center justify-center">{element.giam_gia}</li>
-        //         <li class="checkbox-wrapper-8 w-[10%]  cursor-pointer ml-[3%] rounded-lg flex items-center justify-center" >
-        //             <input class="tgl tgl-skewed" onClick={() => handleStatusChange(element.id)} id={index} checked={element.Status === "Active" ? true : false} type="checkbox"/>
-        //             <label class="tgl-btn" data-tg-off="InActive" data-tg-on="Active"  for={index}></label>
-        //         </li>
-        //         <li className="w-[10%] pl-[7.5%] flex items-center justify-center cursor-pointer" onClick={() => toggleModal(index)}>
-        //             <FontAwesomeIcon className="size-7" icon={faBars} />
-        //         </li>
-        //         {open[index] && (
-        //             <Modal open={open[index]} onClose={() => toggleModal(index)}>
-        //                 <ul className="w-[500px] text-[30px] text-white">
-        //                     <li className="px-[2%]">Tập: <label className="text-[red]">{element.tap}</label></li>
-        //                     <li className="px-[2%] bg-[#2D2F39]">Tác giả: <label className="text-[red]">{element.tac_gia}</label></li>
-        //                     <li className="px-[2%]">Đối tượng: <label className="text-[red]">{element.doi_tuong}</label></li>
-        //                     <li className="px-[2%] bg-[#2D2F39]">Khuôn khổ: <label className="text-[red]">{element.khuon_kho}</label></li>
-        //                     <li className="px-[2%]">Số trang: <label className="text-[red]">{element.Page}</label></li>
-        //                     <li className="px-[2%] bg-[#2D2F39]">Trọng lượng: <label className="text-[red]">{element.trong_luong}</label></li>
-        //                 </ul>
-        //             </Modal>
-        //         )}
-        //     </ul>
-        // ));
-        const Data = [];
-        const temp = index + max_index;
-        for(index;index < temp;index++){
-            if(index < data.length){
-                Data.push(
-                    <ul className={`flex h-[56px] text-[20px] py-2  ${index % 2 === 0 ? "bg-[#E0E3E7]" : ""}`} key={data[index].id}>
-                        <li className="w-[2%] px-[2%]">
-                            <input type={type} className="size-4 rounded-[50%] cursor-pointer"
-                                checked={checkedItems[index]}
-                                onChange={() => {
-                                    handleCheckboxChange(index, results);
-                                }}
-                                name = "isRadio"
-                            />
-                        </li>
-                        <li className="w-[5%] px-[2%]">{data[index].id}</li>
-                        <li className="w-[30%] px-[2%]">{data[index].name}</li>
-                        <li className="w-[13%]">{formatPrice(data[index].gia_goc)}</li>
-                        <li className="w-[10%] px-[1.5%]">{formatPrice(data[index].gia)}</li>
-                        <li className="w-[10%] pl-[1%] flex items-center justify-center">{data[index].giam_gia}</li>
-                        <li class="checkbox-wrapper-8 w-[10%]  cursor-pointer ml-[3%] rounded-lg flex items-center justify-center" >
-                            <input class="tgl tgl-skewed" onClick={() => handleStatusChange(data[index].id)} id={index} checked={data[index].Status === "Active" ? true : false} type="checkbox"/>
-                            <label class="tgl-btn" data-tg-off="InActive" data-tg-on="Active"  for={index}></label>
-                        </li>
-                        <li className="w-[10%] pl-[7.5%] flex items-center justify-center cursor-pointer" onClick={() => toggleModal(index)}>
-                            <FontAwesomeIcon className="size-7" icon={faBars} />
-                        </li>
-                        {open[index] && (
-                            <Modal open={open[index]} onClose={() => toggleModal(index)}>
-                                <ul className="w-[500px] text-[30px] text-white">
-                                    <li className="px-[2%]">Tập: <label className="text-[red]">{data[index].tap}</label></li>
-                                    <li className="px-[2%] bg-[#2D2F39]">Tác giả: <label className="text-[red]">{data[index].tac_gia}</label></li>
-                                    <li className="px-[2%]">Đối tượng: <label className="text-[red]">{data[index].doi_tuong}</label></li>
-                                    <li className="px-[2%] bg-[#2D2F39]">Khuôn khổ: <label className="text-[red]">{data[index].khuon_kho}</label></li>
-                                    <li className="px-[2%]">Số trang: <label className="text-[red]">{data[index].Page}</label></li>
-                                    <li className="px-[2%] bg-[#2D2F39]">Trọng lượng: <label className="text-[red]">{data[index].trong_luong}</label></li>
-                                </ul>
-                            </Modal>
-                        )}
-                    </ul>
-                    );
-            }
-            else{
-                Data.push(
-                    <ul className={`flex h-[56px] py-2  ${index % 2 === 0 ? "bg-[#E0E3E7]" : ""}`}>
-                    </ul>
-                );
-            }
+        let temp = Array(max_index);
+        for(let i = 0; i < max_index; i++){
+            temp[i] = data[index + i];
         }
-        return Data;
+
+        let result = [];
+        temp.map((element, index) => {
+            if(element){
+                result.push(<tr className={`${index % 2 === 0 ? "bg-gray-100" : ""} text-2xl`} key={element.id}>
+                    <td className="px-2 size-4 py-2">
+                        <input type={type} className="size-4 rounded-[50%] cursor-pointer"
+                            checked={checkedItems[index]}
+                            onChange={() => {
+                                handleCheckboxChange(index, results);
+                            }}
+                            name="isRadio"
+                        />
+                    </td>
+                    <td className="px-2 text-center">{element.id}</td>
+                    <td className="px-2">{element.name}</td>
+                    <td className="px-2 text-center">{formatPrice(element.gia_goc)}</td>
+                    <td className="px-2 text-center">{formatPrice(element.gia)}</td>
+                    <td className="px-2 text-center">{element.giam_gia}</td>
+                    <td className="checkbox-wrapper-8 flex items-center justify-center">
+                        <input className="tgl tgl-skewed" onClick={() => handleStatusChange(element.id)} id={index} checked={element.Status === "Active"} type="checkbox" />
+                        <label className="tgl-btn" data-tg-off="InActive" data-tg-on="Active" htmlFor={index}></label>
+                    </td>
+                    <td className="cursor-pointer text-center" onClick={() => toggleModal(index)}>
+                        <FontAwesomeIcon className="size-7" icon={faBars} />
+                    </td>
+                    {open[index] && (
+                        <Modal open={open[index]} onClose={() => toggleModal(index)}>
+                            <ul className="w-[500px] text-[30px] text-white">
+                                <li className="px-[2%]">Tập: <label className="text-[red]">{element.tap}</label></li>
+                                <li className="px-[2%] bg-[#2D2F39]">Tác giả: <label className="text-[red]">{element.tac_gia}</label></li>
+                                <li className="px-[2%]">Đối tượng: <label className="text-[red]">{element.doi_tuong}</label></li>
+                                <li className="px-[2%] bg-[#2D2F39]">Khuôn khổ: <label className="text-[red]">{element.khuon_kho}</label></li>
+                                <li className="px-[2%]">Số trang: <label className="text-[red]">{element.Page}</label></li>
+                                <li className="px-[2%] bg-[#2D2F39]">Trọng lượng: <label className="text-[red]">{element.trong_luong}</label></li>
+                            </ul>
+                        </Modal>
+                    )}
+                </tr>)
+            }else{
+                result.push(
+                    <tr className={`${index % 2 === 0 ? "bg-gray-100" : ""} text-2xl`}>
+                        <td className="px-2 py-2">
+                            Na/N
+                        </td>
+                        <td className="px-2  py-2">
+                            
+                        </td>
+                        <td className="px-2  py-2">
+                            
+                        </td>
+                        <td className="px-2  py-2">
+                            
+                        </td>
+                        <td className="px-2  py-2">
+                            
+                        </td>
+                        <td className="px-2  py-2">
+                            
+                        </td>
+                        <td className="px-2  py-2">
+                            
+                        </td>
+                        <td className="px-2  py-5">
+                            
+                        </td>
+                    </tr>
+                )
+            }
+        });
+        return result;
     }
 
     const countStatus = results.reduce((accumulator, item) => {
@@ -243,9 +231,26 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
 
     return (
         <div className='shadow-lg rounded-lg'>
-            {getData()}
-            <div className='flex relative h-[70px] w-full border-t border-[#D0D1D3]'>
-                <div className='flex  relative items-center text-[20px] '>
+            <table className="min-w-full border-collapse">
+                <thead>
+                    <tr className="bg-gray-200">
+                        <th className="py-2"><input type="checkbox" disabled={edit} className="size-4 cursor-pointer" onClick={() => handleCheckAll()} /></th>
+                        <th className="py-2">ID</th>
+                        <th className="py-2">Name</th>
+                        <th className="py-2">Original Price</th>
+                        <th className="py-2">Current Price</th>
+                        <th className="py-2">Discount</th>
+                        <th className="py-2">Status</th>
+                        <th className="py-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {getData()}
+                </tbody>
+            </table>
+            
+            <div className='flex items-center relative h-[70px] w-full border-t border-[#D0D1D3]'>
+                <div className='flex  relative text-[20px] '>
                     <p className='ml-[10px]'> Tổng sản phẩm: {results.length}</p>
                     <p className='ml-[50px]'> Active: {countStatus.active}</p>
                     <p className='ml-[50px]'> Inactive: {countStatus.inactive}</p>

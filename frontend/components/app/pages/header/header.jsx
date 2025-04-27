@@ -136,7 +136,7 @@ export default function Header(item) {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await fetch(`https://localhost/BTL_web_1/src/app/BackEnd/php/uploads/getAllFavorite.php`);
+            const response = await fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/getAllFavorite.php`);
             const data = await response.json();
             setFavourite(data);
           } catch (error) {
@@ -146,10 +146,12 @@ export default function Header(item) {
         fetchData();
     }, [favourite]);
 
+    
+
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await fetch(`https://localhost/BTL_web_1/src/app/BackEnd/php/uploads/getAllStore.php`);
+            const response = await fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/getAllStore.php`);
             const data = await response.json();
             setStore(data);
           } catch (error) {
@@ -179,7 +181,7 @@ export default function Header(item) {
     useEffect(() => {
         const indexFavorite = clickFavorite.findIndex(value => value === true);
         if (indexFavorite !== -1) {
-            fetch(`https://localhost/BTL_web_1/src/app/BackEnd/php/uploads/deleteFavorite.php?id=${encodeURIComponent(indexFavorite)}`)
+            fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/deleteFavorite.php?id=${encodeURIComponent(indexFavorite)}`)
                 .then(response => response.json()) 
                 .catch(error => console.error('Error fetching data:', error));
                 setClickFavorite(prevCheckedItems => {
@@ -190,7 +192,7 @@ export default function Header(item) {
         }
         const indexStore = clickStore.findIndex(value => value === true);
         if (indexStore !== -1) {
-            fetch(`https://localhost/BTL_web_1/src/app/BackEnd/php/uploads/deleteStore.php?id=${encodeURIComponent(indexStore)}`)
+            fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/deleteStore.php?id=${encodeURIComponent(indexStore)}`)
                 .then(response => response.json()) 
                 .catch(error => console.error('Error fetching data:', error));
                 setClickStore(prevCheckedItems => {
