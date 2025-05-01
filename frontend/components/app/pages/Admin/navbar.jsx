@@ -62,7 +62,7 @@ export default function Navbar() {
     const navigate = useNavigate();
     return (
         <div className="bg-[#161A23] z-50 h-screen">
-            <div className={` ${open ? "w-[240px]" : ""}  bg-[#161A23] font-sans`}>
+            <div className={` ${open ? "w-[300px]" : ""}  bg-[#161A23] font-sans`}>
                 <header className="relative">
                     <div className="flex mt-[20px] justify-center ">
                         <img className={`h-[50px] ${open ? "mr-7" : ""} w-[50px] object-cover" `} src={avt}></img>
@@ -87,8 +87,8 @@ export default function Navbar() {
                         <div className="w-[80%] my-[20px] border-b-[5px] border-[#2D2F39] rounded-full"></div>
                     </div>
                 </header>
-                <div ref={divRef1} className="flex pr-4">
-                    <div className={`container mx-auto ${open ? "w-[110px]" : ""} text-white `}>
+                <div ref={divRef1} className="flex pr-13">
+                    <div className={`container ${open ? "w-[100px]" : ""} text-white `}>
                         <ul className="border-r-4 border-[#8A8C91] rounded-[50%]">
                             <li>
                                 <a
@@ -122,7 +122,7 @@ export default function Navbar() {
                                 </div>
                             </li>
                             <li>
-                                <a href={`${!open ? "/admin/schedules": ""}`} className={`flex py-4 my-2 w-full pl-4 rounded-lg ${!open ? "cursor-pointer transition delay-150 duration-300 ease-in-out hover:scale-[1.4]": ""}`}>
+                                <a href={`${!open ? "/admin/order": ""}`} className={`flex py-4 my-2 w-full pl-4 rounded-lg ${!open ? "cursor-pointer transition delay-150 duration-300 ease-in-out hover:scale-[1.4]": ""}`}>
                                     <img className="pr-4 w-[50px]" src={schedule}></img>
                                 </a>
                             </li>
@@ -145,7 +145,7 @@ export default function Navbar() {
                             <li>
                                 <a
                                     href={"/admin/dashboard"}
-                                    className={`my-1 flex py-5 w-full pl-4 rounded-lg hover:bg-[#2D2F39] cursor-pointer ${isActive === "dashboard" ? 'bg-[#2D2F39] text-[#62fcaf]' : ''}`}
+                                    className={`my-1 flex py-5  pl-4 rounded-lg hover:bg-[#2D2F39] cursor-pointer ${isActive === "dashboard" ? 'bg-[#2D2F39] text-[#62fcaf]' : ''}`}
                                 >
                                     <p className="text-[20px]">Dashboard</p>
                                 </a>
@@ -200,8 +200,8 @@ export default function Navbar() {
                                 </a>
                             </li>
                             <li>
-                                <a href={"/admin/schedules"} className={`my-1 flex py-4 w-full pl-4 rounded-lg hover:bg-[#2D2F39] cursor-pointer ${isActive === "schedules" ? 'bg-[#2D2F39] text-[#62fcaf]' : ''} `}>
-                                    <p className="text-[20px]">Schedules</p>
+                                <a href={"/admin/order"} className={`my-1 flex py-4 w-full pl-4 rounded-lg hover:bg-[#2D2F39] cursor-pointer ${isActive === "order" ? 'bg-[#2D2F39] text-[#62fcaf]' : ''} `}>
+                                    <p className="text-[20px]">Order</p>
                                 </a>
                             </li>
                             <li>

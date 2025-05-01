@@ -8,7 +8,7 @@ import React from 'react';
 // import Home from '../components/Home'
 // import Category from '../components/Category'
 import "./App.css"
-
+import SelectMethodPage from "./../components/app/pages/payment/page"
 function App() {
 
   return (
@@ -21,6 +21,7 @@ function App() {
           <Route path="/main*" element={<Main />} />
           <Route path="/Product/:page?/:name?" element={<Product />} />
           <Route path="/Products/:name?" element={<Product />} />
+          <Route path="/Payment/:value?" element={<SelectMethodPage />} />
       </Routes>
     </BrowserRouter>
 

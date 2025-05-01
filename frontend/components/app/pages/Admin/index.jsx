@@ -5,7 +5,7 @@ import Navbar from "./navbar";
 import Post from "./../../BackEnd/post";
 import { Routes, Route } from 'react-router-dom';
 import Edit from "./../../BackEnd/edit";
-
+import Order from "./../../BackEnd/order"
 export default function Admin() {
     return (
         <div className="flex w-[100%]">
@@ -15,6 +15,7 @@ export default function Admin() {
                     <Route path="/input" element={<Input />} />
                     <Route path="/post/:Status?" element={<Post />} />
                     <Route path="/post/edit/:number?" element={<Edit />} />
+                    <Route path="/order/" element={<Order />} />
                 </Routes>
             </div>
         </div>

@@ -116,8 +116,6 @@ export default function Search(item) {
 
   const data = Data(linkCategory[index]);
 
-  console.log(results);
-
   const listCategory = categories.map((element, index) => (
     <li
       key={index}
@@ -207,7 +205,6 @@ export default function Search(item) {
           <FontAwesomeIcon className="text-[20px]" icon={faMagnifyingGlass} />
         </button>
       </div>
-      {console.log(results)}
       <div
         ref={resultsRef}
         className="flex absolute z-20 md:w-[518px] bg-white mt-[10px] sm:rounded-lg"

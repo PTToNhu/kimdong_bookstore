@@ -225,7 +225,7 @@ export default function Header(item) {
 
     const ListFavourite = () => {
         return (
-            <div ref={resultsRef1} className="w-[280px] absolute shadow-2xl p-[4px] mt-[20px] border-2 font-mono border-[#C2C2D9] rounded-sm bg-white text-black right-0 z-50">
+            <div ref={resultsRef1} className="w-[350px] absolute shadow-2xl p-[4px] mt-[20px] border-2 font-mono border-[#C2C2D9] rounded-sm bg-white text-black right-0 z-50">
             <p className="text-[17px] py-[5px] mb-[5px] flex justify-center items-center bg-[#D51C24] text-white rounded-md"> Danh sách yêu thích của tôi</p>
             <Swiper
                 modules={[Navigation, Pagination, Scrollbar, A11y]}
@@ -233,19 +233,18 @@ export default function Header(item) {
                 slidesPerView={3}
                 scrollbar={{ draggable: true }}
                 direction="vertical"
-                className={`h-[360px] m-0`}
+                className={`h-[400px] m-0`}
             >
                 {favourite.length > 0 && favourite.map((element, index) => (
                     <SwiperSlide className="m-0" key={index}> 
                         <div className="flex">
                             <a className="fit object-cover flex items-center" href={`/Product/tat_ca_san_pham/${element.id}`}>
-                                <img className="h-[100px]" src={imageFavorite[index]}></img>
-                                <div className="ml-2 w-[160px]">
+                                <img className="h-[120px]" src={imageFavorite[index]}></img>
+                                <div className="ml-2 w-[210px]">
                                     <p className="text-[14px]">{element.name}</p>
                                     <p className="text-[14px]">Tập: {element.tap}</p>
                                     <p className="text-[14px]">Giá sản phẩm: {formatPrice(element.gia)}</p>
                                 </div>
-                                
                             </a>
                             <div className="text-[red] cursor-pointer flex items-center" onClick={() => {handleClickFavorite(element.id)}}>x</div>
                         </div>
@@ -259,7 +258,7 @@ export default function Header(item) {
 
     const ListStore = () => {
         return (
-            <div ref={resultsRef2} className="w-[280px] absolute shadow-2xl p-[4px] mt-[20px] border-2 font-mono border-[#C2C2D9] rounded-sm bg-white text-black right-0 z-50">
+            <div ref={resultsRef2} className="w-[350px] absolute shadow-2xl p-[4px] mt-[20px] border-2 font-mono border-[#C2C2D9] rounded-sm bg-white text-black right-0 z-50">
             <p className="text-[14px] py-[5px] mb-[5px] flex bg-[#D51C24] text-white rounded-md p-3"> Giỏ hàng của tôi ({store.length || 0} Sản phẩm)</p>
             <Swiper
                 modules={[Navigation, Pagination, Scrollbar, A11y]}
@@ -267,16 +266,17 @@ export default function Header(item) {
                 slidesPerView={3}
                 scrollbar={{ draggable: true }}
                 direction="vertical"
-                className={`h-[360px] m-0`}
+                className={`h-[400px] m-0`}
             >
                 {store.length > 0 && store.map((element, index) => (
                     <SwiperSlide className="m-0" key={index}> 
                         <div className="fit object-cover flex items-center" href={`/Product/tat_ca_san_pham/${element.id}`}>
-                            <img className="h-[100px]" src={imageStore[index]}></img>
-                            <div className="ml-2 w-[160px]">
+                            <img className="h-[120px]" src={imageStore[index]}></img>
+                            <div className="ml-2 w-[210px]">
                                 <p className="text-[14px]">{element.name}</p>
                                 <p className="text-[14px]">Tập: {element.tap}</p>
                                 <p className="text-[14px]">Giá sản phẩm: {formatPrice(element.gia)}</p>
+                                <p className="text-[14px]">Số lượng: {element.so_luong}</p>
                             </div>
                             <div className="text-[red] cursor-pointer" onClick={() => {handleClickStore(element.id)}}>x</div>
                         </div>
@@ -284,12 +284,17 @@ export default function Header(item) {
                 ))}
             </Swiper>
             <p className="text-[20px]">Tạm tính: <label className="font-bold text-[red]">{formatPrice(store.length > 0 && store.reduce((accumulator, item) => {
-                    return accumulator + Number(item.gia);
+                    return accumulator + Number(item.gia * item.so_luong);
                 }, 0))}</label> 
             </p>
             <div className="flex w-full">
-                <a className="text-[17px] w-[50%] m-[5px] py-[5px] mb-[5px] flex justify-center items-center bg-[white] text-[red] border border-[red] rounded-sm" href="/main/Favorite"> Xem giỏ hàng</a>
-                <a className="text-[17px] w-[50%] m-[5px] py-[5px] mb-[5px] flex justify-center items-center font-bold bg-[red] text-white rounded-sm" href="/main/Favorite"> Thanh toán</a>
+                <a className="text-[17px] w-[50%] m-[5px] py-[5px] mb-[5px] flex justify-center items-center bg-[white] text-[red] border border-[red] rounded-sm"> Xem giỏ hàng</a>
+                <a
+                    className="text-[17px] w-[50%] m-[5px] py-[5px] mb-[5px] flex justify-center items-center font-bold bg-red-500 text-white rounded-sm"
+                    href={`/Payment`}
+                >
+                    Thanh toán
+                </a>
             </div>
         </div>
         );
