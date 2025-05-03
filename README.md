@@ -1,2 +1,0 @@
-# kimdong_bookstore
- 
