@@ -71,4 +71,19 @@ class NewsModel extends Database
             ];
         }
     }
+    public function deleteNew($id)
+    {
+        $query = "DELETE FROM news WHERE id = $id";
+        if (mysqli_query($this->connection, $query)) {
+            return [
+                'status' => 'success',
+                'message' => 'Xóa bài viết thành công',
+            ];
+        } else {
+            return [
+                'status' => 'error',
+                'message' => 'Xóa bài viết thất bại: ' . mysqli_error($this->connection),
+            ];
+        }
+    }
 }

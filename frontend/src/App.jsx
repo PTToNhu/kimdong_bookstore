@@ -10,7 +10,7 @@ import News from "../components/app/pages/News/News.jsx";
 import PostNew from "../components/app/pages/PostNew/PostNew.jsx";
 import "./App.css";
 import AboutUs from "../components/app/pages/AboutUs/AboutUs.jsx";
-
+import Test from "../components/app/pages/Test/Test.jsx";
 function App() {
   return (
     <BrowserRouter>
@@ -25,6 +25,7 @@ function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/faq/question" element={<Question />} />
         <Route path="/postnew" element={<PostNew />} />
+        <Route path="/test" element={<Test />} />
       </Routes>
     </BrowserRouter>
   );

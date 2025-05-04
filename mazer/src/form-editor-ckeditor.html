@@ -1,0 +1,161 @@
+{% set title = 'CKEditor' %}
+{% set filename = 'news.html' %}
+
+{% extends 'src/layouts/master.html' %}
+{% block content %}
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Thêm bài viết</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="news.html">Quản lý bài viết</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Thêm bài viết</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <section class="section">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Tiêu đề</h4>
+                        <input type="text" name="Title" id="Title" class="form-control"
+                            placeholder="Nhập tiêu đề bài viết" required>
+                    </div>
+                </div>
+
+                <section class="section">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Nội dung</h4>
+                                </div>
+                                <div class="card-body">
+                                    <textarea name="" id="default" cols="30" rows="10"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Hình ảnh</h4>
+                        <input type="file" name="Thumbnail" id="Thumbnail" class="form-control"
+                            placeholder="Chọn hình ảnh đại diện cho bài viết" required>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h4 class="card-title">Thể loại tin tức</h4>
+                            <select class="form-select" id="CategoryID" name="CategoryID" required>
+                                <option value="" disabled selected>Chọn thể loại</option>
+                                <option value="1">Hoạt động</option>
+                                <option value="2">Sự kiện</option>
+                                <option value="3">Điểm sách</option>
+                                <option value="4">Sách giả - Sách lậu</option>
+                                <option value="5">Lịch phát hành sách định kỳ</option>
+                            </select>
+                        </div>
+                        <div>
+                            <h4 class="card-title">Trạng thái</h4>
+                            <select class="form-select" id="Status" name="Status" required>
+                                <option value="" disabled selected>Chọn trạng thái bài viết</option>
+                                <option value="1">Công khai</option>
+                                <option value="2">Ẩn</option>
+                                <option value="3">Bản nháp</option>
+                            </select>
+                        </div>
+                        <div>
+                            <h4 class="card-title">Ngày đăng</h4>
+                            <input type="datetime-local" name="ScheduledDate" id="ScheduledDate" class="form-control"
+                                placeholder="Chọn ngày đăng bài viết" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div>
+        <button class="btn btn-primary block" id="submitBtn">Lưu</button>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script src="assets/extensions/tinymce/tinymce.min.js"></script>
+<script src="assets/static/js/pages/tinymce.js"></script>
+<script>
+    document.getElementById('submitBtn').addEventListener('click', function () {
+        const title = document.getElementById('Title').value;
+        const content = tinymce.get('default').getContent();
+        const thumbnail = document.getElementById('Thumbnail').files[0];
+        const categoryID = document.getElementById('CategoryID').value;
+        const status = document.getElementById('Status').value;
+        const scheduledDate = document.getElementById('ScheduledDate').value;
+
+        if (!title || !content || !thumbnail || !categoryID || !status || !scheduledDate) {
+            alert('Vui lòng điền đầy đủ thông tin!');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', thumbnail);
+
+        fetch('http://localhost/BTL_WEB_1/api/upload/UploadFile', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(imageData => {
+                // Sau khi tải lên xong, lấy URL của hình ảnh
+                if (imageData.location) {
+                    const imageUrl = imageData.location; // Giả sử API trả về URL của hình ảnh
+
+                    // Tiếp tục gửi thông tin bài viết dưới dạng JSON
+                    const postData = {
+                        title: title,
+                        text: content,
+                        thumbnail: imageUrl,
+                        categoryID: categoryID,
+                        status: status,
+                        scheduleAt: scheduledDate,
+                        writtenByAdminID: 1,  // Giả sử admin đang đăng bài
+                        writtenDate: new Date().toISOString()  // Thêm thời gian đăng bài
+                    };
+
+                    return fetch('http://localhost/BTL_WEB_1/api/News/postNews', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(postData)
+                    });
+                } else {
+                    throw new Error('Lỗi tải ảnh lên');
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Kiểm tra kết quả trả về từ API
+                console.log('Dữ liệu trả về:', data);  // Log ra dữ liệu trả về từ API
+                if (data.status === 'success') {
+                    alert('Thêm bài viết thành công!');
+                    window.location.href = 'news.html';  // Quay lại trang quản lý bài viết
+                } else {
+                    alert('Có lỗi xảy ra, vui lòng thử lại!');
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi:', error);  // Log chi tiết lỗi vào console
+                alert('Đã có lỗi khi gửi yêu cầu, vui lòng thử lại!');
+            });
+    });
+</script>
+{% endblock %}

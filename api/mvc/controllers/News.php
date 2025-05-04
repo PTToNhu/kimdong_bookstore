@@ -3,7 +3,9 @@ class News extends Controller
 {
     function getNews()
     {
-        $res = $this->model("NewsModel")->getNews($_GET['offset'], $_GET['limit']);
+        $offset = $_GET['offset'] ?? 0; // Giá trị mặc định là 0 nếu không có tham số offset
+        $limit = $_GET['limit'] ?? 20; // Giá trị mặc định là 10 nếu không có tham số limit
+        $res = $this->model("NewsModel")->getNews($offset, $limit);
         echo json_encode($res);
     }
 
@@ -27,6 +29,28 @@ class News extends Controller
         header('Content-Type: application/json');
         $data = json_decode(file_get_contents("php://input"), true); // Lấy dữ liệu JSON từ request body, chuyển đổi json thành mảng
         $res = $this->model("NewsModel")->postNews($data);
+        echo json_encode($res);
+    }
+    function deleteNew()
+    {
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+        header("Access-Control-Allow-Headers: Content-Type, Authorization");
+        header('Content-Type: application/json');
+
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        if (!isset($data['id']) || !is_numeric($data['id'])) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'ID không hợp lệ hoặc không được cung cấp'
+            ]);
+            return;
+        }
+
+        $id = intval($data['id']);
+
+        $res = $this->model("NewsModel")->deleteNew($id); // ✅ Truyền đúng ID
         echo json_encode($res);
     }
 }

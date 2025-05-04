@@ -23,11 +23,11 @@ class Upload extends Controller
             return;
         }
 
-        if ($file["size"] > 500000) {
-            http_response_code(400);
-            echo json_encode(["error" => "File too large"]);
-            return;
-        }
+        // if ($file["size"] > 500000) {
+        //     http_response_code(400);
+        //     echo json_encode(["error" => "File too large"]);
+        //     return;
+        // }
 
         $newFileName = uniqid() . "." . $imageFileType;
         $target_file = $target_dir . $newFileName;
