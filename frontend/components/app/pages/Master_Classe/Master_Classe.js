@@ -3,7 +3,7 @@ export function toggleCommentBox(index) {
   var allComments = document.querySelectorAll(".comment-box");
   var btn = document.querySelector(".btn");
   allComments.forEach(function (comment) {
-    if (!comment.classList.contains("hidden") && comment!=commentBox) {
+    if (!comment.classList.contains("hidden") && comment != commentBox) {
       comment.classList.add("hidden");
     }
   });
