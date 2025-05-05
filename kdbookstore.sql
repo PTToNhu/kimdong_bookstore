@@ -134,3 +134,17 @@ VALUES
   'Lê Hồng Nhung',
   '2024-04-18'
 );
+CREATE TABLE kdbookstore.admin(
+  ad_id INT primary key auto_increment,
+  ad_name VARCHAR(100) NOT NULL,
+  ad_password VARCHAR(50) NOT NULL,
+  ad_email VARCHAR (100) NOT NULL,
+  UNIQUE (ad_email)
+);
+INSERT INTO kdbookstore.admin (ad_name, ad_password, ad_email) VALUES
+('Nguyen Van A', SHA1('password'), 'admin_a@kdbookstore.com'),
+('Le Thi B', SHA1('password'), 'admin_b@kdbookstore.com'),
+('Tran Van C', SHA1('password'), 'admin_c@kdbookstore.com'),
+('Pham Thi D', SHA1('password'), 'admin_d@kdbookstore.com'),
+('Hoang Van E', SHA1('password'), 'admin_e@kdbookstore.com');
+
