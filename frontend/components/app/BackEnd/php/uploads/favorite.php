@@ -10,6 +10,7 @@ $conn = $objDb->connect();
 $currentPage = $_SERVER['REQUEST_URI'];
 
 $url = isset($_GET['id']) ? $_GET['id'] : null;
+$phone = isset($_GET['phone']) ? $_GET['phone'] : null;
 
 if ($url === null) {
     echo json_encode(['error' => 'ID parameter is missing']);
@@ -29,8 +30,8 @@ if (empty($users)) {
 
 $product = $users[0];
 
-$insertSql = "INSERT INTO favorite (id, name, gia_goc, gia, giam_gia, tap, tac_gia, doi_tuong, khuon_kho, so_trang, trong_luong, Page, Status) 
-               VALUES (:id, :name, :gia_goc, :gia, :giam_gia, :tap, :tac_gia, :doi_tuong, :khuon_kho, :so_trang, :trong_luong, 'tat_ca_san_pham', 'Active')";
+$insertSql = "INSERT INTO favorite (id, name, gia_goc, gia, giam_gia, tap, tac_gia, doi_tuong, khuon_kho, so_trang, trong_luong, Page, Status, phone) 
+               VALUES (:id, :name, :gia_goc, :gia, :giam_gia, :tap, :tac_gia, :doi_tuong, :khuon_kho, :so_trang, :trong_luong, 'tat_ca_san_pham', 'Active', :phone)";
 
 $insertStmt = $conn->prepare($insertSql);
 
@@ -44,8 +45,8 @@ $insertStmt->bindParam(':tac_gia', $product['tac_gia'], PDO::PARAM_STR);
 $insertStmt->bindParam(':doi_tuong', $product['doi_tuong'], PDO::PARAM_STR);
 $insertStmt->bindParam(':khuon_kho', $product['khuon_kho'], PDO::PARAM_STR);
 $insertStmt->bindParam(':so_trang', $product['so_trang'], PDO::PARAM_STR);
-$insertStmt->bindParam(':trong_luong', $product['trong_luong'], PDO::PARAM_STR);
-
+$insertStmt->bindParam(':trong_luong',  $product['trong_luong'], PDO::PARAM_STR);
+$insertStmt->bindParam(':phone',  $phone, PDO::PARAM_STR);
 $insertStmt->execute();
 
 $conn = null; 

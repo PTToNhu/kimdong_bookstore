@@ -19,6 +19,7 @@ import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { ChevronUp } from "react-feather";
 import { faSquareXmark } from '@fortawesome/free-solid-svg-icons';
 import Search from './../header/search'
+import Favorite from "../total/Favorite";
 
 let category = [
     "Tất cả sản phẩm",
@@ -71,7 +72,13 @@ export default function Product() {
     const [menu, setMenu] = useState(false);
     const [img, setImages] = useState([]);
     let image = [];
-
+    const [ID, setID] = useState("");
+    useEffect(() => {
+        const id = sessionStorage.getItem('user_id');
+        if (id) {
+            setID(id);
+        }
+    }, [ID]);
     async function loadAndProcessImages() {
         try {
             let imagePaths = [];
@@ -122,25 +129,41 @@ export default function Product() {
         gia: 0,
         gia_goc: 0,
         tac_gia: 'N/A',
-        doituong: 'N/A',
+        doi_tuong: 'N/A',
         khuon_kho: 'N/A',
         so_trang: 'N/A',
         trong_luong: 0,
     };
+
     const [favourite, setFavourite] = useState(false);
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
 
     useEffect(() => {
         const fetchData = async () => {
-          try {
-            const response = await fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/getFavorite.php?id=${encodeURIComponent(element.id)}`);
-            const data = await response.json();
-            setFavourite(data.length > 0);
-          } catch (error) {
-            console.error("Error fetching favorite status:", error);
-          }
+            if(ID){
+                try {
+                    const response = await fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/getFavorite.php?id=${encodeURIComponent(element.id)}&phone=${encodeURIComponent(ID)}`);
+                    const data = await response.json();
+                    setFavourite(data.length > 0);
+                  } catch (error) {
+        
+                  }
+            }else {
+                const currentFavorites = getCookie("Favorite");
+                const favoritesArray = currentFavorites ? currentFavorites.split(',') : [];
+                const isFavorite = favoritesArray.includes(element.id.toString());
+                setFavourite(isFavorite);
+            }
         };
         fetchData();
-      }, [element.id]);
+    }, [data]);
+
+
 
     function formatPrice(price) {
         return price;
@@ -202,10 +225,61 @@ export default function Product() {
         };
     }, []);
 
+    function addFavorite() {
+        const currentFavorites = getCookie("Favorite");
+        const favoritesArray = currentFavorites ? currentFavorites.split(',') : [];
+    
+        if (!favoritesArray.includes(element.id)) {
+            favoritesArray.push(element.id);
+        }else{
+            return;
+        }
+    
+        document.cookie = "Favorite=" + favoritesArray.join(',') + "; path=/;";
+    }
+
+    function deleteFavorite() {
+        const currentFavorites = getCookie("Favorite");
+        const favoritesArray = currentFavorites ? currentFavorites.split(',') : [];
+        
+        const idString = String(element.id);
+        
+        const updatedFavorites = favoritesArray.filter(id => id !== idString);  
+        
+        console.log(idString.toString() );
+        document.cookie = "Favorite=" + updatedFavorites.join(',') + "; path=/;";
+    }
+
+    function addStore() {
+        const currentStore = getCookie("Store");
+        const StoreArray = currentStore ? currentStore.split(',') : [];
+    
+        const existingIndex = StoreArray.findIndex(item => item.startsWith(element.id));
+    
+        if (existingIndex !== -1) {
+            StoreArray[existingIndex] = `${element.id}sl(${soLuong})`;
+        } else {
+            StoreArray.push(`${element.id}sl(${soLuong})`);
+        }
+    
+        document.cookie = `Store=${encodeURIComponent(StoreArray.join(','))}; path=/;`;
+    }
+
     useEffect(() => {
-        favourite ?
-        fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/favorite.php?id=${encodeURIComponent(element.id)}`)
-        : fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/deleteFavorite.php?id=${encodeURIComponent(element.id)}`)
+        if(ID){
+            if(ID){
+                console.log(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/favorite.php?id=${encodeURIComponent(element.id)}&phone=${encodeURIComponent(ID)}`);
+            }
+            favourite ?
+            fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/favorite.php?id=${encodeURIComponent(element.id)}&phone=${encodeURIComponent(ID)}`)
+            : fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/deleteFavorite.php?id=${encodeURIComponent(element.id)}&phone=${encodeURIComponent(ID)}`)
+        }else{
+            if (favourite) {
+                addFavorite();
+            } else {
+                deleteFavorite();
+            }
+        }
     }, [favourite]); 
 
     function handleFavorite(){
@@ -213,7 +287,11 @@ export default function Product() {
     }
 
     function addToStore(){
-        fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/store.php?&id=${encodeURIComponent(element.id)}&sl=${soLuong}`)
+        if(ID){
+            fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/store.php?&id=${encodeURIComponent(element.id)}&sl=${soLuong}&phone=${encodeURIComponent(ID)}`);
+        }else{
+            addStore();
+        }
     }
 
     function formatPrice(price) {
@@ -298,7 +376,7 @@ export default function Product() {
                             centeredSlides={true}
                             navigation={true}
                             modules={[Navigation, Pagination]}
-                            className="lg:w-[39%] sm:w-[70%] lg:h-[715px] max-lg:h-[600px] max-sm:w-[90%] max-sm:mt-[5%]"
+                            className="lg:w-[39%] sm:w-[70%] lg:h-[715px] max-lg:h-[600px] max-sm:w-[90%] max-sm:h-[400px]"
                             onSwiper={(swiper) => (swiperRef.current = swiper)}
                             pagination={{ clickable: true }}
                         >
@@ -409,7 +487,7 @@ export default function Product() {
                                     <label className="sm:text-[30px] max-sm:text-[20px]">Tác giả: <strong className="text-[red]">{element.tac_gia}</strong></label>
                                 </li>
                                 <li>
-                                    <label className="sm:text-[30px] max-sm:text-[20px]">Đối tượng: <strong className="text-[red]">{element.tac_gia}</strong></label>
+                                    <label className="sm:text-[30px] max-sm:text-[20px]">Đối tượng: <strong className="text-[red]">{element.doi_tuong}</strong></label>
                                 </li>
                                 <li>
                                     <label className="sm:text-[30px] max-sm:text-[20px]">Khuôn khổ: <strong className="text-[red]">{element.khuon_kho}</strong></label>
@@ -440,7 +518,7 @@ export default function Product() {
                                     </li>
                                 </ul>
                                 <p onClick={addToStore} className="bg-[#FF4086] rounded-lg text-white mt-[20px] py-4 flex text-center justify-center items-center cursor-pointer transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-[#FF0000]">THÊM VÀO GIỎ HÀNG</p>
-                                <p className="bg-[#28DD3B] rounded-lg text-white mt-[20px] py-4 flex text-center justify-center items-center cursor-pointer transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-[#007F00]">MUA NGAY</p>
+                                <a href={`/Payment/${element.id}_${soLuong}` } className="bg-[#28DD3B] rounded-lg text-white mt-[20px] py-4 flex text-center justify-center items-center cursor-pointer transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-[#007F00]">MUA NGAY</a>
                             </div>
                         </div>
                     </div>

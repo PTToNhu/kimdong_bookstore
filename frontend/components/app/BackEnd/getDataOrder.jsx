@@ -12,6 +12,5 @@ export function Data(variable) {
         console.error("Error fetching data:", error);
       });
   }, ); 
-  console.log(data);
   return data;
 }

@@ -109,7 +109,7 @@ if (isset($_FILES['file'])) {
         }
     }
 }
-
+$response["success"] = true;
 $response["message"] = "Tất cả dữ liệu đã được xử lý thành công.";
 echo json_encode($response);
 $conn->close();

@@ -56,18 +56,40 @@ $stmt->close();
 
 foreach ($tables as $table) {
     if (isset($_POST[$table])) {
-        $sql = "UPDATE " . strtolower($table) . " SET name = ?, gia_goc = ?, gia = ?, giam_gia = ?, tap = ?, tac_gia = ?, doi_tuong = ?, khuon_kho = ?, so_trang = ?, trong_luong = ? WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssssssssssi", $name, $gia_goc, $gia, $giam_gia, $tap, $tac_gia, $doi_tuong, $khuon_kho, $so_trang, $trong_luong, $id);
+        $checkSql = "SELECT id FROM " . strtolower($table) . " WHERE id = ?";
+        $checkStmt = $conn->prepare($checkSql);
+        $checkStmt->bind_param("i", $id);
+        $checkStmt->execute();
+        $checkStmt->store_result();
 
-        if (!$stmt->execute()) {
-            $response["success"] = false;
-            $response["message"] = "Lỗi khi cập nhật bảng $table: " . $stmt->error;
-            echo json_encode($response);
-            $conn->close();
-            exit;
+        if ($checkStmt->num_rows > 0) {
+            $sql = "UPDATE " . strtolower($table) . " SET name = ?, gia_goc = ?, gia = ?, giam_gia = ?, tap = ?, tac_gia = ?, doi_tuong = ?, khuon_kho = ?, so_trang = ?, trong_luong = ? WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ssssssssssi", $name, $gia_goc, $gia, $giam_gia, $tap, $tac_gia, $doi_tuong, $khuon_kho, $so_trang, $trong_luong, $id);
+
+            if (!$stmt->execute()) {
+                $response["success"] = false;
+                $response["message"] = "Lỗi khi cập nhật bảng $table: " . $stmt->error;
+                echo json_encode($response);
+                $conn->close();
+                exit;
+            }
+            $stmt->close();
+        } else {
+            $insertSql = "INSERT INTO " . strtolower($table) . " (id, name, gia_goc, gia, giam_gia, tap, tac_gia, doi_tuong, khuon_kho, so_trang, trong_luong, Page, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $insertStmt = $conn->prepare($insertSql);
+            $insertStmt->bind_param("issssssssssss", $id, $name, $gia_goc, $gia, $giam_gia, $tap, $tac_gia, $doi_tuong, $khuon_kho, $so_trang, $trong_luong, $table, $status);          
+
+            if (!$insertStmt->execute()) {
+                $response["success"] = false;
+                $response["message"] = "Lỗi khi thêm vào bảng $table: " . $insertStmt->error;
+                echo json_encode($response);
+                $conn->close();
+                exit;
+            }
+            $insertStmt->close();
         }
-        $stmt->close();
+        $checkStmt->close();
     }
 }
 
@@ -118,10 +140,15 @@ if (isset($_FILES['file'])) {
         $temp_path = $_FILES['file']['tmp_name'][$key];
         $fileInfo = pathinfo($name);
         $filename = $id . '_' . basename($countName++) . '_.' . $fileInfo['extension'];
+
         if (!file_exists($upload_dirs['tat_ca_san_pham'])) {
             mkdir($upload_dirs['tat_ca_san_pham'], 0777, true);
         }
+
         $target_path = $upload_dirs['tat_ca_san_pham'] . $filename;
+        $target_path = explode('?', $target_path)[0]; 
+        $filename = explode('?', $filename)[0];  
+
         if (move_uploaded_file($temp_path, $target_path)) {
             foreach ($tables as $table) {
                 if (isset($_POST[$table])) {

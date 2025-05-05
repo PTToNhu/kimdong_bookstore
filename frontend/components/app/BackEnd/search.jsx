@@ -89,7 +89,7 @@ class Trie {
 
 const trie = new Trie();
 
-export default function Search(fetchedData, checkedItems, handleCheckboxChange, formatPrice, handleStatusChange, toggleModal, open, edit, setID) {
+export default function Search(fetchedData, checkedItems, handleCheckboxChange, formatPrice, handleStatusChange, toggleModal, open, edit, setID, setAllChecked, allChecked, handleCheckAll) {
     const [results, setResults] = useState([]);
     const [currentCategory, setCurrentCategory] = useState('Tìm theo tên');
     const [index, setIndex] = useState(0);
@@ -106,7 +106,7 @@ export default function Search(fetchedData, checkedItems, handleCheckboxChange, 
                     trie.addWord(element.name, element);
                 }
             });
-        }else if (Array.isArray(data) && data.length > 0 && currentCategory === "Tìm theo ID") {
+        } else if (Array.isArray(data) && data.length > 0 && currentCategory === "Tìm theo ID") {
             trie.clear();
             data.forEach(element => {
                 if (element && element.id.toString()) {
@@ -139,8 +139,11 @@ export default function Search(fetchedData, checkedItems, handleCheckboxChange, 
                     toggleModal={toggleModal}
                     open={open}
                     edit={edit}
+                    setAllChecked={setAllChecked}
+                    allChecked={allChecked}
                     setID={setID}
                     results={results}
+                    handleCheckAll={handleCheckAll}
                 />
             );
         }

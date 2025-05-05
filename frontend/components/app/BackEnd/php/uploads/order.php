@@ -22,12 +22,13 @@ $huyen = isset($_GET['huyen']) ? $_GET['huyen'] : null;
 $xa = isset($_GET['xa']) ? $_GET['xa'] : null;
 $total = isset($_GET['total']) ? $_GET['total'] : null;
 $book = isset($_GET['book']) ? $_GET['book'] : null;
+$status = "Chưa giao";
 
-$sql = "INSERT INTO don_dat_hang (ho_va_ten, email, phone, dia_chi, thanh_pho, huyen, xa, total, book) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$sql = "INSERT INTO don_dat_hang (ho_va_ten, email, phone, dia_chi, thanh_pho, huyen, xa, total, book, Status) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("sssssssss", $ho_va_ten, $email, $phone, $dia_chi, $thanh_pho, $huyen, $xa, $total, $book);
+$stmt->bind_param("ssssssssss", $ho_va_ten, $email, $phone, $dia_chi, $thanh_pho, $huyen, $xa, $total, $book, $status);
 
 if ($stmt->execute()) {
     echo json_encode(["success" => true, "message" => "Đơn đặt hàng đã được thêm thành công."]);

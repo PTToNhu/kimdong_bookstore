@@ -35,12 +35,13 @@ export default function Post() {
     const [data, setData] = useState([]);
     let fetchedData = null;
     const [Link, setLink] = useState("/admin/post/All");
-    const [checkedItems, setCheckedItems] = useState(Array(data.length).fill(false));
-    const [allChecked, setAllChecked] = useState(false);
+    const [checkedItems, setCheckedItems] = useState([]);
+    const [allChecked, setAllChecked] = useState([]);
     const [Category, setCategory] = useState(false);
     const [currentCategory, setCurrentCategory] = useState("Tất cả sản phẩm");
     const [index, setIndex] = useState(0);
     const [ID, setID] = useState(0);
+
     let category = [
         "Tất cả sản phẩm",
         "Lịch sử truyền thống",
@@ -76,6 +77,17 @@ export default function Post() {
         fetchedData = Data(linkcategory[index], "InActive")
     }
     const [open, setOpen] = useState(Array(data.length).fill(false));
+
+    function findMaxIdElement(data) {
+        if (data.length === 0) {
+            return null; 
+        }
+        
+        return data.reduce((max, current) => {
+            return (current.id > max.id) ? current : max;
+        });
+    }
+
     useEffect(() => {
         if (fetchedData) {
             setData(fetchedData);
@@ -101,7 +113,7 @@ export default function Post() {
 
     function HandleActive() {
         if (edit) {
-            setCheckedItems(Array(data.length).fill(false));
+            setCheckedItems([]);
         }
         setActive(true);
         setInActive(false);
@@ -115,7 +127,7 @@ export default function Post() {
 
     function HandleInActive() {
         if (edit) {
-            setCheckedItems(Array(data.length).fill(false));
+            setCheckedItems([]);
         }
         setActive(false);
         setInActive(true);
@@ -128,7 +140,7 @@ export default function Post() {
     }
 
     function HandleEdit() {
-        setCheckedItems(Array(data.length).fill(false));
+        setCheckedItems([]);
         setActive(false);
         setInActive(false);
         setEdit(true);
@@ -140,7 +152,7 @@ export default function Post() {
 
     function HandleDelete() {
         if (edit) {
-            setCheckedItems(Array(data.length).fill(false));
+            setCheckedItems([]);
         }
         setActive(false);
         setInActive(false);
@@ -154,7 +166,7 @@ export default function Post() {
 
     function HandleAll() {
         if (edit) {
-            setCheckedItems(Array(data.length).fill(false));
+            setCheckedItems([]);
         }
         setActive(false);
         setInActive(false);
@@ -180,22 +192,47 @@ export default function Post() {
         });
     }
 
-    const handleCheckboxChange = (index, results) => {
+    const handleCheckboxChange = (index, results, id) => {
         setCheckedItems(prevCheckedItems => {
-            const newCheckedItems = [...prevCheckedItems];
-            newCheckedItems[index] = !newCheckedItems[index];
-            return newCheckedItems;
+            if (Use === "Edit") {
+                setLink("/admin/post/edit/" + id);
+                return [id]; 
+            } else {
+                const existingIndex = prevCheckedItems.indexOf(id);
+                const newCheckedItems = existingIndex === -1 
+                    ? [...prevCheckedItems, id] 
+                    : prevCheckedItems.filter(item => item !== id);
+                return newCheckedItems; 
+            }
         });
-        if(Use === "Edit"){
-            setCheckedItems(Array(results.length).fill(false));
-            setLink("/admin/post/edit/" + results[index].id);
-        }
     };
 
-    const handleCheckAll = () => {
-        const newCheckedItems = Array(data.length).fill(!allChecked);
-        setCheckedItems(newCheckedItems);
-        setAllChecked(!allChecked);
+    const handleCheckAll = (index, currentPage, Data) => {
+        if (!edit) {
+            const newCheckedState = [...allChecked];
+            if (newCheckedState[currentPage]) {
+                newCheckedState[currentPage] = false;
+                const newCheckedItems = [];
+                for (let i = 0; i < 10 && i + index < Data.length; i++) {
+                    const itemId = Data[i + index].id;
+                    newCheckedItems.push(itemId);
+                }
+                setCheckedItems(prevCheckedItems => {
+                    return prevCheckedItems.filter(item => !newCheckedItems.includes(item));
+                });
+            } else {
+                newCheckedState[currentPage] = true; 
+                const newCheckedItems = [];
+                for (let i = 0; i < 10 && i + index < Data.length; i++) {
+                    const itemId = Data[i + index].id;
+                    newCheckedItems.push(itemId);
+                }
+                setCheckedItems(prevCheckedItems => {
+                    return Array.from(new Set([...prevCheckedItems, ...newCheckedItems]));
+                });
+            }
+            setAllChecked(newCheckedState); 
+        }
     };
 
     function formatPrice(price) {
@@ -241,7 +278,8 @@ export default function Post() {
                     handleStatusChange={handleStatusChange}
                     toggleModal={toggleModal}
                     open={open}
-                    edit={edit}
+                    setAllChecked={setAllChecked}
+                    allChecked={allChecked}
                     setID={setID}
                     results={data}
                     handleCheckAll={handleCheckAll}
@@ -262,6 +300,8 @@ export default function Post() {
         window.location.href = url;
     }
 
+
+
     function HandleApply() {
         if (Use === "All") {
             navigateTo(Link);
@@ -273,13 +313,10 @@ export default function Post() {
             navigateTo(Link);
         } else if (Use === "Delete") {
             for (let index = 0; index < checkedItems.length; index++) {
-                if (checkedItems[index] === true) {
-                    try {
-                        const response = fetch(`http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/delete.php?&id=${encodeURIComponent(data[index].id)}`);
-                        const result = response.json();
-                    } catch (error) {
-                        console.error("Error deleting item:", error);
-                    }
+                try {
+                    const response = fetch(`http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/delete.php?&id=${encodeURIComponent(checkedItems[index])}`);
+                } catch (error) {
+                    console.error("Error deleting item:", error);
                 }
             }
             window.location.reload();
@@ -317,7 +354,7 @@ export default function Post() {
         );
     });
 
-    const [input, SecrchResult, results] = Search(fetchedData, checkedItems, handleCheckboxChange, formatPrice, handleStatusChange, toggleModal, open, edit, setID);
+    const [input, SecrchResult, results] = Search(fetchedData, checkedItems, handleCheckboxChange, formatPrice, handleStatusChange, toggleModal, open, edit, setID, setAllChecked, allChecked, handleCheckAll);
 
     return (
         <form className="container mx-auto" action="http://localhost:8000/input.php" method="post" onSubmit={handleSubmit}>

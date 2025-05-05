@@ -5,7 +5,16 @@ import React, { useRef, useEffect, useState } from "react";
 
 export const Favorite = (item) => {
   const [img, setImages] = useState([]);
-    
+  const [ID, setID] = useState("");
+  const [favourite, setFavourite] = useState([]);
+
+  useEffect(() => {
+      const storedData = sessionStorage.getItem('user_id');
+      if (storedData) {
+          setID(storedData);
+      }
+  }, []);
+
   useEffect(() => {
     async function loadImages() {
       const imagePaths = import.meta.glob('../../BackEnd/php/images/tat_ca_san_pham/**/*.{jpg,jpeg,png,gif,svg,webp}');
@@ -15,22 +24,16 @@ export const Favorite = (item) => {
     }
     loadImages();
   }, []);
+
   const location = useLocation();
-  const pathParts = location.pathname;
-  const [favourite, setFavourite] = useState([]);
-  const pageNumber = pathParts.includes(item.resultLocation)
-    ? pathParts.replace(item.resultLocation + "/", "")
-    : pathParts.replace(item.resultLocation, "1");
-  const resultLocation = pathParts.replace("/" + pageNumber, "");
-  let itemNumber = "";
-  if (String(pageNumber) === String(resultLocation)) {
-    itemNumber = "1";
-  } else itemNumber = String(pageNumber);
+  const urlParams = new URLSearchParams(location.search);
+  const page = urlParams.get('page') ? urlParams.get('page') : 1;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/getAllFavorite.php`
+          `http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/getAllFavorite.php?phone=${encodeURIComponent(ID)}`
         );
         const data = await response.json();
         setFavourite(data);
@@ -41,6 +44,7 @@ export const Favorite = (item) => {
     fetchData();
   }, [favourite]);
   let image = useState([]);
+
   const getImg = (img) => {
     let result = [];
     if (favourite.length > 0)
@@ -65,8 +69,8 @@ export const Favorite = (item) => {
   return (
     <div>
       <Test
-        currentPage={Number(itemNumber)}
-        location={resultLocation}
+        currentPage={Number(page)}
+        location={location.pathname}
         images={images}
         childWidth={item.Width}
         favourite={favourite}

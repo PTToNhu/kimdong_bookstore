@@ -35,8 +35,8 @@ export default function Order() {
     const [data, setData] = useState([]);
     let fetchedData = null;
     const [Link, setLink] = useState("/admin/order/All");
-    const [checkedItems, setCheckedItems] = useState(Array(data.length).fill(false));
-    const [allChecked, setAllChecked] = useState(false);
+    const [checkedItems, setCheckedItems] = useState([]);
+    const [allChecked, setAllChecked] = useState([]);
     const [Category, setCategory] = useState(false);
     const [currentCategory, setCurrentCategory] = useState("Tất cả sản phẩm");
     const [index, setIndex] = useState(0);
@@ -180,22 +180,47 @@ export default function Order() {
         });
     }
 
-    const handleCheckboxChange = (index, results) => {
+    const handleCheckboxChange = (index, results, id) => {
         setCheckedItems(prevCheckedItems => {
-            const newCheckedItems = [...prevCheckedItems];
-            newCheckedItems[index] = !newCheckedItems[index];
-            return newCheckedItems;
+            if (Use === "Edit") {
+                setLink("/admin/post/edit/" + id);
+                return [id]; 
+            } else {
+                const existingIndex = prevCheckedItems.indexOf(id);
+                const newCheckedItems = existingIndex === -1 
+                    ? [...prevCheckedItems, id] 
+                    : prevCheckedItems.filter(item => item !== id);
+                return newCheckedItems; 
+            }
         });
-        if(Use === "Edit"){
-            setCheckedItems(Array(results.length).fill(false));
-            setLink("/admin/post/edit/" + results[index].id);
-        }
     };
 
-    const handleCheckAll = () => {
-        const newCheckedItems = Array(data.length).fill(!allChecked);
-        setCheckedItems(newCheckedItems);
-        setAllChecked(!allChecked);
+    const handleCheckAll = (index, currentPage, Data) => {
+        if (!edit) {
+            const newCheckedState = [...allChecked];
+            if (newCheckedState[currentPage]) {
+                newCheckedState[currentPage] = false;
+                const newCheckedItems = [];
+                for (let i = 0; i < 10 && i + index < Data.length; i++) {
+                    const itemId = Data[i + index].id;
+                    newCheckedItems.push(itemId);
+                }
+                setCheckedItems(prevCheckedItems => {
+                    return prevCheckedItems.filter(item => !newCheckedItems.includes(item));
+                });
+            } else {
+                newCheckedState[currentPage] = true; 
+                const newCheckedItems = [];
+                for (let i = 0; i < 10 && i + index < Data.length; i++) {
+                    const itemId = Data[i + index].id;
+                    newCheckedItems.push(itemId);
+                }
+                setCheckedItems(prevCheckedItems => {
+                    return Array.from(new Set([...prevCheckedItems, ...newCheckedItems]));
+                });
+            }
+            setAllChecked(newCheckedState); 
+        }
     };
 
     function formatPrice(price) {
@@ -223,7 +248,28 @@ export default function Order() {
     };
 
     const toggleModal = (index) => {
-        setOpen(prevOpen => {
+        setOpen(prevOpen => {    function getHTML() {
+            if (Array.isArray(data) && data.length > 0) {
+                return (
+                    <PaginationHelper
+                        data={data}
+                        checkedItems={checkedItems}
+                        handleCheckboxChange={handleCheckboxChange}
+                        formatPrice={formatPrice}
+                        handleStatusChange={handleStatusChange}
+                        toggleModal={toggleModal}
+                        open={open}
+                        setAllChecked={setAllChecked}
+                        allChecked={allChecked}
+                        setID={setID}
+                        results={data}
+                        handleCheckAll={handleCheckAll}
+                    />
+                );
+            } else {
+                return <p>No data available</p>;
+            }
+        }
             const newOpen = [...prevOpen];
             newOpen[index] = !newOpen[index];
             return newOpen;
@@ -241,7 +287,8 @@ export default function Order() {
                     handleStatusChange={handleStatusChange}
                     toggleModal={toggleModal}
                     open={open}
-                    edit={edit}
+                    setAllChecked={setAllChecked}
+                    allChecked={allChecked}
                     setID={setID}
                     results={data}
                     handleCheckAll={handleCheckAll}
@@ -273,13 +320,10 @@ export default function Order() {
             navigateTo(Link);
         } else if (Use === "Delete") {
             for (let index = 0; index < checkedItems.length; index++) {
-                if (checkedItems[index] === true) {
-                    try {
-                        const response = fetch(`http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/delete.php?&id=${encodeURIComponent(data[index].id)}`);
-                        const result = response.json();
-                    } catch (error) {
-                        console.error("Error deleting item:", error);
-                    }
+                try {
+                    const response = fetch(`http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/deleteOrder.php?&id=${encodeURIComponent(checkedItems[index])}`);
+                } catch (error) {
+                    console.error("Error deleting item:", error);
                 }
             }
             window.location.reload();

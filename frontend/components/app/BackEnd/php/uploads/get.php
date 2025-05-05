@@ -11,16 +11,15 @@ $conn = $objDb->connect();
 $url = isset($_GET['url']) ? $_GET['url'] : null;
 $variable = isset($_GET['variable']) ? $_GET['variable'] : null;
 
-echo $url;
-
 if ($url) {
+    // Sử dụng prepared statements để ngăn chặn SQL Injection
     if ($variable === null) {
-        $sql = "SELECT * FROM $url";
+        $sql = "SELECT * FROM `$url`"; // Thêm dấu `` để bảo vệ tên bảng
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } else {
-        $sql = "SELECT * FROM $url WHERE id = :id";
+        $sql = "SELECT * FROM `$url` WHERE id = :id";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':id', $variable, PDO::PARAM_STR); 
         $stmt->execute();
@@ -36,5 +35,7 @@ if ($url) {
     echo json_encode(['message' => 'URL parameter is missing.']);
 }
 
+echo json_encode($users); 
+// Đóng kết nối
 $conn = null;
 ?>

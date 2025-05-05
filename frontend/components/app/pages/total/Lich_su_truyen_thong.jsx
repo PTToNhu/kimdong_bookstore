@@ -22,22 +22,15 @@ export default function Lich_su_truyen_thong(item) {
   }, []);
   const images = useData(img, "lich_su_truyen_thong");
   const location = useLocation();
-  const pathParts = location.pathname;
-  const pageNumber = pathParts.includes(item.resultLocation)
-    ? pathParts.replace(item.resultLocation + "/", "")
-    : pathParts.replace(item.resultLocation, "1");
-  const resultLocation = pathParts.replace("/" + pageNumber, "");
-  let itemNumber = "";
-  if (String(pageNumber) === String(resultLocation)) {
-    itemNumber = "1";
-  } else itemNumber = String(pageNumber);
+  const urlParams = new URLSearchParams(location.search);
+  const page = urlParams.get('page') || '1';
 
   return (
     <div>
       <div>
         <Test
-          currentPage={Number(itemNumber)}
-          location={resultLocation}
+          currentPage={Number(page)}
+          location={location.pathname}
           images={images}
           childWidth={item.Width}
         />

@@ -63,7 +63,7 @@ export default function Edit() {
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
-        fetch(`https://localhost/BTL_web_1/src/app/BackEnd/php/uploads/Data.php?&url=${encodeURIComponent("tat_ca_san_pham")}&variable=${encodeURIComponent(value)}`)
+        fetch(`http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/Data.php?&url=${encodeURIComponent("tat_ca_san_pham")}&variable=${encodeURIComponent(value)}`)
             .then((response) => response.json())
             .then((data) => {
                 setData(data);
@@ -92,12 +92,12 @@ export default function Edit() {
         if (data && data.length > 0 && TapRef.current) {
             const initialValue = data[0].tap;
             TapRef.current.defaultValue = initialValue;
-            setSubmittedGiam_gia(initialValue);
+            setSubmittedTap(initialValue);
         }
         if (data && data.length > 0 && giam_giaRef.current) {
             const initialValue = data[0].giam_gia;
             giam_giaRef.current.defaultValue = initialValue;
-            setSubmittedTap(initialValue);
+            setSubmittedGiam_gia(initialValue);
         }
         if (data && data.length > 0 && tac_giaRef.current) {
             const initialValue = data[0].tac_gia;
@@ -249,7 +249,6 @@ export default function Edit() {
 
         const formData = new FormData(form[0]);
         for (let i = 0; i < files.length; i++) {
-            console.log(files[i].title);
             formData.append('file[]', files[i].title);
         }
 
@@ -605,7 +604,14 @@ export default function Edit() {
                             {submittedGiam_gia && (
                                 <div className="flex">
                                     <div >
-                                        <label className="text-[red] text-[20px] mr-[30px]"><strong>{formatPrice(parseInt(parseInt(submittedGia_goc) - (parseInt(submittedGia_goc) * parseInt(submittedGiam_gia)) / 100))}</strong></label>
+                                        <label className="text-[red] text-[20px] mr-[30px]">
+                                            <strong>
+                                                {formatPrice(
+                                                    parseInt(submittedGia_goc) - 
+                                                    (parseInt(submittedGia_goc) * parseInt(submittedGiam_gia)) / 100
+                                                )}
+                                            </strong>
+                                        </label>                                    
                                     </div>
                                     <div >
                                         <label className="text-gray-400 text-[20px] line-through" id="original-price"><strong>{formatPrice(parseInt(submittedGia_goc))}</strong></label>

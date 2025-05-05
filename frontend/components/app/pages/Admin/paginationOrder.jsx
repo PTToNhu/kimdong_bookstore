@@ -5,19 +5,7 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import Modal from "../helper/modal";
 import React, { useState } from "react";
 import "./style/style.css";
-const PaginationHelper = ({
-  data = [],
-  checkedItems,
-  handleCheckboxChange,
-  formatPrice,
-  handleStatusChange,
-  toggleModal,
-  open,
-  edit,
-  setID,
-  results,
-  handleCheckAll,
-}) => {
+const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, formatPrice, handleStatusChange, toggleModal, open, edit, setID, results, handleCheckAll, allChecked }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const pagination = {
     totalItems: data.length,
@@ -36,38 +24,21 @@ const PaginationHelper = ({
     xhtmlEnd = [],
     xhtmlPages = [];
 
-  const countI = Math.ceil(pageRange / 2);
-  let min = currentPage - countI + 1,
-    max = totalPages;
-
-  if (min <= 1) {
-    min = 1;
+  let min = Math.max(1, currentPage - Math.floor(pageRange / 2));
+  let max = Math.min(totalPages, min + pageRange - 1);
+  if (max - min < pageRange - 1) {
+    min = Math.max(1, max - (pageRange - 1));
   }
-  max = min + pageRange;
-  if (max > totalPages) {
-    max = totalPages;
-  }
-
   if (min > 1) {
     xhtmlPages.push(
       <li
         key="start-ellipsis"
-        className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border rounded-e-lg border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+        className="flex items-center justify-center p-5 m-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
       >
         ...
       </li>
     );
   }
-
-  let i = 1;
-
-  if (min + countI >= totalPages) {
-    i = totalPages - pageRange + 1;
-  } else {
-    i = min;
-  }
-
-  if (i <= 0) i = 1;
 
   function handleClickStart() {
     setCurrentPage(1);
@@ -92,43 +63,34 @@ const PaginationHelper = ({
     setCurrentPage(page);
   }
 
-  for (let i = 1; i <= max && i <= totalPages; i++) {
-    if (i !== currentPage) {
-      xhtmlPages.push(
-        <li key={i}>
-          <div
-            onClick={() => handleClickI(i)}
-            className="flex items-center justify-center px-3 m-1 h-8 leading-tight text-gray-500 bg-white border rounded-lg border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-          >
-            {i}
-          </div>
-        </li>
-      );
-    } else {
-      xhtmlPages.push(
-        <li key={i}>
-          <div
-            onClick={() => handleClickI(i)}
-            aria-current="page"
-            className="flex items-center justify-center px-3 m-1 h-8 text-blue-600 border border-gray-300 rounded-lg bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-          >
-            {i}
-          </div>
-        </li>
-      );
-    }
+  for (let i = min; i <= max; i++) {
+    xhtmlPages.push(
+      <li key={i}>
+        <div
+          onClick={() => handleClickI(i)}
+          className={`flex items-center justify-center p-5 m-3 h-8 leading-tight ${
+            i === currentPage
+              ? "text-blue-600 border border-gray-300 rounded-lg bg-[#E9EFFF]"
+              : "text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800"
+          }  dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+          aria-current={i === currentPage ? "page" : undefined}
+        >
+          {i}
+        </div>
+      </li>
+    );
   }
 
   xhtmlStart.push(
     <li onClick={handleClickStart}>
-      <div className="flex items-center max-sm:hidden justify-center px-3 m-1 h-8  leading-tight text-gray-500 bg-white border border-e-0 rounded-lg border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+      <div className="flex items-center max-sm:hidden justify-center p-5 m-3 h-8  leading-tight text-gray-500 bg-white border border-e-0 rounded-lg border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
         Start
       </div>
     </li>
   );
   xhtmlPrevious.push(
     <li onClick={handleClickPrev}>
-      <div className="flex items-center justify-center px-3 m-1 h-8  leading-tight text-gray-500 bg-white rounded-lg border border-e-0 border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+      <div className="flex items-center justify-center p-5 m-3 h-8  leading-tight text-gray-500 bg-white rounded-lg border border-e-0 border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
         &#60;
       </div>
     </li>
@@ -136,14 +98,14 @@ const PaginationHelper = ({
 
   xhtmlNext.push(
     <li onClick={handleClickNext}>
-      <div className="flex items-center justify-center px-3 m-1 h-8 leading-tight text-white bg-black border rounded-lg border-gray-300hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+      <div className="flex items-center justify-center p-5 m-3 h-8 leading-tight text-white bg-black border rounded-lg border-gray-300hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
         &#62;
       </div>
     </li>
   );
   xhtmlEnd.push(
     <li onClick={handleClickEnd}>
-      <div className="flex max-sm:hidden items-center max-sm:hiden justify-center px-3 m-1 h-8 leading-tight text-white bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+      <div className="flex max-sm:hidden items-center max-sm:hiden justify-center p-5 m-3 h-8 leading-tight text-white bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
         End
       </div>
     </li>
@@ -153,7 +115,7 @@ const PaginationHelper = ({
     xhtmlPages.push(
       <li
         key="end-ellipsis"
-        className="flex items-center justify-center px-3 m-1 h-8 leading-tight text-white bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+        className="flex items-center justify-center p-5 m-3 h-8 leading-tight text-white bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
       >
         ...
       </li>
@@ -175,16 +137,21 @@ const PaginationHelper = ({
     { label: "Chưa giao", color: "bg-[red]" },
     { label: "Đang giao", color: "bg-orange-500" },
     { label: "Đã giao", color: "bg-green-500" },
+    { label: "Đã hủy", color: "bg-[#848585]" },
   ];
 
   const [isOpen, setIsOpen] = useState(null);
-  
+
   const toggleDropdown = (index) => {
-    setIsOpen(isOpen === index ? null : index); 
+    setIsOpen(isOpen === index ? null : index);
   };
 
   const selectOption = (option, id) => {
-    fetch(`http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/updateStatusOrder.php?id=${encodeURIComponent(id)}&status=${encodeURIComponent(option)}`)
+    fetch(
+      `http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/updateStatusOrder.php?id=${encodeURIComponent(
+        id
+      )}&status=${encodeURIComponent(option)}`
+    );
     setIsOpen(null);
   };
 
@@ -203,20 +170,17 @@ const PaginationHelper = ({
             key={element.id}
           >
             <th className="px-2 size-4 py-2  w-[50px]">
-              <input
-                type={type}
-                className="size-4 rounded-[50%] cursor-pointer"
-                checked={checkedItems[index]}
-                onChange={() => {
-                  handleCheckboxChange(index, results);
-                }}
-                name="isRadio"
+              <input 
+                  type="checkbox" 
+                  className="size-4 rounded-[50%] cursor-pointer"
+                  onChange={() => handleCheckboxChange(index, results, element.id)}
+                  checked={checkedItems.includes(element.id)}
               />
             </th>
             <th className="px-2 text-center font-normal">{element.id}</th>
             <th className="px-2 text-start font-normal">{element.ho_va_ten}</th>
             <th className="px-2 text-start font-normal">
-              {formatPrice(element.email)}
+              {element.email}
             </th>
             <th className="px-2 text-center font-normal">
               {formatPrice(element.phone)}
@@ -226,7 +190,10 @@ const PaginationHelper = ({
             </th>
             <th key={index} className="px-2 font-normal">
               <div
-                className={`border ${options.find(item => element.Status === item.label)?.color || 'bg-gray-500'} text-white rounded-2xl border-gray-300 w-[200px] z-0 p-2 cursor-pointer`}
+                className={`border ${
+                  options.find((item) => element.Status === item.label)
+                    ?.color || "bg-gray-500"
+                } text-white rounded-2xl border-gray-300 w-[200px] z-0 p-2 cursor-pointer`}
                 onClick={() => toggleDropdown(index)}
               >
                 {element.Status}
@@ -312,11 +279,12 @@ const PaginationHelper = ({
         <thead>
           <tr className="bg-gray-200">
             <th className="py-2">
-              <input
-                type="checkbox"
-                disabled={edit}
-                className="size-4 cursor-pointer"
-                onClick={() => handleCheckAll()}
+              <input 
+                  type="checkbox" 
+                  disabled={edit} 
+                  className="size-4 cursor-pointer" 
+                  checked={allChecked[currentPage - 1] === true   } 
+                  onChange={() => handleCheckAll(index, currentPage - 1, data)} 
               />
             </th>
             <th className="py-2 w-[1%]">ID</th>

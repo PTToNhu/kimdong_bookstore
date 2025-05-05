@@ -17,6 +17,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { faSquareXmark } from '@fortawesome/free-solid-svg-icons';
+import Modal from "./../helper/modal";
+import logo from "./../images/logo.webp";
+import Favorite from "../total/Favorite";
 
 let category = [
     "Tất cả sản phẩm",
@@ -43,14 +46,14 @@ const listCategory = category.map((element, index) => {
         return (
             <li key={index} className="border-b  border-black pt-[5px] bg-white hover:text-[red]">
                 <FontAwesomeIcon icon={faBook} />
-                <a className="pl-[5px] ml-[10px]" href={linkCategory[index]}>{element}</a>
+                <a className="pl-[5px] ml-[10px]" href={linkCategory[index] + "?page=1"}>{element}</a>
             </li>
         );
     } else {
         return (
             <li key={index} className="rounded-b-lg border-b border-black pt-[5px] bg-white hover:text-[red]">
                 <FontAwesomeIcon icon={faBook} />
-                <a className="pl-[5px] ml-[10px]" href={linkCategory[index]}>{element}</a>
+                <a className="pl-[5px] ml-[10px]" href={linkCategory[index] + "?page=1"}>{element}</a>
             </li>
         );
     }
@@ -86,6 +89,15 @@ export default function Header(item) {
     const resultsRef3 = useRef();
     const [images, setImages] = useState([]);
     const [category, setCategory] = useState(false);
+    const [ID, setID] = useState("");
+    const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        const storedData = sessionStorage.getItem('user_id');
+        if (storedData) {
+            setID(storedData);
+        }
+    }, [ID]);
     
     useEffect(() => {
       async function loadImages() {
@@ -96,7 +108,7 @@ export default function Header(item) {
       }
       
       loadImages();
-    }, []);
+    }, [ID]);
 
     let imageFavorite = useState([]);
     let imageStore = useState([]);
@@ -131,35 +143,59 @@ export default function Header(item) {
         return result;
     };
 
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
     imageFavorite = getImgFavourite(images);
     imageStore = getImgStore(images);
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const response = await fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/getAllFavorite.php`);
+
+
+    const fetchDataID = async () => {
+        try {
+            const response = await fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/getAllFavorite.php?phone=${encodeURIComponent(ID)}`);
             const data = await response.json();
             setFavourite(data);
-          } catch (error) {
-            console.error("Error fetching favorite status:", error);
-          }
-        };
-        fetchData();
-    }, [favourite]);
+        } catch (error) {
+            // console.error("Error fetching favorite status:", error);
+        }
+    };
 
+    const fetchData = async () => {
+        const currentFavorites = getCookie("Favorite");
+        const favoritesArray = currentFavorites ? currentFavorites.split(',') : [];
+        const temp = [];
+        if (favoritesArray.length > 0) {
+            const promises = favoritesArray.map(async (element_id) => {
+                const response = await fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/getdataFromID.php?variable=${encodeURIComponent(element_id)}`);
+                const data = await response.json();
+                favourite.push(data[0]);
+            });
+        }
+    };
     
+    useEffect(() => {
+        if(!ID){
+            fetchData();
+        }else{
+            fetchDataID();
+        }
+    }, [getCookie("Favorite"), ID]);
 
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/getAllStore.php`);
+            const response = await fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/getAllStore.php?phone=${encodeURIComponent(ID)}`);
             const data = await response.json();
             setStore(data);
           } catch (error) {
-            console.error("Error fetching favorite status:", error);
+            // console.error("Error fetching favorite status:", error);
           }
         };
         fetchData();
-    }, [store]);
+    }, );
 
     useEffect(() => {
         const handleScroll = () => {
@@ -178,28 +214,30 @@ export default function Header(item) {
         };
     }, []);
 
+    
+
     useEffect(() => {
         const indexFavorite = clickFavorite.findIndex(value => value === true);
         if (indexFavorite !== -1) {
-            fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/deleteFavorite.php?id=${encodeURIComponent(indexFavorite)}`)
+            fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/deleteFavorite.php?id=${encodeURIComponent(indexFavorite)}&phone=${encodeURIComponent(ID)}`)
                 .then(response => response.json()) 
                 .catch(error => console.error('Error fetching data:', error));
                 setClickFavorite(prevCheckedItems => {
                     const newCheckedItems = [...prevCheckedItems];
                     newCheckedItems[indexFavorite] = false; 
                     return newCheckedItems;
-                });
+            });
         }
         const indexStore = clickStore.findIndex(value => value === true);
         if (indexStore !== -1) {
-            fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/deleteStore.php?id=${encodeURIComponent(indexStore)}`)
+            fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/deleteStore.php?id=${encodeURIComponent(indexStore)}&phone=${encodeURIComponent(ID)}`)
                 .then(response => response.json()) 
                 .catch(error => console.error('Error fetching data:', error));
                 setClickStore(prevCheckedItems => {
                     const newCheckedItems = [...prevCheckedItems];
                     newCheckedItems[indexStore] = false; 
                     return newCheckedItems;
-                });
+            });
         }
     }, [clickFavorite, clickStore]);
 
@@ -225,15 +263,15 @@ export default function Header(item) {
 
     const ListFavourite = () => {
         return (
-            <div ref={resultsRef1} className="w-[350px] absolute shadow-2xl p-[4px] mt-[20px] border-2 font-mono border-[#C2C2D9] rounded-sm bg-white text-black right-0 z-50">
+            <div ref={resultsRef1} className="w-[350px] absolute shadow-2xl p-[4px] mt-[20px] border-2 font-mono border-[#C2C2D9] rounded-sm bg-white text-black right-0 z-150">
             <p className="text-[17px] py-[5px] mb-[5px] flex justify-center items-center bg-[#D51C24] text-white rounded-md"> Danh sách yêu thích của tôi</p>
             <Swiper
                 modules={[Navigation, Pagination, Scrollbar, A11y]}
                 spaceBetween={0}
-                slidesPerView={3}
+                slidesPerView={favourite.length >= 3 ? 3 : favourite.length}
                 scrollbar={{ draggable: true }}
                 direction="vertical"
-                className={`h-[400px] m-0`}
+                className={`${favourite.length >= 3 ? "h-[450px]" : favourite.length === 2 ? "h-[300px]" : "h-[150px]"} m-0`}
             >
                 {favourite.length > 0 && favourite.map((element, index) => (
                     <SwiperSlide className="m-0" key={index}> 
@@ -251,22 +289,22 @@ export default function Header(item) {
                     </SwiperSlide>
                 ))}
             </Swiper>
-            <a className="text-[17px] py-[5px] mb-[5px] flex justify-center items-center bg-[#17AF91] text-white font-bold rounded-sm" href="/main/Favorite"> Xem thêm</a>
+            <a className="text-[17px] py-[5px] mb-[5px] flex justify-center items-center bg-[#17AF91] text-white font-bold rounded-sm" href="/main/Favorite?page=1"> Xem thêm</a>
         </div>
         );
     };
 
     const ListStore = () => {
         return (
-            <div ref={resultsRef2} className="w-[350px] absolute shadow-2xl p-[4px] mt-[20px] border-2 font-mono border-[#C2C2D9] rounded-sm bg-white text-black right-0 z-50">
+            <div ref={resultsRef2} className="w-[350px] absolute shadow-2xl p-[4px] mt-[20px] border-2 font-mono border-[#C2C2D9] rounded-sm bg-white text-black right-0 z-150">
             <p className="text-[14px] py-[5px] mb-[5px] flex bg-[#D51C24] text-white rounded-md p-3"> Giỏ hàng của tôi ({store.length || 0} Sản phẩm)</p>
             <Swiper
                 modules={[Navigation, Pagination, Scrollbar, A11y]}
                 spaceBetween={0}
-                slidesPerView={3}
+                slidesPerView={store.length >= 3 ? 3 : store.length}
                 scrollbar={{ draggable: true }}
                 direction="vertical"
-                className={`h-[400px] m-0`}
+                className={`${store.length >= 3 ? "h-[450px]" : store.length === 2 ? "h-[300px]" : "h-[150px]"} m-0`}
             >
                 {store.length > 0 && store.map((element, index) => (
                     <SwiperSlide className="m-0" key={index}> 
@@ -278,7 +316,7 @@ export default function Header(item) {
                                 <p className="text-[14px]">Giá sản phẩm: {formatPrice(element.gia)}</p>
                                 <p className="text-[14px]">Số lượng: {element.so_luong}</p>
                             </div>
-                            <div className="text-[red] cursor-pointer" onClick={() => {handleClickStore(element.id)}}>x</div>
+                            <div className="text-[red] cursor-pointer absolute right-1" onClick={() => {handleClickStore(element.id)}}>x</div>
                         </div>
                     </SwiperSlide>
                 ))}
@@ -330,9 +368,43 @@ export default function Header(item) {
     function clickCategory(){
         setCategory(!category);
     }
+
+    function deletecookie(name) {
+        document.cookie = name + '=; Max-Age=0; path=/'; 
+    }
     
     return (
-        <div className="z-100">
+        <div className="z-150">
+            <Modal open={open} onClose={() => setOpen(false)}>
+                <div className="h-[300px]  z-150 w-[330px] bg-white shadow-lg rounded-2xl">
+                    <p className="w-full flex items-center justify-center text-[red] font-bold text-[40px]">Smember</p>
+                    <div className="w-full flex items-center justify-center">
+                        <img src={logo} alt="" />
+                    </div>
+                    {!ID && 
+                        <div >
+                            <p className="text-black text-center">Vui lòng đăng nhập tài khoản Smember để xem ưu đãi và thanh toán dễ dàng hơn.</p>
+                            <div className="flex h-[102px] w-full items-center justify-center">
+                                <a href="/sign_up" className="cursor-pointer transition-transform transform hover:scale-105 w-[44%] mx-[3%] text-[20px] font-bold text-[red] flex items-center justify-center py-[10px] border-3 rounded-lg border-[red]">Đăng ký</a>
+                                <a href="/sign_in" className="cursor-pointer transition-transform transform hover:scale-105 w-[44%] mx-[3%] text-[20px] font-bold text-[white] flex items-center justify-center py-[10px] border-3 bg-[red] rounded-lg border-[red]">Đăng nhập</a>
+                            </div>
+                        </div>
+                    }
+                    {ID && 
+                        <div>
+                            <p className="text-black text-center ">Bạn có muốn đăng xuất ?</p>
+                            <div className="flex h-[102px] w-full items-center justify-center">
+                                <div onClick={()=>{
+                                    sessionStorage.clear();
+                                    setID("");
+                                    deletecookie("user");
+                                    window.location.reload();
+                                }} className="cursor-pointer bg-[red] transition-transform transform hover:scale-105 w-full mx-[3%] text-[20px] font-bold text-[white] flex items-center justify-center py-[10px] border-3 rounded-lg border-[red] mt-[50px]">Đăng xuất</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </Modal>
             <header id="yourElementId" className={`fixed z-50 w-full top-0 left-0 transition-transform duration-700 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
                 <div className="flex z-50 sm:pl-[100px] max-sm:pl-[30px] bg-[white] items-center">
                     <div className="logo flex items-center">
@@ -359,7 +431,7 @@ export default function Header(item) {
                             </div>
                             {listStore && ListStore()}
                         </li>
-                        <li className="text-[30px] max-sm:hidden px-[20px] hover:text-[red] cursor-pointer mx-[5px] rounded-lg hover:bg-[#EEFFF7]">
+                        <li onClick={() => {setOpen(!open);}} className="text-[30px] max-sm:hidden px-[20px] hover:text-[red] cursor-pointer mx-[5px] rounded-lg hover:bg-[#EEFFF7]">
                             <FontAwesomeIcon icon={faUser} />
                         </li>
                     </ul>
@@ -370,28 +442,28 @@ export default function Header(item) {
                 
                 <div className={`h-[51px] max-sm:hidden w-full bg-[black] flex items-center justify-center transition-transform duration-700 ${isVisible ? 'translate-y-0' : 'translate-y-[50px]'}`}>
                     <div className="flex items-center text-[20px] h-full relative w-[1400px] justify-center">
-                            <div ref={resultsRef3} className="flex  items-center w-[300px] absolute left-0 h-full group bg-[#15A78A] ">
-                                <i className="px-[15px] rounded-lg " onClick={clickCategory}>
-                                    <FontAwesomeIcon className="text-[white] font-bold" icon={faList} />
-                                    <label className="text-white font-normal px-[10px]" style={{ fontStyle: 'normal' }}>Danh mục sản phẩm</label>
-                                </i>
-                                <ul className="absolute bg-white left-0 w-[300px] text-[23px] top-[50px] px-[15px] items-center hidden group-hover:block">
+                        <div ref={resultsRef3} className="flex  items-center w-[300px] absolute left-0 h-full group bg-[#15A78A] ">
+                            <i className="px-[15px] rounded-lg " onClick={clickCategory}>
+                                <FontAwesomeIcon className="text-[white] font-bold" icon={faList} />
+                                <label className="text-white font-normal px-[10px]" style={{ fontStyle: 'normal' }}>Danh mục sản phẩm</label>
+                            </i>
+                            <ul className="absolute bg-white left-0 w-[300px] text-[23px] top-[50px] px-[15px] items-center hidden group-hover:block">
+                                {listCategory}
+                            </ul>
+                            {category && 
+                                <ul className="absolute bg-white left-0 w-[300px] text-[23px] top-[50px] px-[15px] items-center">
                                     {listCategory}
                                 </ul>
-                                {category && 
-                                    <ul className="absolute bg-white left-0 w-[300px] text-[23px] top-[50px] px-[15px] items-center">
-                                        {listCategory}
-                                    </ul>
-                                }
-                            </div>
-                            <ul className="text-white flex text-[20px] max-lg:hidden">
-                                <li className="px-[10px] hover:text-[#15A78A] cursor-pointer">HOME <FontAwesomeIcon icon={faChevronDown} /></li>
-                                <li className="px-[10px] hover:text-[#15A78A] cursor-pointer">SHOP <FontAwesomeIcon icon={faChevronDown} /></li>
-                                <li className="px-[10px] hover:text-[#15A78A] cursor-pointer">PRODUCT <FontAwesomeIcon icon={faChevronDown} /></li>
-                                <li className="px-[10px] hover:text-[#15A78A] cursor-pointer">BLOG <FontAwesomeIcon icon={faChevronDown} /></li>
-                            </ul>
-                            <p className="absolute right-0 text-white font-bold pl-[30px] border-l-2 border-white">Clearance Up to 30% Off</p>
+                            }
                         </div>
+                        <ul className="text-white flex text-[20px] max-lg:hidden">
+                            <li className="px-[10px] hover:text-[#15A78A] cursor-pointer">HOME <FontAwesomeIcon icon={faChevronDown} /></li>
+                            <li className="px-[10px] hover:text-[#15A78A] cursor-pointer">SHOP <FontAwesomeIcon icon={faChevronDown} /></li>
+                            <li className="px-[10px] hover:text-[#15A78A] cursor-pointer">PRODUCT <FontAwesomeIcon icon={faChevronDown} /></li>
+                            <li className="px-[10px] hover:text-[#15A78A] cursor-pointer">BLOG <FontAwesomeIcon icon={faChevronDown} /></li>
+                        </ul>
+                        <p className="absolute right-0 text-white font-bold pl-[30px] border-l-2 border-white">Clearance Up to 30% Off</p>
+                    </div>
                 </div>
             </header>
         </div>

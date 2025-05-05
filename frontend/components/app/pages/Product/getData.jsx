@@ -42,6 +42,7 @@ export function useData(img = [], url, variable) {
           gia: data[0].gia,
           giam_gia: data[0].giam_gia,
           name: data[0].name,
+          doi_tuong: data[0].doi_tuong,
           tap: data[0].tap,
           tac_gia: data[0].tac_gia,
           khuon_kho: data[0].khuon_kho,
