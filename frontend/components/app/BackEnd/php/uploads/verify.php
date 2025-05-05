@@ -1,8 +1,7 @@
 <?php
 header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json');
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Authorization, Content-Type');
 
 $secretKey = '0368287072';
 
@@ -17,17 +16,23 @@ function base64UrlDecode($data) {
 function verifyToken($token) {
     global $secretKey;
 
+    // Tách token thành các phần
     list($header64, $payload64, $signature64) = explode('.', $token);
 
+    // Giải mã các phần
     $header = json_decode(base64UrlDecode($header64), true);
     $payload = json_decode(base64UrlDecode($payload64), true);
     $signature = base64UrlDecode($signature64);
 
+    // Tạo chữ ký mong đợi
     $expectedSignature = hash_hmac('sha256', "$header64.$payload64", $secretKey, true);
 
+    // So sánh chữ ký và kiểm tra thời gian hết hạn
     if ($signature === $expectedSignature && isset($payload['exp']) && $payload['exp'] > time()) {
         return $payload; 
-    return null; 
+    } else {
+        return null; 
+    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -36,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $authHeader = $headers['Authorization'];
         $token = str_replace('Bearer ', '', $authHeader);
 
+        // Xác thực token
         $userData = verifyToken($token);
         if ($userData) {
             echo json_encode(['success' => true, 'data' => $userData]);
@@ -47,6 +53,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 } else {
     echo json_encode(['success' => false, 'message' => 'Phương thức yêu cầu không hợp lệ.']);
-}
 }
 ?>

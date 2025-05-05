@@ -29,13 +29,12 @@ if ($username && $password) {
             $_SESSION["user_id"] = $userData['phone']; 
             $_SESSION["user_name"] = $userData['name']; 
             
-            // Tạo token JWT
-            $jwt = createJwt($userData['phone'], $name); // Gọi hàm tạo token
+            $jwt = createJwt($userData['phone'], $name); 
 
             $response["success"] = true;
             $response["message"] = "Đăng nhập thành công!";
             $response["name"] = $name;
-            $response["jwt"] = $jwt; // Thêm jwt vào phản hồi
+            $response["jwt"] = $jwt; 
             
         } else {
             echo json_encode(["success" => false, "message" => "Mật khẩu không chính xác."]);
@@ -58,14 +57,13 @@ if (isset($_SESSION["user_id"])) {
 
 echo json_encode($response);
 
-// Hàm tạo token JWT
 function createJwt($userId, $username) {
     $secret = '0368287072';
     $header = json_encode(['alg' => 'HS256', 'typ' => 'JWT']);
     $payload = json_encode([
         'userId' => $userId,
         'username' => $username,
-        'exp' => time() + 3600 // Thời gian hết hạn token (1 giờ)
+        'exp' => time() + 3600 
     ]);
 
     $encodedHeader = base64UrlEncode($header);
@@ -75,7 +73,6 @@ function createJwt($userId, $username) {
     return "$encodedHeader.$encodedPayload.$signature";
 }
 
-// Hàm mã hóa Base64URL
 function base64UrlEncode($data) {
     return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
 }

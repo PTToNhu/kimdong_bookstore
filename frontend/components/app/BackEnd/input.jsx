@@ -72,7 +72,7 @@ export default function Input() {
     Truyen_tranh: false,
     Van_hoc_nuoc_ngoai: false,
     Van_hoc_Viet_Nam: false,
-    Wings_book: false,
+    Wings_book: true,
   });
 
   const [item, setFullitem] = useState({

@@ -1,5 +1,5 @@
 export const verifyToken = async (token) => {
-    try {
+
         const response = await fetch('http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/verify.php', {
             method: 'POST',
             headers: {
@@ -9,13 +9,12 @@ export const verifyToken = async (token) => {
         });
 
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            const errorData = await response.json();
+            throw new Error(`Error: ${errorData.message}`);
         }
 
         const data = await response.json();
+        console.log(data); // Đảm bảo rằng bạn gọi console.log sau khi await
         return data; 
-    } catch (error) {
-        console.error('Đã xảy ra lỗi:', error);
-        return { success: false, message: 'Đã xảy ra lỗi trong quá trình xác thực.' };
-    }
+
 };

@@ -57,7 +57,7 @@ const listCategoryMenu = category.map((element, index) => {
     }
 });
 
-export default function Product() {
+export default function Product(item) {
     const location = useLocation();
     const [soLuong, setSoLuong] = useState(1);
     const pathParts = location.pathname.split("/").filter(part => part);
@@ -72,13 +72,8 @@ export default function Product() {
     const [menu, setMenu] = useState(false);
     const [img, setImages] = useState([]);
     let image = [];
-    const [ID, setID] = useState("");
-    useEffect(() => {
-        const id = sessionStorage.getItem('user_id');
-        if (id) {
-            setID(id);
-        }
-    }, [ID]);
+    const [clickStore, setClickStore] = useState(false);
+
     async function loadAndProcessImages() {
         try {
             let imagePaths = [];
@@ -145,9 +140,9 @@ export default function Product() {
 
     useEffect(() => {
         const fetchData = async () => {
-            if(ID){
+            if(item.ID){
                 try {
-                    const response = await fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/getFavorite.php?id=${encodeURIComponent(element.id)}&phone=${encodeURIComponent(ID)}`);
+                    const response = await fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/getFavorite.php?id=${encodeURIComponent(element.id)}&phone=${encodeURIComponent(item.ID)}`);
                     const data = await response.json();
                     setFavourite(data.length > 0);
                   } catch (error) {
@@ -246,9 +241,10 @@ export default function Product() {
         
         const updatedFavorites = favoritesArray.filter(id => id !== idString);  
         
-        console.log(idString.toString() );
         document.cookie = "Favorite=" + updatedFavorites.join(',') + "; path=/;";
     }
+
+    console.log(document.cookie);
 
     function addStore() {
         const currentStore = getCookie("Store");
@@ -266,29 +262,33 @@ export default function Product() {
     }
 
     useEffect(() => {
-        if(ID){
-            if(ID){
-                console.log(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/favorite.php?id=${encodeURIComponent(element.id)}&phone=${encodeURIComponent(ID)}`);
-            }
-            favourite ?
-            fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/favorite.php?id=${encodeURIComponent(element.id)}&phone=${encodeURIComponent(ID)}`)
-            : fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/deleteFavorite.php?id=${encodeURIComponent(element.id)}&phone=${encodeURIComponent(ID)}`)
-        }else{
-            if (favourite) {
-                addFavorite();
-            } else {
-                deleteFavorite();
-            }
-        }
+
     }, [favourite]); 
 
     function handleFavorite(){
-        setFavourite(!favourite);
+        if(item.ID){
+            if (favourite) {
+                fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/deleteFavorite.php?id=${encodeURIComponent(element.id)}&phone=${encodeURIComponent(item.ID)}`)
+                setFavourite(false);
+            } else {
+                fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/favorite.php?id=${encodeURIComponent(element.id)}&phone=${encodeURIComponent(item.ID)}`)
+                setFavourite(true);
+            }
+        }else{
+            if (favourite) {
+                deleteFavorite();
+                setFavourite(false);
+            } else {
+                addFavorite();
+                setFavourite(true);
+            }
+        }
     }
 
     function addToStore(){
-        if(ID){
-            fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/store.php?&id=${encodeURIComponent(element.id)}&sl=${soLuong}&phone=${encodeURIComponent(ID)}`);
+        setClickStore(!clickStore);
+        if(item.ID){
+            fetch(`https://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/store.php?&id=${encodeURIComponent(element.id)}&sl=${soLuong}&phone=${encodeURIComponent(item.ID)}`);
         }else{
             addStore();
         }
@@ -318,7 +318,7 @@ export default function Product() {
                 backgroundAttachment: 'fixed ',
             }}
         >
-            <Header childWidth={childWidth} menu={menu} handleClickMenu={handleClickMenu}/>
+            <Header childWidth={childWidth} clickFavorite={favourite} clickStore={clickStore}  ID={item.ID} menu={menu} handleClickMenu={handleClickMenu}/>
             <div className={`fixed bg-black md:hidden z-150 h-screen opacity-80 w-[300px] top-0 transition-transform duration-700 delay-150 right-0 ${menu ? 'translate-x-0' : 'translate-x-[500px]'}`}>
                 <p className="absolute right-[10px] top-[10px]">
                     <FontAwesomeIcon 

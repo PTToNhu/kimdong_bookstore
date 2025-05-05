@@ -402,12 +402,12 @@ export default function Post() {
                         `} onClick={handleAction}>
                             <p>{Use}</p>
                         </div>
-                        <i onClick={HandleCategory} className="absolute  w-[250px] text-[#009981] flex items-center right-[0] px-[15px] py-[10px] rounded-lg hover:bg-[#EEFFF7] hover:text-[black]">
+                        <i onClick={HandleCategory} className="absolute  w-[300px] text-[#009981] flex items-center right-[0] px-[15px] py-[10px] rounded-lg hover:bg-[#EEFFF7] hover:text-[black]">
                             <FontAwesomeIcon className="text-[20px] font-bold" icon={faList} />
                             <label className="text-[20px] font-bold px-4">{currentCategory}</label>
                         </i>
                         {Category &&
-                            <ul className="absolute z-50 shadow-lg right-[0px] border bg-white top-[90px] bold w-[250px] rounded-lg text-[20px] items-center">
+                            <ul className="absolute z-50 shadow-lg right-[0px] border bg-white top-[90px] bold w-[300px] rounded-lg text-[20px] items-center">
                                 {listCategory}
                             </ul>
                         }

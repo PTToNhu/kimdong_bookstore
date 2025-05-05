@@ -20,10 +20,10 @@ function App() {
   const [ID, setID] = useState("");
 
   useEffect(() => {
-      const storedToken = sessionStorage.getItem("jwt");
-      const storedID = sessionStorage.getItem("user_id");
+      const storedToken = sessionStorage.getItem("jwt") || localStorage.getItem("jwt");
+      const storedID = sessionStorage.getItem("user_id") || localStorage.getItem("user_id");
 
-      if (storedToken && storedID) {
+      if (verifyToken(storedToken)  && storedID) {
           verifyToken(storedToken).then((data) => {
               if (data.success) {
                   setID(storedID);
@@ -41,14 +41,14 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<Main />} />
+        <Route index element={<Main ID={ID}/>} />
         <Route path="/admin*" element={<Admin />} />
-        <Route path="/main*" element={<Main />} />
-        <Route path="/Product/:page?/:name?" element={<Product />} />
-        <Route path="/Products/:name?" element={<Product />} />
-        <Route path="/Payment/:value?" element={<SelectMethodPage />} />
-        <Route path="/sign_up" element={<SignupForm />} />
-        <Route path="/sign_in" element={<SigninForm />} />
+        <Route path="/main*" element={<Main ID={ID}/>} />
+        <Route path="/Product/:page?/:name?" element={<Product ID={ID}/>} />
+        <Route path="/Products/:name?" element={<Product ID={ID}/>} />
+        <Route path="/Payment/:value?" element={<SelectMethodPage ID={ID}/>} />
+        <Route path="/sign_up" element={<SignupForm ID={ID}/>} />
+        <Route path="/sign_in" element={<SigninForm ID={ID}/>} />
       </Routes>
     </BrowserRouter>
   );

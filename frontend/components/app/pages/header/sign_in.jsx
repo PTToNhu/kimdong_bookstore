@@ -4,7 +4,7 @@ import logo from "./../images/logo.webp";
 import { useState, useRef, useEffect } from "react";
 import { userPostFetch } from "./../../BackEnd/authentification";
 
-const SigninForm = () => {
+const SigninForm = (item) => {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
@@ -20,46 +20,50 @@ const SigninForm = () => {
 
     // Kiểm tra thông tin người dùng và mật khẩu
     if (!identifier || !password) {
-        alert("Vui lòng nhập tên người dùng và mật khẩu.");
-        return;
+      alert("Vui lòng nhập tên người dùng và mật khẩu.");
+      return;
     }
 
     try {
-        const response = await fetch(
-            `http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/login.php?username=${encodeURIComponent(identifier)}&password=${encodeURIComponent(password)}`,
-            { method: 'GET' }
-        );
+      const response = await fetch(
+        `http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/login.php?username=${encodeURIComponent(
+          identifier
+        )}&password=${encodeURIComponent(password)}`,
+        { method: "GET" }
+      );
 
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      alert(data.message);
+
+      if (data.success && data.jwt) {
+        if(remember){
+          localStorage.setItem("jwt", data.jwt);
+          localStorage.setItem("user_id", data.user_id);
+        }else{
+          sessionStorage.setItem("jwt", data.jwt);
+          sessionStorage.setItem("user_id", data.user_id);
         }
-
-        const data = await response.json();
-        alert(data.message);
-
-        if (data.success && data.jwt) { // Kiểm tra nếu đăng nhập thành công và có jwt
-            // Lưu token vào localStorage hoặc sessionStorage
-            if (remember) {
-                localStorage.setItem("jwt", data.jwt); // Lưu vào localStorage
-            } else {
-                sessionStorage.setItem("jwt", data.jwt); // Lưu vào sessionStorage
-            }
-            sessionStorage.setItem("user_id", data.user_id); // Lưu user_id
-        } else {
-            alert("Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin.");
-        }
-        
+        window.location.href = "/main/Tat_ca_san_pham?page=1";
+      } else {
+        alert("Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin.");
+      }
     } catch (error) {
-        console.error("Đã xảy ra lỗi trong quá trình gửi yêu cầu:", error);
-        alert("Đã xảy ra lỗi. Vui lòng thử lại.");
+      console.error("Đã xảy ra lỗi trong quá trình gửi yêu cầu:", error);
+      alert("Đã xảy ra lỗi. Vui lòng thử lại.");
     }
-};
+  };
 
-  console.log(localStorage,sessionStorage);
-
+  console.log("localStorage", localStorage);
+  console.log("sessionStorage", sessionStorage);
+  console.log("item.ID", item.ID);
+  
   return (
     <div>
-      <Header></Header>
+      <Header ID={item.ID}></Header>
       <div className="bg-white flex items-center justify-center min-h-screen">
         <div className="bg-white p-8 rounded-lg border border-gray-200 shadow-2xl w-[700px]">
           <div className="text-center mb-6">

@@ -43,7 +43,7 @@ let linkCategory = [
   "/main/Wings_book",
 ];
 
-const Main = () => {
+const Main = (item) => {
   const location = useLocation();
   const pathParts = location.pathname;
   const headerRef = useRef(null);
@@ -146,6 +146,7 @@ const Main = () => {
         childWidth={childWidth}
         menu={menu}
         handleClickMenu={handleClickMenu}
+        ID={item.ID}
       />
       <div
         className={`fixed bg-black md:hidden z-160 h-screen opacity-80 w-[300px] top-0 transition-transform duration-700 delay-150 right-0 ${
