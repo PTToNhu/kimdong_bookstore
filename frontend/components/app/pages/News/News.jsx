@@ -143,7 +143,7 @@ const News = () => {
                   >
                     {item.Thumbnail && (
                       <div className="overflow-hidden mb-2.5">
-                        <a href={`/new/?newid=${item.ID}`}>
+                        <a href={`/new?newid=${item.ID}`}>
                           <img
                             src={item.Thumbnail}
                             alt="Thông báo"
@@ -170,7 +170,7 @@ const News = () => {
                             />
                           </svg>
                           <span className="text-sm text-gray-500">
-                            {item.ScheduledAt}
+                            {item.WrittenDate}
                           </span>
                         </span>
                         <span className="flex items-center space-x-1">
@@ -212,7 +212,7 @@ const News = () => {
                           </p>
                         </span>
                       </div>
-                      <a href="/new/master_classe">
+                      <a href={`/new?newid=${item.ID}`}>
                         <h3 className="text-lg mb-2 text-gray-700 font-semibold hover:text-red-700 group-hover:text-red-700">
                           {item.Title}
                         </h3>

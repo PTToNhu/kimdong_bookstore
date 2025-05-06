@@ -73,11 +73,6 @@
                                 <option value="3">Bản nháp</option>
                             </select>
                         </div>
-                        <div>
-                            <h4 class="card-title">Ngày đăng</h4>
-                            <input type="datetime-local" name="ScheduledDate" id="ScheduledDate" class="form-control"
-                                placeholder="Chọn ngày đăng bài viết" required>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -98,7 +93,6 @@
         const thumbnail = document.getElementById('Thumbnail').files[0];
         const categoryID = document.getElementById('CategoryID').value;
         const status = document.getElementById('Status').value;
-        const scheduledDate = document.getElementById('ScheduledDate').value;
 
         if (!title || !content || !thumbnail || !categoryID || !status || !scheduledDate) {
             alert('Vui lòng điền đầy đủ thông tin!');
@@ -125,9 +119,8 @@
                         thumbnail: imageUrl,
                         categoryID: categoryID,
                         status: status,
-                        scheduleAt: scheduledDate,
-                        writtenByAdminID: 1,  // Giả sử admin đang đăng bài
-                        writtenDate: new Date().toISOString()  // Thêm thời gian đăng bài
+                        writtenByAdminID: 1,
+                        writtenDate: new Date().toISOString()
                     };
 
                     return fetch('http://localhost/BTL_WEB_1/api/News/postNews', {

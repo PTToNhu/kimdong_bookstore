@@ -8,6 +8,10 @@ const Master_Classe = () => {
   const [comments, setComments] = useState({});
   const [order, setOrder] = useState("ASC");
   const [offset, setOffset] = useState(0);
+  const userID = 1;
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editContent, setEditContent] = useState("");
+  const [commentText, setCommentText] = useState("");
   const fetchCategory = async () => {
     try {
       const res = await fetch(
@@ -48,7 +52,7 @@ const Master_Classe = () => {
         `http://localhost/BTL_WEB_1/api/comment/getCommentByNewID?newid=${newID}&order=${order}&offset=${offset}`
       );
       const data = await res.json();
-      const userID = 1;
+      // const userID = 1;
       const enrichedComments = await Promise.all(
         data.data.map(async (comment) => {
           const numOfLikes = await fetch(
@@ -61,10 +65,38 @@ const Master_Classe = () => {
           );
           const isLikedData = await isLiked.json();
           const likedStatus = isLikedData.status;
+          const repliesRes = await fetch(
+            `http://localhost/BTL_WEB_1/api/comment/getChildCommentByParentID?parentID=${comment.ID}`
+          );
+          const repliesData = await repliesRes.json();
+          const enrichedReplies = await Promise.all(
+            repliesData.data.data.map(async (reply) => {
+              const [replyLikesRes, replyLikedRes] = await Promise.all([
+                fetch(
+                  `http://localhost/BTL_WEB_1/api/commentLike/getToTalLikesByCommentID?commentid=${reply.ID}`
+                ),
+                fetch(
+                  `http://localhost/BTL_WEB_1/api/commentLike/getLikedByCommentIDandUserID?commentid=${reply.ID}&userid=${userID}`
+                ),
+              ]);
+
+              const [replyLikesData, replyLikedData] = await Promise.all([
+                replyLikesRes.json(),
+                replyLikedRes.json(),
+              ]);
+
+              return {
+                ...reply,
+                totalLikes: replyLikesData.total,
+                likedStatus: replyLikedData.status,
+              };
+            })
+          );
           return {
             ...comment,
             totalLikes: totalLikes,
             likedStatus: likedStatus,
+            replies: enrichedReplies || [],
           };
         })
       );
@@ -102,29 +134,162 @@ const Master_Classe = () => {
       );
       const data = await res.json();
       if (data.status === "liked" || data.status === "unliked") {
-        setComments((prevComments) => {
-          const updatedComments = prevComments.data.map((comment) => {
-            if (comment.ID === commentID) {
-              const liked = data.status === "liked";
-              return {
-                ...comment,
-                likedStatus: liked,
-                totalLikes: liked
-                  ? comment.totalLikes + 1
-                  : comment.totalLikes - 1,
-              };
-            }
-            return comment;
-          });
+        // setComments((prevComments) => {
+        //   const updatedComments = prevComments.data.map((comment) => {
+        //     if (comment.ID === commentID) {
+        //       const liked = data.status === "liked";
+        //       return {
+        //         ...comment,
+        //         likedStatus: liked,
+        //         totalLikes: liked
+        //           ? comment.totalLikes + 1
+        //           : comment.totalLikes - 1,
+        //       };
+        //     }
+        //     return comment;
+        //   });
 
-          return { ...prevComments, data: updatedComments };
-        });
+        //   return { ...prevComments, data: updatedComments };
+        // });
+        const urlParams = new URLSearchParams(window.location.search);
+        const newID = urlParams.get("newid");
+        fetchComments(newID); // gọi lại API để reload
       } else {
         console.error("Lỗi từ API:", data.message || "Unknown error");
       }
     } catch (error) {
       console.error("Lỗi gọi API like:", error);
     }
+  };
+  const handleEditComment = (id, content) => () => {
+    setEditingCommentId(id);
+    setEditContent(content);
+  };
+
+  const handleSaveEdit = async (commentId) => {
+    try {
+      const response = await fetch(
+        `http://localhost/BTL_WEB_1/api/comment/updateComment`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: commentId,
+            content: editContent,
+          }),
+        }
+      );
+      const data = await response.json();
+      if (data.message === "success") {
+        const urlParams = new URLSearchParams(window.location.search);
+        const newID = urlParams.get("newid");
+        setEditingCommentId(null);
+        setEditContent("");
+        fetchComments(newID); // gọi lại API để reload
+      } else {
+        alert("Không thể cập nhật bình luận");
+      }
+    } catch (error) {
+      console.error("Lỗi cập nhật bình luận:", error);
+    }
+  };
+  const handleDeleteComment = async (commentId) => {
+    if (!window.confirm("Bạn có chắc chắn muốn xóa bình luận này không?")) {
+      return;
+    }
+    try {
+      const response = await fetch(
+        `http://localhost/BTL_WEB_1/api/comment/deleteComment`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: commentId,
+          }),
+        }
+      );
+      const data = await response.json();
+      if (data.message === "success") {
+        const urlParams = new URLSearchParams(window.location.search);
+        const newID = urlParams.get("newid");
+        fetchComments(newID);
+      } else {
+        alert("Không thể xóa bình luận");
+      }
+    } catch (error) {
+      console.error("Lỗi xóa bình luận:", error);
+    }
+  };
+  const handlePostComment = async () => {
+    if (!commentText) {
+      alert("Vui lòng nhập nội dung bình luận");
+      return;
+    }
+    const newID = new URLSearchParams(window.location.search).get("newid");
+    try {
+      const response = await fetch(
+        `http://localhost/BTL_WEB_1/api/comment/addComment`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            content: commentText,
+            newsID: newID,
+            userID: userID,
+          }),
+        }
+      );
+      const data = await response.json();
+      if (data.message === "success") {
+        fetchComments(newID);
+        setCommentText("");
+      } else {
+        alert("Không thể gửi bình luận");
+      }
+    } catch (error) {
+      console.error("Lỗi gửi bình luận:", error);
+    }
+    toggleButton();
+  };
+  const handleReplyComment = async (parentID) => {
+    if (!commentText) {
+      alert("Vui lòng nhập nội dung bình luận");
+      return;
+    }
+    const newID = new URLSearchParams(window.location.search).get("newid");
+    try {
+      const response = await fetch(
+        `http://localhost/BTL_WEB_1/api/CommentReply/addCommentReply`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            content: commentText,
+            newsID: newID,
+            userID: userID,
+            parentID: parentID,
+          }),
+        }
+      );
+      const data = await response.json();
+      if (data.message === "success") {
+        fetchComments(newID);
+        setCommentText("");
+      } else {
+        alert("Không thể gửi bình luận");
+      }
+    } catch (error) {
+      console.error("Lỗi gửi bình luận:", error);
+    }
+    toggleButton();
   };
   const avt = "/avt_1.png";
   return (
@@ -174,7 +339,7 @@ const Master_Classe = () => {
                   />
                 </svg>
                 <span className="text-sm text-gray-500">
-                  {paper.ScheduledAt}
+                  {paper.WrittenDate}
                 </span>
               </span>
               <span className="flex items-center space-x-1">
@@ -297,6 +462,7 @@ const Master_Classe = () => {
                 placeholder="Bình luận"
                 onClick={toggleButton}
                 className="text-left w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                onChange={(e) => setCommentText(e.target.value)}
               ></textarea>
               <div className="btn hidden flex justify-end">
                 <button
@@ -305,8 +471,10 @@ const Master_Classe = () => {
                 >
                   Hủy
                 </button>
-
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800 cursor-pointer">
+                <button
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800 cursor-pointer"
+                  onClick={handlePostComment}
+                >
                   Bình luận
                 </button>
               </div>
@@ -328,7 +496,35 @@ const Master_Classe = () => {
                   <p className="font-semibold text-sm text-blue-600">
                     {comment.UserID}
                   </p>
-                  <p>{comment.Content}</p>
+                  {editingCommentId === comment.ID ? (
+                    <div className="flex flex-col">
+                      <textarea
+                        value={editContent}
+                        onChange={(e) => setEditContent(e.target.value)}
+                        className="border border-gray-300 px-3 py-2 w-full mt-2"
+                      />
+                      <div className="flex justify-end space-x-3 mt-2">
+                        <button
+                          className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-800 cursor-pointer"
+                          onClick={() => {
+                            setEditingCommentId(null);
+                            setEditContent("");
+                          }}
+                        >
+                          Hủy
+                        </button>
+                        <button
+                          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800 cursor-pointer"
+                          onClick={() => handleSaveEdit(comment.ID)}
+                        >
+                          Lưu
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <p>{comment.Content}</p>
+                  )}
+
                   <div className="flex items-center space-x-3">
                     <div onClick={() => handleLike(comment.ID)}>
                       <svg
@@ -381,6 +577,23 @@ const Master_Classe = () => {
                     )}
                     <div>|</div>
                     <p>{comment.CreatedAt}</p>
+                    {Number(comment.UserID) === userID && (
+                      <div className="flex items-center space-x-3">
+                        <div>|</div>
+                        <button
+                          onClick={handleEditComment(
+                            comment.ID,
+                            comment.Content
+                          )}
+                        >
+                          Chỉnh sửa
+                        </button>
+                        <div>|</div>
+                        <button onClick={() => handleDeleteComment(comment.ID)}>
+                          Xóa
+                        </button>
+                      </div>
+                    )}
                   </div>
                   <div
                     id={`comment-box-${comment.ID}`}
@@ -395,6 +608,7 @@ const Master_Classe = () => {
                       <textarea
                         placeholder="Trả lời"
                         className="border border-gray-300 px-3 py-2 w-full"
+                        onChange={(e) => setCommentText(e.target.value)}
                       ></textarea>
                       <div className="flex justify-end space-x-3 mt-2">
                         <button
@@ -403,16 +617,168 @@ const Master_Classe = () => {
                         >
                           Hủy
                         </button>
-                        <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800 cursor-pointer">Trả lời</button>
+                        <button
+                          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800 cursor-pointer"
+                          onClick={()=>handleReplyComment(comment.ID)}
+                        >
+                          Trả lời
+                        </button>
                       </div>
                     </div>
                   </div>
+                  {comment.replies?.map((reply) => {
+                    return (
+                      <div
+                        key={reply.ID}
+                        className="flex justify-start space-x-3 text-base mb-5 mt-5"
+                      >
+                        <img
+                          src={avt}
+                          alt="ảnh đại diện của tôi"
+                          className="lg:w-16 lg:h-16 w-12 h-12"
+                        />
+                        <div className="w-full">
+                          <p className="font-semibold text-sm text-blue-600">
+                            {reply.UserID}
+                          </p>
+                          {editingCommentId === reply.ID ? (
+                            <div className="flex flex-col">
+                              <textarea
+                                value={editContent}
+                                onChange={(e) => setEditContent(e.target.value)}
+                                className="border border-gray-300 px-3 py-2 w-full mt-2"
+                              />
+                              <div className="flex justify-end space-x-3 mt-2">
+                                <button
+                                  className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-800 cursor-pointer"
+                                  onClick={() => {
+                                    setEditingCommentId(null);
+                                    setEditContent("");
+                                  }}
+                                >
+                                  Hủy
+                                </button>
+                                <button
+                                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800 cursor-pointer"
+                                  onClick={() => handleSaveEdit(comment.ID)}
+                                >
+                                  Lưu
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <p>{reply.Content}</p>
+                          )}
+
+                          <div className="flex items-center space-x-3">
+                            <div onClick={() => handleLike(reply.ID)}>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                height="16"
+                                width="16"
+                                viewBox="0 0 512 512"
+                                className={`cursor-pointer ${
+                                  reply.likedStatus
+                                    ? "fill-blue-700"
+                                    : "fill-gray-700"
+                                }`}
+                              >
+                                <path d="M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2l144 0c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48l-97.5 0c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3l0-38.3 0-48 0-24.9c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192l64 0c17.7 0 32 14.3 32 32l0 224c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32L0 224c0-17.7 14.3-32 32-32z" />
+                              </svg>
+                            </div>
+                            <div>|</div>
+                            <div
+                              onClick={() => toggleCommentBox(reply.ID)}
+                              className="hover:cursor-pointer"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                height="16"
+                                width="16"
+                                viewBox="0 0 512 512"
+                                className="fill-gray-700"
+                              >
+                                <path d="M512 240c0 114.9-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6C73.6 471.1 44.7 480 16 480c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4c0 0 0 0 0 0s0 0 0 0s0 0 0 0c0 0 0 0 0 0l.3-.3c.3-.3 .7-.7 1.3-1.4c1.1-1.2 2.8-3.1 4.9-5.7c4.1-5 9.6-12.4 15.2-21.6c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208z" />
+                              </svg>
+                            </div>
+                            {reply.totalLikes > 0 && (
+                              <div className="flex items-center space-x-3">
+                                <div>|</div>
+                                <div className="flex items-center space-x-0.25">
+                                  <div>
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      height="16"
+                                      width="16"
+                                      viewBox="0 0 512 512"
+                                      className="fill-gray-700"
+                                    >
+                                      <path d="M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2l144 0c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48l-97.5 0c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3l0-38.3 0-48 0-24.9c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192l64 0c17.7 0 32 14.3 32 32l0 224c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32L0 224c0-17.7 14.3-32 32-32z" />
+                                    </svg>
+                                  </div>
+                                  <div>{reply.totalLikes}</div>
+                                </div>
+                              </div>
+                            )}
+                            <div>|</div>
+                            <p>{reply.CreatedAt}</p>
+                            {Number(reply.UserID) === userID && (
+                              <div className="flex items-center space-x-3">
+                                <div>|</div>
+                                <button
+                                  onClick={handleEditComment(
+                                    reply.ID,
+                                    reply.Content
+                                  )}
+                                >
+                                  Chỉnh sửa
+                                </button>
+                                <div>|</div>
+                                <button
+                                  onClick={() => handleDeleteComment(reply.ID)}
+                                >
+                                  Xóa
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                          <div
+                            id={`comment-box-${reply.ID}`}
+                            className="comment-box flex mt-5 flex-row space-x-3 items-start hidden"
+                          >
+                            <img
+                              src={avt}
+                              alt="ảnh đại diện của tôi"
+                              className="lg:w-16 lg:h-16 w-12 h-12"
+                            />
+                            <div className="flex flex-col w-full">
+                              <textarea
+                                placeholder="Trả lời"
+                                className="border border-gray-300 px-3 py-2 w-full"
+                                onChange={(e) => setCommentText(e.target.value)}
+                              ></textarea>
+                              <div className="flex justify-end space-x-3 mt-2">
+                                <button
+                                  className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-800 cursor-pointer mr-3"
+                                  onClick={() => toggleCommentBox(reply.ID)}
+                                >
+                                  Hủy
+                                </button>
+                                <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800 cursor-pointer" onClick={()=>handleReplyComment(comment.ID)}>
+                                  Trả lời
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             );
           })}
-          {/* Phần này chờ có database rồi chỉnh sửa sau */}
-          {comments?.total >= comments?.data?.length && (
+          {comments?.total > comments?.data?.length && (
             <div className="flex justify-center mb-5">
               <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800 hover: cursor-pointer">
                 Tải thêm 10 bình luận
