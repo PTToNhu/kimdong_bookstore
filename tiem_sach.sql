@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 05, 2025 at 02:05 PM
+-- Generation Time: May 06, 2025 at 03:51 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -67,6 +67,35 @@ INSERT INTO `accountadmin` (`name`, `phone`, `email`, `birthdate`, `password`) V
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `don_dat_hang`
+--
+
+CREATE TABLE `don_dat_hang` (
+  `id` int(11) NOT NULL,
+  `ho_va_ten` varchar(500) NOT NULL,
+  `email` varchar(500) NOT NULL,
+  `phone` varchar(500) NOT NULL,
+  `dia_chi` varchar(500) NOT NULL,
+  `thanh_pho` varchar(500) NOT NULL,
+  `huyen` varchar(500) NOT NULL,
+  `xa` varchar(500) NOT NULL,
+  `total` varchar(500) NOT NULL,
+  `book` varchar(500) NOT NULL,
+  `status` varchar(500) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `don_dat_hang`
+--
+
+INSERT INTO `don_dat_hang` (`id`, `ho_va_ten`, `email`, `phone`, `dia_chi`, `thanh_pho`, `huyen`, `xa`, `total`, `book`, `status`) VALUES
+(1, '1234', '1234@gmail.com', '1234', '1234', 'Tỉnh Hưng Yên', 'Huyện Yên Mỹ', 'Xã Yên Phú', '349700', '{id: 177(số lượng: 1),id: 178(số lượng: 1),id: 172(số lượng: 1),id: 176(số lượng: 1),id: 176(số lượng: 1),id: 173(số lượng: 1)}', 'Đã giao'),
+(2, '123', '123', '123', '123', 'Tỉnh Vĩnh Phúc', 'Thành phố Phúc Yên', 'Phường Phúc Thắng', '44990000', '{id: 123(số lượng: 1)}', 'Đã hủy'),
+(3, '123', '123', '123', '123', 'Tỉnh Vĩnh Phúc', 'Thành phố Phúc Yên', 'Phường Phúc Thắng', '44990000', '{id: 123(số lượng: 1)}', 'Đang giao');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `favorite`
 --
 
@@ -86,6 +115,15 @@ CREATE TABLE `favorite` (
   `Status` varchar(500) NOT NULL,
   `phone` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `favorite`
+--
+
+INSERT INTO `favorite` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `tap`, `tac_gia`, `doi_tuong`, `khuon_kho`, `so_trang`, `trong_luong`, `Page`, `Status`, `phone`) VALUES
+(10, 'Rèn nhân cách - Luyện tài năng - Bác Hồ - Tấm gương yêu nước', '20000', '18000', '10', 'truyện lẻ', 'Phạm Văn Hòa ', 'Thiếu niên (11 – 15)', '13x19 cm', '76', '95', 'tat_ca_san_pham', 'Active', '1234'),
+(173, 'Dược sư tự sự (Manga) - Tập 13', '127000', '63500', '50', '13', 'Natsu Hyuuga, Touco Shino, Itsuki Nanao, Nekokurage', 'Tuổi trưởng thành (trên 18 tuổi)', '13x18 cm', '180', '200', 'tat_ca_san_pham', 'Active', '1234'),
+(175, 'Cách yêu thương - Cẩm nang về tâm tình và mối quan hệ cho mọi người', '112000', '89600', '20', 'truyện lẻ', 'Alex Norris', 'Tuổi trưởng thành (trên 18 tuổi)', '13x19 cm', '224', '310', 'tat_ca_san_pham', 'Active', '1234');
 
 -- --------------------------------------------------------
 
@@ -233,6 +271,14 @@ CREATE TABLE `store` (
   `so_luong` int(255) NOT NULL,
   `phone` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `store`
+--
+
+INSERT INTO `store` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `tap`, `tac_gia`, `doi_tuong`, `khuon_kho`, `so_trang`, `trong_luong`, `Page`, `Status`, `so_luong`, `phone`) VALUES
+(175, 'Cách yêu thương - Cẩm nang về tâm tình và mối quan hệ cho mọi người', '112000', '89600', '20', 'truyện lẻ', 'Alex Norris', 'Tuổi trưởng thành (trên 18 tuổi)', '13x19 cm', '224', '310', 'tat_ca_san_pham', 'Active', 1, '1234'),
+(177, 'Kujima hót, cả nhà véo von - Tập 4 (Tặng Lót Ly)', '40000', '32000', '20', '4', 'Akira Konno', 'Tuổi mới lớn (15 – 18),  Tuổi trưởng thành (trên 18 tuổi)', '13x18 cm', '144', '175', 'tat_ca_san_pham', 'Active', 1, '1234');
 
 -- --------------------------------------------------------
 
@@ -688,6 +734,12 @@ ALTER TABLE `accountadmin`
   ADD UNIQUE KEY `email` (`email`);
 
 --
+-- Indexes for table `don_dat_hang`
+--
+ALTER TABLE `don_dat_hang`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `favorite`
 --
 ALTER TABLE `favorite`
@@ -746,10 +798,16 @@ ALTER TABLE `wings_book`
 --
 
 --
+-- AUTO_INCREMENT for table `don_dat_hang`
+--
+ALTER TABLE `don_dat_hang`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `favorite`
 --
 ALTER TABLE `favorite`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=181;
 
 --
 -- AUTO_INCREMENT for table `kien_thuc_khoa_hoc`
@@ -767,7 +825,7 @@ ALTER TABLE `lich_su_truyen_thong`
 -- AUTO_INCREMENT for table `store`
 --
 ALTER TABLE `store`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=178;
 
 --
 -- AUTO_INCREMENT for table `tat_ca_san_pham`
