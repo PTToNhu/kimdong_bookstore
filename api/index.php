@@ -21,6 +21,15 @@ if ($relative_uri == "/login" && $_SERVER['REQUEST_METHOD'] == "POST") {
     
     $controller->login();
 }
+else if ($relative_uri == "/location" && $_SERVER['REQUEST_METHOD'] == "GET") {
+    $controller = new ContactUs();
+    $controller->getLocations();
+} 
+else if ($relative_uri == "/newcontact" && $_SERVER['REQUEST_METHOD'] == "POST") {
+    $controller = new ContactUs();
+    $controller->addNewContact();
+} 
+
 else if ($relative_uri == "/register" && $_SERVER['REQUEST_METHOD'] == "POST") {
     $controller = new AuthController();
     

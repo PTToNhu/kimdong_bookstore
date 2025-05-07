@@ -56,14 +56,25 @@ p_date DATE
 ALTER TABLE kdbookstore.posts 
 MODIFY COLUMN p_date VARCHAR(255);
 
-CREATE TABLE kdbookstore.address(
+
+
+CREATE TABLE kdbookstore.locations(
 time_open time NOT NULL,
 time_close time not null,
 phone VARCHAR (20) NOT null,
 branch_name VARCHAR (50) NOT NULL,
-address VARCHAR (100) NOT NULL,
-a_id INT PRIMARY KEY AUTO_INCREMENT
+branch_address VARCHAR (100) NOT NULL,
+main_branch boolean not null,
+location_id INT PRIMARY KEY AUTO_INCREMENT
 );
+INSERT INTO kdbookstore.locations (time_open, time_close, phone, branch_name, branch_address, main_branch) VALUES
+('08:00:00', '21:00:00', '0909000111', 'Chi nhánh Nguyễn Văn Bình', 'Đường sách Nguyễn Văn Bình, Quận 1, TP.HCM', true),
+('08:30:00', '21:00:00', '0909123456', 'Chi nhánh Phan Văn Trị', '104 Phan Văn Trị, Phường 10, Gò Vấp, TP.HCM', false),
+('09:00:00', '18:00:00', '0911222333', 'Chi nhánh Cộng Hòa', '415 Cộng Hòa, Phường 15, Tân Bình, TP.HCM', false),
+('08:00:00', '20:00:00', '0988111222', 'Chi nhánh Vincom Bà Triệu', '191 Bà Triệu, Hai Bà Trưng, Hà Nội', false),
+('09:00:00', '19:30:00', '0977666555', 'Chi nhánh Trần Thái Tông', '139 Trần Thái Tông, Cầu Giấy, Hà Nội', false);
+
+
 ALTER TABLE kdbookstore.book 
 MODIFY COLUMN pubdate VARCHAR(255);
 insert into kdbookstore.customer (cus_name, cus_password, 
@@ -147,4 +158,50 @@ INSERT INTO kdbookstore.admin (ad_name, ad_password, ad_email) VALUES
 ('Tran Van C', SHA1('password'), 'admin_c@kdbookstore.com'),
 ('Pham Thi D', SHA1('password'), 'admin_d@kdbookstore.com'),
 ('Hoang Van E', SHA1('password'), 'admin_e@kdbookstore.com');
+
+CREATE TABLE kdbookstore.contact (
+  ct_id INT AUTO_INCREMENT PRIMARY KEY,
+  ct_name VARCHAR(100) NOT NULL,
+  ct_email VARCHAR(100) NOT NULL,
+  ct_title VARCHAR(100) NOT NULL,
+  ct_content VARCHAR(2000) NOT NULL,
+  ct_time DATETIME NOT NULL,
+  ct_is_read BOOLEAN NOT NULL,
+  ct_is_responsed BOOLEAN NOT NULL,
+  CHECK (CHAR_LENGTH(ct_content) BETWEEN 100 AND 2000)
+);
+CREATE TABLE kdbookstore.generalInfo(
+   id int auto_increment primary key,
+   main_address VARCHAR (100) not null,
+   email VARCHAR (100) not null,
+   company_name VARCHAR (200) not null,
+   company_inter_name  VARCHAR (200) not null,
+   agency VARCHAR(200) not null,
+   established_date DATE not null,
+   phone VARCHAR(50) not null,
+   director VARCHAR (100) not null,
+   license varchar (255) not null
+);
+INSERT INTO kdbookstore.generalInfo (
+    main_address,
+    email,
+    company_name,
+    company_inter_name,
+    agency,
+    established_date,
+    phone,
+    director,
+    license
+) VALUES (
+    'Đường sách Nguyễn Văn Bình, Quận 1, TP.HCM',
+    'huyen.tran170704@hcmut.edu.vn',
+    'Nhà xuất bản Kim Đồng',
+    'Kim Dong Publishing House',
+    'Trung ương Đoàn TNCS Hồ Chí Minh',
+    '1957-06-17',
+    '028-3829-3180',
+    'Bùi Tuấn Nghĩa',
+    '517/GP-BTTTT ngày 6/10/2015 của Bộ Thông tin và Truyền thông'
+);
+
 
