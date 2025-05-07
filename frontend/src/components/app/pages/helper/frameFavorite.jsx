@@ -4,7 +4,6 @@ import React, { useRef, useEffect, useState } from 'react';
 const Frame  = ({ item, index, max_index, childWidth }) => {
     let totalView = [];
     let oneView = [];
-
     function formatPrice(price) {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'đ';
     }

@@ -42,7 +42,7 @@ export default function Search(item) {
   ];
 
   useEffect(() => {
-    fetch(`http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/getSearch.php?&url=${encodeURIComponent(linkCategory[index])}&variable=${encodeURIComponent(searchTerm)}`)
+    fetch(`http://localhost/kimdong_bookstore/api/BackEnd/php/getSearch.php?&url=${encodeURIComponent(linkCategory[index])}&variable=${encodeURIComponent(searchTerm)}`)
       .then((response) => response.json())
       .then((data) => {
         setResults(data);

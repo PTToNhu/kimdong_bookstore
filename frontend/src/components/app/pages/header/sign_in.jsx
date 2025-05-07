@@ -15,10 +15,6 @@ const SigninForm = (item) => {
     }
   }
 
-  console.log(`http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/login.php?username=${encodeURIComponent(
-          identifier
-        )}&password=${encodeURIComponent(password)}`);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -29,7 +25,7 @@ const SigninForm = (item) => {
 
     try {
       const response = await fetch(
-        `http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/login.php?username=${encodeURIComponent(
+        `http://localhost/kimdong_bookstore/api/BackEnd/login.php?username=${encodeURIComponent(
           identifier
         )}&password=${encodeURIComponent(password)}`,
         { method: "GET" }
@@ -59,10 +55,6 @@ const SigninForm = (item) => {
       alert("Đã xảy ra lỗi. Vui lòng thử lại.");
     }
   };
-
-  console.log("localStorage", localStorage);
-  console.log("sessionStorage", sessionStorage);
-  console.log("item.ID", item.ID);
   
   return (
     <div>

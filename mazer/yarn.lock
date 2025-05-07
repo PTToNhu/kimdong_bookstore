@@ -1205,6 +1205,11 @@
     ckeditor5 "45.0.0"
     es-toolkit "1.32.0"
 
+"@esbuild/win32-x64@0.19.12":
+  version "0.19.12"
+  resolved "https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.19.12.tgz"
+  integrity sha512-T1QyPSDCyMXaO3pzBkF96E8xMkiRYbUEZADd29SyPGabqxMViNoii+NcK7eWJAEoU6RZyEm5lVSIjTmcdoB9HA==
+
 "@fontsource/nunito@^4.5.11":
   version "4.5.12"
   resolved "https://registry.npmjs.org/@fontsource/nunito/-/nunito-4.5.12.tgz"

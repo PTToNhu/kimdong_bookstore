@@ -16,3 +16,10 @@ table.dataTable td {
 div.dataTables_wrapper div.dataTables_info {
 	padding-top: .4em
 }
+.compose-new-mail-sidebar {
+    display: none;
+  }
+  
+.compose-new-mail-sidebar.show {
+    display: block;
+  }

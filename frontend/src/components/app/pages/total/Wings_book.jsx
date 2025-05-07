@@ -9,7 +9,7 @@ export default function Wings_book(item) {
   useEffect(() => {
     async function loadImages() {
       const imagePaths = import.meta.glob(
-        "../../BackEnd/php/images/tat_ca_san_pham/**/*.{jpg,jpeg,png,gif,svg,webp}"
+        "../../../../../../api/BackEnd/images/wings_book/**/*.{jpg,jpeg,png,gif,svg,webp}"
       );
       const imagePromises = Object.values(imagePaths).map((importer) =>
         importer()

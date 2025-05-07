@@ -9,7 +9,7 @@ export default function Van_hoc_Viet_Nam(item) {
   useEffect(() => {
     async function loadImages() {
       const imagePaths = import.meta.glob(
-        "../../BackEnd/php/images/tat_ca_san_pham/**/*.{jpg,jpeg,png,gif,svg,webp}"
+        "../../../../../../api/BackEnd/images/van_hoc_viet_nam/**/*.{jpg,jpeg,png,gif,svg,webp}"
       );
       const imagePromises = Object.values(imagePaths).map((importer) =>
         importer()

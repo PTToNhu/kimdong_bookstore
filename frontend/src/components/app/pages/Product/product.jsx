@@ -78,19 +78,19 @@ export default function Product(item) {
         try {
             let imagePaths = [];
             if (link === "tat_ca_san_pham") {
-                imagePaths = import.meta.glob('./../../BackEnd/php/images/tat_ca_san_pham/**/*.{jpg,jpeg,png,gif,svg,webp}');
+                imagePaths = import.meta.glob('../../../../../../api/BackEnd/images/tat_ca_san_pham/**/*.{jpg,jpeg,png,gif,svg,webp}');
             } else if (link === "Kien_thuc_khoa_hoc") {
-                imagePaths = import.meta.glob('./../../BackEnd/php/images/kien_thuc_khoa_hoc/**/*.{jpg,jpeg,png,gif,svg,webp}');
+                imagePaths = import.meta.glob('../../../../../../api/BackEnd/images/kien_thuc_khoa_hoc/**/*.{jpg,jpeg,png,gif,svg,webp}');
             } else if (link === "Lich_su_truyen_thong") {
-                imagePaths = import.meta.glob('./../../BackEnd/php/images/lich_su_truyen_thong/**/*.{jpg,jpeg,png,gif,svg,webp}');
+                imagePaths = import.meta.glob('../../../../../../api/BackEnd/images/lich_su_truyen_thong/**/*.{jpg,jpeg,png,gif,svg,webp}');
             } else if (link === "Truyen_tranh") {
-                imagePaths = import.meta.glob('./../../BackEnd/php/images/truyen_tranh/**/*.{jpg,jpeg,png,gif,svg,webp}');
+                imagePaths = import.meta.glob('../../../../../../api/BackEnd/images/truyen_tranh/**/*.{jpg,jpeg,png,gif,svg,webp}');
             } else if (link === "Van_hoc_nuoc_ngoai") {
-                imagePaths = import.meta.glob('./../../BackEnd/php/images/van_hoc_nuoc_ngoai/**/*.{jpg,jpeg,png,gif,svg,webp}');
+                imagePaths = import.meta.glob('../../../../../../api/BackEnd/images/van_hoc_nuoc_ngoai/**/*.{jpg,jpeg,png,gif,svg,webp}');
             } else if (link === "Van_hoc_Viet_Nam") {
-                imagePaths = import.meta.glob('./../../BackEnd/php/images/van_hoc_Viet_Nam/**/*.{jpg,jpeg,png,gif,svg,webp}');
+                imagePaths = import.meta.glob('../../../../../../api/BackEnd/images/van_hoc_Viet_Nam/**/*.{jpg,jpeg,png,gif,svg,webp}');
             } else if (link === "Wings_book") {
-                imagePaths = import.meta.glob('./../../BackEnd/php/images/wings_book/**/*.{jpg,jpeg,png,gif,svg,webp}');
+                imagePaths = import.meta.glob('../../../../../../api/BackEnd/images/wings_book/**/*.{jpg,jpeg,png,gif,svg,webp}');
             }
             const imagePromises = Object.values(imagePaths).map(importer => importer());
             const loadedImages = await Promise.all(imagePromises);
@@ -142,7 +142,7 @@ export default function Product(item) {
         const fetchData = async () => {
             if(item.ID){
                 try {
-                    const response = await fetch(`http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/getFavorite.php?id=${encodeURIComponent(element.id)}&phone=${encodeURIComponent(item.ID)}`);
+                    const response = await fetch(`http://localhost/kimdong_bookstore/api/BackEnd/php/getFavorite.php?id=${encodeURIComponent(element.id)}&phone=${encodeURIComponent(item.ID)}`);
                     const data = await response.json();
                     setFavourite(data.length > 0);
                   } catch (error) {
@@ -155,6 +155,7 @@ export default function Product(item) {
                 setFavourite(isFavorite);
             }
         };
+        console.log(`http://localhost/kimdong_bookstore/api/BackEnd/php/getFavorite.php?id=${encodeURIComponent(element.id)}&phone=${encodeURIComponent(item.ID)}`);
         fetchData();
     }, [data]);
 
@@ -261,10 +262,10 @@ export default function Product(item) {
     function handleFavorite(){
         if(item.ID){
             if (favourite) {
-                fetch(`http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/deleteFavorite.php?id=${encodeURIComponent(element.id)}&phone=${encodeURIComponent(item.ID)}`)
+                fetch(`http://localhost/kimdong_bookstore/api/BackEnd/php/deleteFavorite.php?id=${encodeURIComponent(element.id)}&phone=${encodeURIComponent(item.ID)}`)
                 setFavourite(false);
             } else {
-                fetch(`http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/favorite.php?id=${encodeURIComponent(element.id)}&phone=${encodeURIComponent(item.ID)}`)
+                fetch(`http://localhost/kimdong_bookstore/api/BackEnd/php/favorite.php?id=${encodeURIComponent(element.id)}&phone=${encodeURIComponent(item.ID)}`)
                 setFavourite(true);
             }
         }else{
@@ -281,7 +282,7 @@ export default function Product(item) {
     function addToStore(){
         setClickStore(!clickStore);
         if(item.ID){
-            fetch(`http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/store.php?&id=${encodeURIComponent(element.id)}&sl=${soLuong}&phone=${encodeURIComponent(item.ID)}`);
+            fetch(`http://localhost/kimdong_bookstore/api/BackEnd/php/store.php?&id=${encodeURIComponent(element.id)}&sl=${soLuong}&phone=${encodeURIComponent(item.ID)}`);
         }else{
             addStore();
         }

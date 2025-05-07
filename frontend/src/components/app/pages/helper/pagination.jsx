@@ -19,6 +19,7 @@ export const Test = (item) => {
     totalItemsPerPage: 16,
     pageRanges: childWidth > 900 ? 5 : 3,
   };
+
   const totalItems = pagination.totalItems;
   const totalItemsPerPage = pagination.totalItemsPerPage;
   const totalPages = Math.ceil(totalItems / totalItemsPerPage);

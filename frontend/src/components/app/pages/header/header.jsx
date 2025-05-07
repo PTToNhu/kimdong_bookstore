@@ -118,7 +118,7 @@ export default function Header(item) {
   useEffect(() => {
     async function loadImages() {
       const imagePaths = import.meta.glob(
-        "../../BackEnd/php/images/tat_ca_san_pham/**/*.{jpg,jpeg,png,gif,svg,webp}"
+        "../../../../../../api/BackEnd/images/tat_ca_san_pham/**/*.{jpg,jpeg,png,gif,svg,webp}"
       );
       const imagePromises = Object.values(imagePaths).map((importer) =>
         importer()
@@ -181,7 +181,7 @@ export default function Header(item) {
   const fetchDataID = async () => {
     try {
       const response = await fetch(
-        `http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/getAllFavorite.php?phone=${encodeURIComponent(
+        `http://localhost/kimdong_bookstore/api/BackEnd/php/getAllFavorite.php?id=${encodeURIComponent(
           item.ID
         )}`
       );
@@ -200,7 +200,7 @@ export default function Header(item) {
     if (favoritesArray.length > 0) {
       const promises = favoritesArray.map(async (element_id) => {
         const response = await fetch(
-          `http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/getdataFromID.php?variable=${encodeURIComponent(
+          `http://localhost/kimdong_bookstore/api/BackEnd/php/getdataFromID.php?variable=${encodeURIComponent(
             element_id
           )}`
         );
@@ -227,7 +227,7 @@ export default function Header(item) {
   const fetchDataStore = async () => {
     try {
       const response = await fetch(
-        `http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/getAllStore.php?phone=${encodeURIComponent(
+        `http://localhost/kimdong_bookstore/api/BackEnd/php/getAllStore.php?id=${encodeURIComponent(
           item.ID
         )}`
       );
@@ -251,7 +251,7 @@ export default function Header(item) {
         if (match) {
           const id = match[1];
           const response = await fetch(
-            `http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/getdataFromID.php?variable=${encodeURIComponent(
+            `http://localhost/kimdong_bookstore/api/BackEnd/php/getdataFromID.php?variable=${encodeURIComponent(
               id
             )}`
           );
@@ -303,7 +303,7 @@ export default function Header(item) {
       const indexFavorite = clickFavorite.findIndex((value) => value === true);
       if (indexFavorite !== -1) {
         fetch(
-          `http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/deleteFavorite.php?id=${encodeURIComponent(
+          `http://localhost/kimdong_bookstore/api/BackEnd/php/deleteFavorite.php?id=${encodeURIComponent(
             indexFavorite
           )}&phone=${encodeURIComponent(item.ID)}`
         )
@@ -318,7 +318,7 @@ export default function Header(item) {
       const indexStore = clickStore.findIndex((value) => value === true);
       if (indexStore !== -1) {
         fetch(
-          `http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/deleteStore.php?id=${encodeURIComponent(
+          `http://localhost/kimdong_bookstore/api/BackEnd/php/deleteStore.php?id=${encodeURIComponent(
             indexStore
           )}&phone=${encodeURIComponent(item.ID)}`
         )
@@ -593,6 +593,14 @@ export default function Header(item) {
             <div>
               <p className="text-black text-center ">Bạn có muốn đăng xuất ?</p>
               <div className="flex h-[102px] w-full items-center justify-center">
+                <div
+                  onClick={() => {
+                    window.location = "/User";
+                  }}
+                  className="cursor-pointer bg-[green] transition-transform transform hover:scale-105 w-full mx-[3%] text-[20px] font-bold text-[white] flex items-center justify-center py-[10px] border-3 rounded-lg border-[green] mt-[50px]"
+                >
+                  Edit Tài khoản
+                </div>
                 <div
                   onClick={() => {
                     sessionStorage.clear();

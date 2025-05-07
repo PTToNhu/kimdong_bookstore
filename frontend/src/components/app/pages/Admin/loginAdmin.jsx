@@ -23,12 +23,12 @@ export function LoginAdmin() {
 
     try {
       const response = await fetch(
-        `http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/loginAdmin.php?username=${encodeURIComponent(
+        `http://localhost/kimdong_bookstore/api/BackEnd/php/loginAdmin.php?username=${encodeURIComponent(
           identifier
         )}&password=${encodeURIComponent(password)}`,
         { method: "GET" }
       );
-      console.log(`http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/loginAdmin.php?username=${encodeURIComponent(
+      console.log(`http://localhost/kimdong_bookstore/api/BackEnd/php/loginAdmin.php?username=${encodeURIComponent(
           identifier
         )}&password=${encodeURIComponent(password)}`);
       if (!response.ok) {

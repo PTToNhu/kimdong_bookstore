@@ -7,7 +7,7 @@ export function useData(img = [], url, search) {
   useEffect(() => {
       const fetchData = async () => {
           try {
-              const response = await fetch(`http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/getSearch.php?&url=${encodeURIComponent(url)}&variable=${encodeURIComponent(search)}`);
+              const response = await fetch(`http://localhost/kimdong_bookstore/api/BackEnd/php/getSearch.php?&url=${encodeURIComponent(url)}&variable=${encodeURIComponent(search)}`);
               if (!response.ok) {
                   throw new Error('Network response was not ok');
               }
