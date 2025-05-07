@@ -12,6 +12,13 @@
 	display: inline-flex;
 	align-items: center;
 }
+.compose-new-mail-sidebar {
+    display: none;
+  }
+  
+.compose-new-mail-sidebar.show {
+    display: block;
+  }
 
 .dataTable-dropdown label {
 	white-space: nowrap;
