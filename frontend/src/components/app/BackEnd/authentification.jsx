@@ -2,7 +2,7 @@ export const userPostFetch = (userId, identifier) => {
     console.log(userId);
   return (dispatch) => {
     return fetch(
-      "http://localhost/kimdong_bookstore/frontend/components/app/BackEnd/php/uploads/getToken.php",
+      "http://localhost/kimdong_bookstore/api/BackEnd/php/getToken.php",
       {
         method: "POST",
         headers: {

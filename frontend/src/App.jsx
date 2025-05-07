@@ -15,13 +15,12 @@ import SelectMethodPage from "./components/app/pages/payment/page";
 import SignupForm from "./components/app/pages/header/sign_up";
 import SigninForm from "./components/app/pages/header/sign_in";
 import { verifyToken } from "./components/app/BackEnd/verifyToken";
-
-// import { GlobalProvider } from './GlobalContext';
+import Detail_infor from "./components/app/pages/User/Detail_infor";
 import { useState, useEffect } from "react";
 
 function App() {
   const [ID, setID] = useState("");
-  console.log(sessionStorage);
+
   useEffect(() => {
     const storedToken =
       sessionStorage.getItem("jwt") || localStorage.getItem("jwt");
@@ -45,6 +44,8 @@ function App() {
     }
   }, []);
 
+  console.log(ID);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -56,7 +57,7 @@ function App() {
         <Route path="/Payment/:value?" element={<SelectMethodPage ID={ID} />} />
         <Route path="/sign_up" element={<SignupForm ID={ID} />} />
         <Route path="/sign_in" element={<SigninForm ID={ID} />} />
-
+        {ID && <Route path="/User" element={<Detail_infor ID={ID} />} />}
         <Route path="/news" element={<News />}></Route>
         <Route path="/about_us" element={<AboutUs />} />
         <Route path="/new" element={<Master_Classe />} />

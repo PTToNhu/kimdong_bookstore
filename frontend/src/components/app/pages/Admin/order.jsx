@@ -232,7 +232,7 @@ export default function Order() {
             const updatedData = data.map((element) => {
                 if (element.id === id) {
                     const newStatus = element.Status === "Active" ? "Inactive" : "Active";
-                    fetch(`http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/setStatus.php?&url=${encodeURIComponent(element.Page)}&variable=${encodeURIComponent(newStatus)}&id=${encodeURIComponent(id)}`)
+                    fetch(`http://localhost/kimdong_bookstore/api/BackEnd/php/setStatus.php?&url=${encodeURIComponent(element.Page)}&variable=${encodeURIComponent(newStatus)}&id=${encodeURIComponent(id)}`)
                         .then((response) => response.json())
                         .then((data) => {
                         })
@@ -321,7 +321,7 @@ export default function Order() {
         } else if (Use === "Delete") {
             for (let index = 0; index < checkedItems.length; index++) {
                 try {
-                    const response = fetch(`http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/deleteOrder.php?&id=${encodeURIComponent(checkedItems[index])}`);
+                    const response = fetch(`http://localhost/kimdong_bookstore/api/BackEnd/php/deleteOrder.php?&id=${encodeURIComponent(checkedItems[index])}`);
                 } catch (error) {
                     console.error("Error deleting item:", error);
                 }

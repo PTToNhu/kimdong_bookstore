@@ -5,7 +5,7 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import Modal from "../helper/modal";
 import React, { useState } from "react";
 import "./style/style.css";
-const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, formatPrice, handleStatusChange, toggleModal, open, edit, setID, results, handleCheckAll, allChecked }) => {
+const PaginationHelper = ({ data = [] }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const pagination = {
     totalItems: data.length,
@@ -125,13 +125,7 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
   let index = (currentPage - 1) * totalItemsPerPage;
   let max_index = totalItemsPerPage;
 
-  if (edit) {
-    checkedItems = [];
-  }
-
   let type;
-
-  edit ? (type = "radio") : (type = "checkbox");
 
   const options = [
     { label: "Chưa giao", color: "bg-[red]" },
@@ -144,18 +138,6 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
 
   const toggleDropdown = (index) => {
     setIsOpen(isOpen === index ? null : index);
-  };
-
-  const selectOption = (option, id) => {
-    console.log(`http://localhost/kimdong_bookstore/api/BackEnd/php/updateStatusOrder.php?id=${encodeURIComponent(
-      id
-    )}&status=${encodeURIComponent(option)}`);
-    fetch(
-      `http://localhost/kimdong_bookstore/api/BackEnd/php/updateStatusOrder.php?id=${encodeURIComponent(
-        id
-      )}&status=${encodeURIComponent(option)}`
-    );
-    setIsOpen(null);
   };
 
   function getData() {
@@ -176,81 +158,38 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
               <input 
                   type="checkbox" 
                   className="size-4 rounded-[50%] cursor-pointer"
-                  onChange={() => handleCheckboxChange(index, results, element.id)}
-                  checked={checkedItems.includes(element.id)}
               />
             </th>
             <th className="px-2 text-center font-normal">{element.id}</th>
-            <th className="px-2 text-start font-normal">{element.ho_va_ten}</th>
+            <th className="px-2 text-start font-normal">{element.name}</th>
             <th className="px-2 text-start font-normal">
               {element.email}
             </th>
             <th className="px-2 text-center font-normal">
-              {formatPrice(element.phone)}
+              {element.phone}
             </th>
             <th className="px-2 text-center font-normal">
-              {formatPrice(element.total)}
+              {element.birthdate}
             </th>
-            <th key={index} className="px-2 font-normal">
-              <div
-                className={`border ${
-                  options.find((item) => element.status === item.label)
-                    ?.color || "bg-gray-500"
-                } text-white rounded-2xl border-gray-300 w-[200px] z-0 p-2 cursor-pointer`}
-                onClick={() => toggleDropdown(index)}
-              >
-                {element.status}
-              </div>
-              {isOpen === index && (
-                <div className="absolute mt-1 w-[200px] z-50 border border-gray-300 rounded shadow-lg text-black">
-                  {options.map((item) => (
-                    <div
-                      key={item.label}
-                      className={`p-2 cursor-pointer w-[200px] z-50 hover:bg-blue-100 hover:text-black text-white ${item.color}`}
-                      onClick={() => selectOption(item.label, element.id)}
-                    >
-                      {item.label}
-                    </div>
-                  ))}
-                </div>
-              )}
+            <th className="px-2 py-1 font-normal" onClick={() => {
+                fetch(`http://localhost/kimdong_bookstore/api/BackEnd/php/deleteUser.php?id=${encodeURIComponent(element.id)}`)
+                  .then(() => {
+                    window.location.reload();
+                  })
+                  .catch((error) => {
+                    console.error('Error deleting user:', error);
+                  });
+              }}>
+              <span className="bg-red-400 px-4 py-2 hover:bg-[red] cursor-pointer">
+                Xóa User
+              </span>
             </th>
-            <th
-              className="cursor-pointer text-center"
-              onClick={() => toggleModal(index)}
-            >
-              <FontAwesomeIcon className="size-7" icon={faBars} />
-            </th>
-            {open[index] && (
-              <Modal open={open[index]} onClose={() => toggleModal(index)}>
-                <ul className="w-[500px] text-[30px] text-white">
-                  <li className="px-[2%]">
-                    sách: <label className="text-white">{element.book}</label>
-                  </li>
-                  <li className="px-[2%] bg-[#2D2F39]">
-                    Địa chỉ:{" "}
-                    <label className="text-white">{element.dia_chi}</label>
-                  </li>
-                  <li className="px-[2%]">
-                    Thành phố:{" "}
-                    <label className="text-white">{element.thanh_pho}</label>
-                  </li>
-                  <li className="px-[2%] bg-[#2D2F39]">
-                    Huyện: <label className="text-white">{element.huyen}</label>
-                  </li>
-                  <li className="px-[2%]">
-                    Xã: <label className="text-white">{element.xa}</label>
-                  </li>
-                </ul>
-              </Modal>
-            )}
           </tr>
         );
       } else {
         result.push(
           <tr className={`${index % 2 === 0 ? "bg-gray-100" : ""} text-2xl`}>
             <td className="px-2 py-2">Na/N</td>
-            <td className="px-2  py-2"></td>
             <td className="px-2  py-2"></td>
             <td className="px-2  py-2"></td>
             <td className="px-2  py-2"></td>
@@ -264,18 +203,6 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
     return result;
   }
 
-  const countStatus = results.reduce(
-    (accumulator, item) => {
-      if (item.status === "Active") {
-        accumulator.active += 1;
-      } else if (item.status === "Inactive") {
-        accumulator.inactive += 1;
-      }
-      return accumulator;
-    },
-    { active: 0, inactive: 0 }
-  );
-
   return (
     <div className="shadow-lg rounded-lg">
       <table className="min-w-full border-collapse">
@@ -284,19 +211,15 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
             <th className="py-2">
               <input 
                   type="checkbox" 
-                  disabled={edit} 
                   className="size-4 cursor-pointer" 
-                  checked={allChecked[currentPage - 1] === true   } 
-                  onChange={() => handleCheckAll(index, currentPage - 1, data)} 
               />
             </th>
             <th className="py-2 w-[1%]">ID</th>
             <th className="py-2 w-[25%]">Họ và tên</th>
             <th className="py-2 w-[25%]">Email</th>
             <th className="py-2">Phone</th>
-            <th className="py-2">Giá</th>
+            <th className="py-2">Birth Date</th>
             <th className="py-2 w-[200px]">status</th>
-            <th className="py-2">Actions</th>
           </tr>
         </thead>
         <tbody>{getData()}</tbody>
@@ -304,9 +227,6 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
 
       <div className="flex items-center relative h-[70px] w-full border-t border-[#D0D1D3]">
         <div className="flex  relative text-[20px] ">
-          <p className="ml-[10px]"> Tổng sản phẩm: {results.length}</p>
-          <p className="ml-[50px]"> Active: {countStatus.active}</p>
-          <p className="ml-[50px]"> Inactive: {countStatus.inactive}</p>
         </div>
         <nav className="absolute right-0">
           <ul className="inline-flex text-[15px] max-sm:text-[15px] max-sm:w-[30]">

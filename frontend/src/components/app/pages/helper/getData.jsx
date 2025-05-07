@@ -7,11 +7,12 @@ export function useData(img = [], url) {
   useEffect(() => {
       const fetchData = async () => {
           try {
-              const response = await fetch(`http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/${url}.php`);
+              const response = await fetch(`http://localhost/kimdong_bookstore/api/BackEnd/php/${url}.php`);
               if (!response.ok) {
                   throw new Error('Network response was not ok');
               }
               const result = await response.json();
+              
               setData(result);
           } catch (error) {
               console.error("Error fetching data: ", error);
@@ -20,11 +21,12 @@ export function useData(img = [], url) {
 
       fetchData();
   }, [url]);
+  
   function getTampNumber(item){
     const fileName = item.split('/').pop();
     return fileName.split('_')[0];
   }
-
+  
   useEffect(() => {
     if (data.length > 0 && img.length > 0) {
         const getData = {};

@@ -9,7 +9,7 @@ const Tat_ca_san_pham = (item) => {
   useEffect(() => {
     async function loadImages() {
       const imagePaths = import.meta.glob(
-        "../../BackEnd/php/images/tat_ca_san_pham/**/*.{jpg,jpeg,png,gif,svg,webp}"
+        "../../../../../../api/BackEnd/images/tat_ca_san_pham/**/*.{jpg,jpeg,png,gif,svg,webp}"
       );
       const imagePromises = Object.values(imagePaths).map((importer) =>
         importer()
@@ -25,7 +25,7 @@ const Tat_ca_san_pham = (item) => {
   const location = useLocation();
   const urlParams = new URLSearchParams(location.search);
   const page = urlParams.get('page') || '1';
-
+  console.log(images);
   return (
     <div>
       <Test

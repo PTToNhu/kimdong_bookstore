@@ -1,6 +1,6 @@
 export const verifyToken = async (token) => {
 
-        const response = await fetch('http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/verify.php', {
+        const response = await fetch('http://localhost/kimdong_bookstore/api/BackEnd/php/verify.php', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,

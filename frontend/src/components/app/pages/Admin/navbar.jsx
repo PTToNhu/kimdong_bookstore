@@ -87,7 +87,7 @@ export default function Navbar() {
                         <div className="w-[80%] my-[20px] border-b-[5px] border-[#2D2F39] rounded-full"></div>
                     </div>
                 </header>
-                <div ref={divRef1} className="flex pr-13">
+                <div ref={divRef1} className="flex">
                     <div className={`container ${open ? "w-[100px]" : ""} text-white `}>
                         <ul className="border-r-4 border-[#8A8C91] rounded-[50%]">
                             <li>
@@ -205,49 +205,13 @@ export default function Navbar() {
                                 </a>
                             </li>
                             <li>
-                                <a className={`my-1 flex py-6 w-full bg-[none] relative pl-4 rounded-lg hover:bg-[#2D2F39] cursor-pointer ${showHtmlBottom ? 'bg-[#2D2F39] text-[#62fcaf]' : ''} `} onClick={() => {
-                                    handleClickBottom();
-                                }}>
-                                    <p className="text-[20px]">Income</p>
-                                    {!showHtmlBottom && (
-                                        <button className="pr-4 absolute bg-[none] hover:bg-[#2D2F39] right-0 text-sm font-medium text-gray-900 dark:text-gray-400"
-                                            onClick={handleClickBottom}
-                                        >
-                                            <FontAwesomeIcon icon={faChevronDown} />
-                                        </button>
-                                    )}{showHtmlBottom && (
-                                        <button className="pr-4 absolute bg-[none] hover:bg-[#2D2F39] right-0 text-sm font-medium text-gray-900 dark:text-gray-400"
-                                            onClick={handleClickBottom}
-                                        >
-                                            <FontAwesomeIcon icon={faChevronUp} />
-                                        </button>
-                                    )}</a>
+                                <a className={`my-1 flex py-6 w-full bg-[none] relative pl-4 rounded-lg hover:bg-[#2D2F39] cursor-pointer ${isActive === "User" ? 'bg-[#2D2F39] text-[#62fcaf]' : ''} `} onClick={() => {
+                                    handleClickBottom()}}
+                                    href={"/admin/User"}
+                                >
+                                    <p className="text-[20px]">User Management</p>
+                                </a>
                             </li>
-                            {showHtmlBottom && (
-                                <div className="flex relative ml-[20px]">
-                                    <div className="overflow-hidden h-[150px]">
-                                        <img src={thang} className="w-[8px]"></img>
-                                    </div>
-                                    <ul className="absolute">
-                                        <li className="mt-[15px] flex relative">
-                                            <img src={Radius} className="w-[53px]"></img>
-                                            <a className="absolute left-[60px] top-[3px] rounded-lg cursor-pointer hover:bg-[#2D2F39] p-[10px]"> Earnings</a>
-                                        </li>
-                                        <li className="mt-[15px] flex relative">
-                                            <img src={Radius} className="w-[53px]"></img>
-                                            <a className="absolute left-[60px] top-[3px] rounded-lg cursor-pointer hover:bg-[#2D2F39] p-[10px]">  Refunds</a>
-                                        </li>
-                                        <li className="mt-[15px] flex relative">
-                                            <img src={Radius} className="w-[53px]"></img>
-                                            <a className="absolute left-[60px] top-[3px] rounded-lg cursor-pointer hover:bg-[#2D2F39] p-[10px]">  Declines</a>
-                                        </li>
-                                        <li className="mt-[15px] flex relative">
-                                            <img src={Radius} className="w-[53px]"></img>
-                                            <a className="absolute left-[60px] top-[3px] rounded-lg cursor-pointer hover:bg-[#2D2F39] p-[10px]">  Payouts</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            )}
                         </ul>
                     </div>
                 </div>
