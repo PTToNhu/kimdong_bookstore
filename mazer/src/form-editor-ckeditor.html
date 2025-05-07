@@ -94,7 +94,7 @@
         const categoryID = document.getElementById('CategoryID').value;
         const status = document.getElementById('Status').value;
 
-        if (!title || !content || !thumbnail || !categoryID || !status || !scheduledDate) {
+        if (!title || !content || !thumbnail || !categoryID || !status) {
             alert('Vui lòng điền đầy đủ thông tin!');
             return;
         }
@@ -102,7 +102,7 @@
         const formData = new FormData();
         formData.append('file', thumbnail);
 
-        fetch('http://localhost/BTL_WEB_1/api/upload/UploadFile', {
+        fetch('http://localhost/kimdong_bookstore/api/upload/UploadFile', {
             method: 'POST',
             body: formData
         })
@@ -123,7 +123,7 @@
                         writtenDate: new Date().toISOString()
                     };
 
-                    return fetch('http://localhost/BTL_WEB_1/api/News/postNews', {
+                    return fetch('http://localhost/kimdong_bookstore/api/News/postNews', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

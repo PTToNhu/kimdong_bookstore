@@ -27,7 +27,7 @@
         </div>
     </section>
     <div class="modal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editModalLabel">Chỉnh sửa bài viết</h5>
@@ -106,7 +106,7 @@
 <script src="assets/extensions/tinymce/tinymce.min.js"></script>
 <script src="assets/static/js/pages/tinymce.js"></script>
 <script>
-    fetch('http://localhost/BTL_WEB_1/api/News/getNews')
+    fetch('http://localhost/kimdong_bookstore/api/News/getNews')
         .then(response => response.json())
         .then(data => {
             console.log(data);
@@ -114,9 +114,9 @@
             data.data.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'col-md-6 col-sm-12';
-                card.onclick = function () {
-                    window.location.href = `form-editor-ckeditor.html?id=${item.ID}`;
-                };
+                // card.onclick = function () {
+                //    window.location.href = `form-editor-ckeditor.html?id=${item.ID}`;
+                //};
                 card.innerHTML = `
                     <div class="card">
                         <div class="card-content">
@@ -141,7 +141,7 @@
         });
     function handleEdit(id) {
         let postDataFromDB = null;
-        fetch(`http://localhost/BTL_WEB_1/api/news/getNewByID?newid=${id}`)
+        fetch(`http://localhost/kimdong_bookstore/api/news/getNewByID?newid=${id}`)
             .then(response => response.json())
             .then(data => {
                 if (data.data) {
@@ -187,7 +187,7 @@
             if (thumbnailFile) {
                 const formData = new FormData();
                 formData.append('file', thumbnailFile);
-                fetch('http://localhost/BTL_WEB_1/api/upload/UploadFile', {
+                fetch('http://localhost/kimdong_bookstore/api/upload/UploadFile', {
                     method: 'POST',
                     body: formData
                 })
@@ -216,7 +216,7 @@
             status: status,
         };
 
-        fetch('http://localhost/BTL_WEB_1/api/News/updateNew', {
+        fetch('http://localhost/kimdong_bookstore/api/News/updateNew', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -239,7 +239,7 @@
     }
     function handleDelete(id) {
         if (confirm('Bạn có chắc chắn muốn xóa bài viết này không?')) {
-            fetch(`http://localhost/BTL_WEB_1/api/News/deleteNew`, {
+            fetch(`http://localhost/kimdong_bookstore/api/News/deleteNew`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

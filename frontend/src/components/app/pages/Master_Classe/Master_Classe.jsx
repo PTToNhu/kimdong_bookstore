@@ -24,7 +24,7 @@ const Master_Classe = () => {
   const fetchCategory = async () => {
     try {
       const res = await fetch(
-        "http://localhost/BTL_WEB_1/api/Category/getCategory"
+        "http://localhost/kimdong_bookstore/api/Category/getCategory"
       );
       const data = await res.json();
       setNewsCategories(data);
@@ -35,7 +35,7 @@ const Master_Classe = () => {
   const fetchRelatedPosts = async (newID) => {
     try {
       const res = await fetch(
-        `http://localhost/BTL_WEB_1/api/relatednew/getrelatednewsbynewid?newid=${newID}`
+        `http://localhost/kimdong_bookstore/api/relatednew/getrelatednewsbynewid?newid=${newID}`
       );
       const data = await res.json();
       setRelatedPosts(data);
@@ -46,7 +46,7 @@ const Master_Classe = () => {
   const fetchPaper = async (newID) => {
     try {
       const res = await fetch(
-        `http://localhost/BTL_WEB_1/api/news/getnewbyid?newid=${newID}`
+        `http://localhost/kimdong_bookstore/api/news/getnewbyid?newid=${newID}`
       );
       const data = await res.json();
       // console.log(data.data)
@@ -58,34 +58,34 @@ const Master_Classe = () => {
   const fetchComments = async (newID) => {
     try {
       const res = await fetch(
-        `http://localhost/BTL_WEB_1/api/comment/getCommentByNewID?newid=${newID}&order=${order}&offset=${offset}`
+        `http://localhost/kimdong_bookstore/api/comment/getCommentByNewID?newid=${newID}&order=${order}&offset=${offset}`
       );
       const data = await res.json();
       // const userID = 1;
       const enrichedComments = await Promise.all(
         data.data.map(async (comment) => {
           const numOfLikes = await fetch(
-            `http://localhost/BTL_WEB_1/api/commentLike/getToTalLikesByCommentID?commentid=${comment.ID}`
+            `http://localhost/kimdong_bookstore/api/commentLike/getToTalLikesByCommentID?commentid=${comment.ID}`
           );
           const numOfLikesData = await numOfLikes.json();
           const totalLikes = numOfLikesData.total;
           const isLiked = await fetch(
-            `http://localhost/BTL_WEB_1/api/commentLike/getLikedByCommentIDandUserID?commentid=${comment.ID}&userid=${userID}`
+            `http://localhost/kimdong_bookstore/api/commentLike/getLikedByCommentIDandUserID?commentid=${comment.ID}&userid=${userID}`
           );
           const isLikedData = await isLiked.json();
           const likedStatus = isLikedData.status;
           const repliesRes = await fetch(
-            `http://localhost/BTL_WEB_1/api/comment/getChildCommentByParentID?parentID=${comment.ID}`
+            `http://localhost/kimdong_bookstore/api/comment/getChildCommentByParentID?parentID=${comment.ID}`
           );
           const repliesData = await repliesRes.json();
           const enrichedReplies = await Promise.all(
             repliesData.data.data.map(async (reply) => {
               const [replyLikesRes, replyLikedRes] = await Promise.all([
                 fetch(
-                  `http://localhost/BTL_WEB_1/api/commentLike/getToTalLikesByCommentID?commentid=${reply.ID}`
+                  `http://localhost/kimdong_bookstore/api/commentLike/getToTalLikesByCommentID?commentid=${reply.ID}`
                 ),
                 fetch(
-                  `http://localhost/BTL_WEB_1/api/commentLike/getLikedByCommentIDandUserID?commentid=${reply.ID}&userid=${userID}`
+                  `http://localhost/kimdong_bookstore/api/commentLike/getLikedByCommentIDandUserID?commentid=${reply.ID}&userid=${userID}`
                 ),
               ]);
 
@@ -137,7 +137,7 @@ const Master_Classe = () => {
     const userID = 1; // Thay thế bằng ID người dùng thực tế
     try {
       const res = await fetch(
-        `http://localhost/BTL_WEB_1/api/commentLike/postCommentLike`,
+        `http://localhost/kimdong_bookstore/api/commentLike/postCommentLike`,
         {
           method: "POST",
           headers: {
@@ -183,7 +183,7 @@ const Master_Classe = () => {
   const handleSaveEdit = async (commentId) => {
     try {
       const response = await fetch(
-        `http://localhost/BTL_WEB_1/api/comment/updateComment`,
+        `http://localhost/kimdong_bookstore/api/comment/updateComment`,
         {
           method: "POST",
           headers: {
@@ -215,7 +215,7 @@ const Master_Classe = () => {
     }
     try {
       const response = await fetch(
-        `http://localhost/BTL_WEB_1/api/comment/deleteComment`,
+        `http://localhost/kimdong_bookstore/api/comment/deleteComment`,
         {
           method: "POST",
           headers: {
@@ -246,7 +246,7 @@ const Master_Classe = () => {
     const newID = new URLSearchParams(window.location.search).get("newid");
     try {
       const response = await fetch(
-        `http://localhost/BTL_WEB_1/api/comment/addComment`,
+        `http://localhost/kimdong_bookstore/api/comment/addComment`,
         {
           method: "POST",
           headers: {
@@ -279,7 +279,7 @@ const Master_Classe = () => {
     const newID = new URLSearchParams(window.location.search).get("newid");
     try {
       const response = await fetch(
-        `http://localhost/BTL_WEB_1/api/CommentReply/addCommentReply`,
+        `http://localhost/kimdong_bookstore/api/CommentReply/addCommentReply`,
         {
           method: "POST",
           headers: {
@@ -437,7 +437,10 @@ const Master_Classe = () => {
             <div className="bg-gray-300 lg:h-4 h-2 my-8 "></div>
             <div className="space-y-6 text-gray-700 text-justify">
               <div className="font-bold">{paper.sub_title}</div>
-              <div>{paper.Text}</div>
+              <div
+                className="prose max-w-none"
+                dangerouslySetInnerHTML={{ __html: paper.Text }}
+              ></div>
             </div>
             {/* Phần bình luận */}
             {/* Sắp xếp theo */}

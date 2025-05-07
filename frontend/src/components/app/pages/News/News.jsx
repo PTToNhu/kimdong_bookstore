@@ -12,6 +12,12 @@ const News = () => {
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(2);
   const [total, setTotal] = useState(0);
+  function truncateHTMLContent(html, maxLength = 150) {
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+    const text = temp.textContent || temp.innerText || "";
+    return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+  }
   const updateChildWidth = () => {
     if (parentRef.current) {
       const parentWidth = parentRef.current.offsetWidth;
@@ -21,7 +27,7 @@ const News = () => {
   const fetchCategory = async () => {
     try {
       const res = await fetch(
-        "http://localhost/BTL_WEB_1/api/Category/getCategory"
+        "http://localhost/kimdong_bookstore/api/Category/getCategory"
       );
       const data = await res.json();
       setNewsCategories(data);
@@ -33,8 +39,8 @@ const News = () => {
     try {
       const url =
         categoryID == 0
-          ? `http://localhost/BTL_WEB_1/api/News/getNews?offset=${offset}&limit=${limit}`
-          : `http://localhost/BTL_WEB_1/api/News/getNewsByCategoryID?categoryID=${categoryID}&offset=${offset}&limit=${limit}`;
+          ? `http://localhost/kimdong_bookstore/api/News/getNews?offset=${offset}&limit=${limit}`
+          : `http://localhost/kimdong_bookstore/api/News/getNewsByCategoryID?categoryID=${categoryID}&offset=${offset}&limit=${limit}`;
 
       const res = await fetch(url);
       const newsData = await res.json();
@@ -43,7 +49,7 @@ const News = () => {
         newsData.data.map(async (item) => {
           try {
             const commentRes = await fetch(
-              `http://localhost/BTL_WEB_1/api/comment/getTotalCommentsByNewID?newid=${item.ID}`
+              `http://localhost/kimdong_bookstore/api/comment/getTotalCommentsByNewID?newid=${item.ID}`
             );
             const commentData = await commentRes.json();
             return {
@@ -219,7 +225,7 @@ const News = () => {
                       </a>
                       <div className="bg-red-700 w-[75%] h-0.5 "></div>
                       <p className="mt-2 text-gray-700">
-                        {item.Text.slice(0, 150) + "..."}
+                        {truncateHTMLContent(item.Text, 150)}
                       </p>
                     </div>
                   </div>

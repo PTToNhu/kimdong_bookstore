@@ -63,7 +63,7 @@ function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/faq/question" element={<Question />} />
         <Route path="/postnew" element={<PostNew />} />
-        <Route path="/admin" element={<Test />} />
+        <Route path="/mazer" element={<Test />} />
       </Routes>
     </BrowserRouter>
   );
