@@ -11,7 +11,8 @@ class CommentModel extends Database
     }
     public function getCommentByNewID($id, $offset = 0, $limit = 10, $order = 'ASC')
     {
-        $query = "Select * from comment where NewsID=$id AND ID NOT IN (SELECT CommentID FROM commentreply) order by CreatedAt $order limit $limit offset $offset";
+        $query = "Select comment.*, account.name, account.avt from comment, account where NewsID=$id AND comment.UserID=account.id
+AND comment.ID NOT IN (SELECT CommentID FROM commentreply) order by comment.CreatedAt $order limit $limit offset $offset";
         $data = mysqli_query($this->connection, $query);
         $comments = [];
         while ($row = mysqli_fetch_assoc($data)) {
@@ -74,7 +75,7 @@ class CommentModel extends Database
     }
     public function getChildCommentByParentID($parentID)
     {
-        $query = "select * from comment where ID in (select CommentID from commentreply where ParrentCommentID=$parentID)";
+        $query = "select comment.*, account.name, account.avt from comment, account where comment.userID = account.id AND comment.ID in (select CommentID from commentreply where ParrentCommentID=$parentID)";
         $data = mysqli_query($this->connection, $query);
         $comments = [];
         while ($row = mysqli_fetch_assoc($data)) {

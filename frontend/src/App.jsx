@@ -50,6 +50,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route index element={<Main ID={ID} />} />
+        <Route path="/admin/mazer" element={<Test />} />
         <Route path="/admin*" element={<Admin />} />
         <Route path="/main*" element={<Main ID={ID} />} />
         <Route path="/Product/:page?/:name?" element={<Product ID={ID} />} />
@@ -64,7 +65,6 @@ function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/faq/question" element={<Question />} />
         <Route path="/postnew" element={<PostNew />} />
-        <Route path="/mazer" element={<Test />} />
       </Routes>
     </BrowserRouter>
   );

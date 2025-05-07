@@ -144,7 +144,7 @@ export default function Navbar() {
                         <ul>
                             <li>
                                 <a
-                                    href={"/admin/dashboard"}
+                                    href={"/admin/mazer"}
                                     className={`my-1 flex py-5  pl-4 rounded-lg hover:bg-[#2D2F39] cursor-pointer ${isActive === "dashboard" ? 'bg-[#2D2F39] text-[#62fcaf]' : ''}`}
                                 >
                                     <p className="text-[20px]">Dashboard</p>

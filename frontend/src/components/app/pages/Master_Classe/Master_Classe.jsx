@@ -9,12 +9,14 @@ const Master_Classe = () => {
   const [comments, setComments] = useState({});
   const [order, setOrder] = useState("ASC");
   const [offset, setOffset] = useState(0);
-  const userID = 1;
+  const userID =
+    localStorage.getItem("user_id") || sessionStorage.getItem("user_id");
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editContent, setEditContent] = useState("");
   const [commentText, setCommentText] = useState("");
   const parentRef = useRef(null);
   const [childWidth, setChildWidth] = useState(0);
+  const [user, setUser] = useState({});
   const updateChildWidth = () => {
     if (parentRef.current) {
       const parentWidth = parentRef.current.offsetWidth;
@@ -61,7 +63,6 @@ const Master_Classe = () => {
         `http://localhost/kimdong_bookstore/api/comment/getCommentByNewID?newid=${newID}&order=${order}&offset=${offset}`
       );
       const data = await res.json();
-      // const userID = 1;
       const enrichedComments = await Promise.all(
         data.data.map(async (comment) => {
           const numOfLikes = await fetch(
@@ -115,6 +116,18 @@ const Master_Classe = () => {
       console.error("Error fetching comments:", error);
     }
   };
+  const fetchUser = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost/kimdong_bookstore/api/account/GetAccount?id=${userID}`
+      );
+      const data = await res.json();
+      console.log("user", data);
+      setUser(data);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  };
   useEffect(() => {
     updateChildWidth();
     window.addEventListener("resize", updateChildWidth);
@@ -124,6 +137,7 @@ const Master_Classe = () => {
     fetchRelatedPosts(newID);
     fetchPaper(newID);
     fetchComments(newID);
+    fetchUser();
     return () => {
       window.removeEventListener("resize", updateChildWidth);
     };
@@ -134,7 +148,8 @@ const Master_Classe = () => {
     fetchComments(newID);
   }, [order, offset]);
   const handleLike = async (commentID) => {
-    const userID = 1; // Thay thế bằng ID người dùng thực tế
+    const userID =
+      localStorage.getItem("user_id") || sessionStorage.getItem("user_id");
     try {
       const res = await fetch(
         `http://localhost/kimdong_bookstore/api/commentLike/postCommentLike`,
@@ -305,7 +320,6 @@ const Master_Classe = () => {
     }
     toggleButton();
   };
-  const avt = "/avt_1.png";
   return (
     <div className="h-screen bg-cover w-[100%] bg-center" ref={parentRef}>
       <Header childWidth={childWidth} />
@@ -470,35 +484,37 @@ const Master_Classe = () => {
             </div>
             <div className="bg-gray-300 h-0.5 my-5 mx-2"></div>
             {/* Nội dung bình luận */}
-            <div className="flex space-x-3 mb-5 text-base">
-              <img
-                src={avt}
-                alt="ảnh đại diện của tôi"
-                className="lg:w-16 lg:h-16 w-12 h-12"
-              />
-              <div className="w-full">
-                <textarea
-                  placeholder="Bình luận"
-                  onClick={toggleButton}
-                  className="text-left w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
-                  onChange={(e) => setCommentText(e.target.value)}
-                ></textarea>
-                <div className="btn hidden flex justify-end">
-                  <button
-                    className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-800 cursor-pointer mr-3"
+            {userID && (
+              <div className="flex space-x-3 mb-5 text-base">
+                <img
+                  src={user.avt}
+                  alt="ảnh đại diện của tôi"
+                  className="lg:w-16 lg:h-16 w-12 h-12"
+                />
+                <div className="w-full">
+                  <textarea
+                    placeholder="Bình luận"
                     onClick={toggleButton}
-                  >
-                    Hủy
-                  </button>
-                  <button
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800 cursor-pointer"
-                    onClick={handlePostComment}
-                  >
-                    Bình luận
-                  </button>
+                    className="text-left w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                    onChange={(e) => setCommentText(e.target.value)}
+                  ></textarea>
+                  <div className="btn hidden flex justify-end">
+                    <button
+                      className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-800 cursor-pointer mr-3"
+                      onClick={toggleButton}
+                    >
+                      Hủy
+                    </button>
+                    <button
+                      className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800 cursor-pointer"
+                      onClick={handlePostComment}
+                    >
+                      Bình luận
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
             {/* Phần bình luận của người khác */}
             {comments?.data?.map((comment) => {
               return (
@@ -507,13 +523,13 @@ const Master_Classe = () => {
                   className="flex justify-start space-x-3 text-base mb-5"
                 >
                   <img
-                    src={avt}
+                    src={comment.avt}
                     alt="ảnh đại diện của tôi"
                     className="lg:w-16 lg:h-16 w-12 h-12"
                   />
                   <div className="w-full">
                     <p className="font-semibold text-sm text-blue-600">
-                      {comment.UserID}
+                      {comment.name}
                     </p>
                     {editingCommentId === comment.ID ? (
                       <div className="flex flex-col">
@@ -545,39 +561,43 @@ const Master_Classe = () => {
                     )}
 
                     <div className="flex items-center space-x-3">
-                      <div onClick={() => handleLike(comment.ID)}>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          height="16"
-                          width="16"
-                          viewBox="0 0 512 512"
-                          className={`cursor-pointer ${
-                            comment.likedStatus
-                              ? "fill-blue-700"
-                              : "fill-gray-700"
-                          }`}
-                        >
-                          <path d="M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2l144 0c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48l-97.5 0c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3l0-38.3 0-48 0-24.9c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192l64 0c17.7 0 32 14.3 32 32l0 224c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32L0 224c0-17.7 14.3-32 32-32z" />
-                        </svg>
-                      </div>
-                      <div>|</div>
-                      <div
-                        onClick={() => toggleCommentBox(comment.ID)}
-                        className="hover:cursor-pointer"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          height="16"
-                          width="16"
-                          viewBox="0 0 512 512"
-                          className="fill-gray-700"
-                        >
-                          <path d="M512 240c0 114.9-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6C73.6 471.1 44.7 480 16 480c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4c0 0 0 0 0 0s0 0 0 0s0 0 0 0c0 0 0 0 0 0l.3-.3c.3-.3 .7-.7 1.3-1.4c1.1-1.2 2.8-3.1 4.9-5.7c4.1-5 9.6-12.4 15.2-21.6c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208z" />
-                        </svg>
-                      </div>
+                      {userID && (
+                        <div className="flex items-center space-x-3">
+                          <div onClick={() => handleLike(comment.ID)}>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              height="16"
+                              width="16"
+                              viewBox="0 0 512 512"
+                              className={`cursor-pointer ${
+                                comment.likedStatus
+                                  ? "fill-blue-700"
+                                  : "fill-gray-700"
+                              }`}
+                            >
+                              <path d="M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2l144 0c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48l-97.5 0c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3l0-38.3 0-48 0-24.9c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192l64 0c17.7 0 32 14.3 32 32l0 224c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32L0 224c0-17.7 14.3-32 32-32z" />
+                            </svg>
+                          </div>
+                          <div>|</div>
+                          <div
+                            onClick={() => toggleCommentBox(comment.ID)}
+                            className="hover:cursor-pointer"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              height="16"
+                              width="16"
+                              viewBox="0 0 512 512"
+                              className="fill-gray-700"
+                            >
+                              <path d="M512 240c0 114.9-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6C73.6 471.1 44.7 480 16 480c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4c0 0 0 0 0 0s0 0 0 0s0 0 0 0c0 0 0 0 0 0l.3-.3c.3-.3 .7-.7 1.3-1.4c1.1-1.2 2.8-3.1 4.9-5.7c4.1-5 9.6-12.4 15.2-21.6c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208z" />
+                            </svg>
+                          </div>
+                          <div>|</div>
+                        </div>
+                      )}
                       {comment.totalLikes > 0 && (
                         <div className="flex items-center space-x-3">
-                          <div>|</div>
                           <div className="flex items-center space-x-0.25">
                             <div>
                               <svg
@@ -592,9 +612,10 @@ const Master_Classe = () => {
                             </div>
                             <div>{comment.totalLikes}</div>
                           </div>
+                          <div>|</div>
                         </div>
                       )}
-                      <div>|</div>
+
                       <p>{comment.CreatedAt}</p>
                       {Number(comment.UserID) === userID && (
                         <div className="flex items-center space-x-3">
@@ -621,7 +642,7 @@ const Master_Classe = () => {
                       className="comment-box flex mt-5 flex-row space-x-3 items-start hidden"
                     >
                       <img
-                        src={avt}
+                        src={user.avt}
                         alt="ảnh đại diện của tôi"
                         className="lg:w-16 lg:h-16 w-12 h-12"
                       />
@@ -654,13 +675,13 @@ const Master_Classe = () => {
                           className="flex justify-start space-x-3 text-base mb-5 mt-5"
                         >
                           <img
-                            src={avt}
+                            src={reply.avt}
                             alt="ảnh đại diện của tôi"
                             className="lg:w-16 lg:h-16 w-12 h-12"
                           />
                           <div className="w-full">
                             <p className="font-semibold text-sm text-blue-600">
-                              {reply.UserID}
+                              {reply.name}
                             </p>
                             {editingCommentId === reply.ID ? (
                               <div className="flex flex-col">
@@ -692,41 +713,44 @@ const Master_Classe = () => {
                             ) : (
                               <p>{reply.Content}</p>
                             )}
-
                             <div className="flex items-center space-x-3">
-                              <div onClick={() => handleLike(reply.ID)}>
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  height="16"
-                                  width="16"
-                                  viewBox="0 0 512 512"
-                                  className={`cursor-pointer ${
-                                    reply.likedStatus
-                                      ? "fill-blue-700"
-                                      : "fill-gray-700"
-                                  }`}
-                                >
-                                  <path d="M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2l144 0c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48l-97.5 0c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3l0-38.3 0-48 0-24.9c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192l64 0c17.7 0 32 14.3 32 32l0 224c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32L0 224c0-17.7 14.3-32 32-32z" />
-                                </svg>
-                              </div>
-                              <div>|</div>
-                              <div
-                                onClick={() => toggleCommentBox(reply.ID)}
-                                className="hover:cursor-pointer"
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  height="16"
-                                  width="16"
-                                  viewBox="0 0 512 512"
-                                  className="fill-gray-700"
-                                >
-                                  <path d="M512 240c0 114.9-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6C73.6 471.1 44.7 480 16 480c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4c0 0 0 0 0 0s0 0 0 0s0 0 0 0c0 0 0 0 0 0l.3-.3c.3-.3 .7-.7 1.3-1.4c1.1-1.2 2.8-3.1 4.9-5.7c4.1-5 9.6-12.4 15.2-21.6c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208z" />
-                                </svg>
-                              </div>
+                              {userID && (
+                                <div className="flex items-center space-x-3">
+                                  <div onClick={() => handleLike(reply.ID)}>
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      height="16"
+                                      width="16"
+                                      viewBox="0 0 512 512"
+                                      className={`cursor-pointer ${
+                                        reply.likedStatus
+                                          ? "fill-blue-700"
+                                          : "fill-gray-700"
+                                      }`}
+                                    >
+                                      <path d="M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2l144 0c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48l-97.5 0c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.4 160 358.3l0-38.3 0-48 0-24.9c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192l64 0c17.7 0 32 14.3 32 32l0 224c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32L0 224c0-17.7 14.3-32 32-32z" />
+                                    </svg>
+                                  </div>
+                                  <div>|</div>
+                                  <div
+                                    onClick={() => toggleCommentBox(reply.ID)}
+                                    className="hover:cursor-pointer"
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      height="16"
+                                      width="16"
+                                      viewBox="0 0 512 512"
+                                      className="fill-gray-700"
+                                    >
+                                      <path d="M512 240c0 114.9-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6C73.6 471.1 44.7 480 16 480c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4c0 0 0 0 0 0s0 0 0 0s0 0 0 0c0 0 0 0 0 0l.3-.3c.3-.3 .7-.7 1.3-1.4c1.1-1.2 2.8-3.1 4.9-5.7c4.1-5 9.6-12.4 15.2-21.6c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208z" />
+                                    </svg>
+                                  </div>
+                                  <div>|</div>
+                                </div>
+                              )}
                               {reply.totalLikes > 0 && (
                                 <div className="flex items-center space-x-3">
-                                  <div>|</div>
                                   <div className="flex items-center space-x-0.25">
                                     <div>
                                       <svg
@@ -741,9 +765,9 @@ const Master_Classe = () => {
                                     </div>
                                     <div>{reply.totalLikes}</div>
                                   </div>
+                                  <div>|</div>
                                 </div>
                               )}
-                              <div>|</div>
                               <p>{reply.CreatedAt}</p>
                               {Number(reply.UserID) === userID && (
                                 <div className="flex items-center space-x-3">
@@ -772,7 +796,7 @@ const Master_Classe = () => {
                               className="comment-box flex mt-5 flex-row space-x-3 items-start hidden"
                             >
                               <img
-                                src={avt}
+                                src={user.avt}
                                 alt="ảnh đại diện của tôi"
                                 className="lg:w-16 lg:h-16 w-12 h-12"
                               />
