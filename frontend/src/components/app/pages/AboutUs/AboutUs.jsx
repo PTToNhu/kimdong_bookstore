@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../../../../../components/app/pages/header/header";
+import Header from "../header/header";
 import { useRef, useState, useEffect } from "react";
 
 const AboutUs = () => {

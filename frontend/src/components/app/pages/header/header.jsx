@@ -240,7 +240,7 @@ export default function Header(item) {
 
   const fetchDataStoreCookie = async () => {
     const currentStore = decodeURIComponent(getCookie("Store"));
-    console.log("currentStore",currentStore);
+    console.log("currentStore", currentStore);
     const storeArray = currentStore ? currentStore.split(",") : [];
     const store = [];
     const regex = /(\d+)sl\((\d+)\)/;
@@ -707,7 +707,9 @@ export default function Header(item) {
                 PRODUCT <FontAwesomeIcon icon={faChevronDown} />
               </li>
               <li className="px-[10px] hover:text-[#15A78A] cursor-pointer">
-                BLOG <FontAwesomeIcon icon={faChevronDown} />
+                <a href="/news">
+                  TIN TỨC <FontAwesomeIcon icon={faChevronDown} />
+                </a>
               </li>
             </ul>
             <p className="absolute right-0 text-white font-bold pl-[30px] border-l-2 border-white">
