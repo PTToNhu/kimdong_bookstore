@@ -17,7 +17,8 @@ export default function Detail_infor(item) {
   const [img, setImages] = useState([]);
   const [avatar, setAvatar] = useState([]);
   const inputRef = useRef(null);
-  const [first, setFirst] = useState(true);
+  const [newAvatar, setNewAvatar] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null); 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -71,8 +72,6 @@ export default function Detail_infor(item) {
   useEffect(() => {
     const filteredAvatars = img.filter(element => {
       let parts = element.split("/");
-
-      console.log("parts", parts);
       return parts[parts.length - 2] === item.ID; 
     });
 
@@ -89,12 +88,8 @@ export default function Detail_infor(item) {
       formData.append("birthdate", birthday);
       formData.append("email", email);
       formData.append("phone", phone);
-
-      if (avatar && avatar.length > 0 && avatar[0] instanceof File) {
-        formData.append("file", avatar[0]); 
-      } else {
-        console.log("No files selected or invalid file.");
-      }
+      formData.append("password", OldPassword);
+      formData.append("file", selectedFile);
 
       try {
         const response = await axios.post(
@@ -122,9 +117,14 @@ export default function Detail_infor(item) {
   };
 
   const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      setAvatar(URL.createObjectURL(selectedFile));
+    const file = e.target.files[0];
+
+    if (file) {
+      setSelectedFile(file); 
+      setNewAvatar(URL.createObjectURL(file)); 
+    } else {
+      setSelectedFile(null);
+      setNewAvatar(null);
     }
   };
 
@@ -141,7 +141,7 @@ export default function Detail_infor(item) {
           {avatar ? (
             <img
               className="m-4 w-[150px] h-[150px] md:max-w-[200px] md:max-h-[200px] rounded-full object-cover"
-              src={avatar}
+              src={newAvatar ? newAvatar : avatar}
               alt="User Avatar"
             />
           ) : (
@@ -151,7 +151,7 @@ export default function Detail_infor(item) {
           )}
           <div>
             <p className="text-[20px] md:text-[25px] font-bold">
-              {user.name} {user.name}
+              {user.name}
             </p>
             <p className="text-[16px] md:text-[18px]">{user.email}</p>
             <p className="text-[16px] md:text-[18px]">{user.phone}</p>
@@ -237,6 +237,7 @@ export default function Detail_infor(item) {
                     onChange={(e) => setOldPassword(e.target.value)}
                     className="w-full px-3 py-2 mt-3 rounded-md border border-black"
                     type="password"
+                    name="password"
                   />
                 </label>
                 <label className="w-full">

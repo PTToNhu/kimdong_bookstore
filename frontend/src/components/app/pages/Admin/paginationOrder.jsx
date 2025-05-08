@@ -186,7 +186,7 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
               {element.email}
             </th>
             <th className="px-2 text-center font-normal">
-              {formatPrice(element.phone)}
+              {element.phone}
             </th>
             <th className="px-2 text-center font-normal">
               {formatPrice(element.total)}

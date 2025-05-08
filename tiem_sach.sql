@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2025 at 05:51 PM
+-- Generation Time: May 08, 2025 at 04:39 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -26,8 +26,6 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `account`
 --
--- CREATE database tiem_sach;
-USE tiem_sach;
 
 CREATE TABLE `account` (
   `id` int(11) NOT NULL,
@@ -42,18 +40,17 @@ CREATE TABLE `account` (
 --
 -- Dumping data for table `account`
 --
-USE tiem_sach;
 
 INSERT INTO `account` (`id`, `name`, `phone`, `email`, `birthdate`, `password`, `isStudent`) VALUES
-(1, 'Nguyễn Văn Avádasd', '123456789123', '123aa@example.coma', '2000-01-01', '$2y$10$ANhtS50DEtDlOmaxwSUnP.69oI3Ssh7jskOhFI2aGtBm9NuqDUizS', 'on'),
-(2, '123', '1231', '1234561@gmail.com', '2025-05-07', '$2y$10$T2ymOkpyDzwpJwBnFyx32uZxfIXugyW7dWWSdTYBvTOqqfsVY1hw.', 'on');
+(1, 'Nguyễn Văn Avádasd', '123456789123', '123aa@example.coma', '2000-01-01', '$2y$10$6JTR3vy.9ymG650SrSXq7.HQqTl2UsSe754mXTBg.MZ2CrySXHclS', 'on'),
+(2, '123', '1231', '1234561@gmail.com', '2025-05-07', '$2y$10$T2ymOkpyDzwpJwBnFyx32uZxfIXugyW7dWWSdTYBvTOqqfsVY1hw.', 'on'),
+(3, 'Hoàng Thanh Chí Bảo123', '0368287072', 'hoangbao27092004@gmail.com', '2000-01-01', '$2y$10$.1qbZORv/V4Z364Jg6da8.jKi4Fw1nl8gqqx66SZ4aSsX8W775qvO', 'on');
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `accountadmin`
 --
-USE tiem_sach;
 
 CREATE TABLE `accountadmin` (
   `id` int(11) NOT NULL,
@@ -67,7 +64,6 @@ CREATE TABLE `accountadmin` (
 --
 -- Dumping data for table `accountadmin`
 --
-USE tiem_sach;
 
 INSERT INTO `accountadmin` (`id`, `name`, `phone`, `email`, `birthdate`, `password`) VALUES
 (1, '1234', '1234', 'hoangbao270904@gmail.com', '2025-05-13', '$2y$10$UrWILHE5W/LNNdXYglhtCO.i/BZFtaJ/QycbYCiVMtpZPRQe7FU3m');
@@ -77,7 +73,6 @@ INSERT INTO `accountadmin` (`id`, `name`, `phone`, `email`, `birthdate`, `passwo
 --
 -- Table structure for table `admin`
 --
-USE tiem_sach;
 
 CREATE TABLE `admin` (
   `ID` int(11) NOT NULL
@@ -86,7 +81,6 @@ CREATE TABLE `admin` (
 --
 -- Dumping data for table `admin`
 --
-USE tiem_sach;
 
 INSERT INTO `admin` (`ID`) VALUES
 (1),
@@ -96,9 +90,46 @@ INSERT INTO `admin` (`ID`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `author`
+--
+
+CREATE TABLE `author` (
+  `aut_id` int(11) NOT NULL,
+  `aut_name` varchar(50) NOT NULL,
+  `aut_birthday` date DEFAULT NULL,
+  `aut_img` varchar(255) DEFAULT NULL,
+  `aut_desc` varchar(1000) DEFAULT NULL,
+  `dead` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `author`
+--
+
+INSERT INTO `author` (`aut_id`, `aut_name`, `aut_birthday`, `aut_img`, `aut_desc`, `dead`) VALUES
+(1, 'Miyazaki Hayao', '1950-08-17', 'img/authors/vdlh.jpg', NULL, NULL),
+(2, 'Eiichiro Oda', '1975-01-01', 'img/authors/oda.jpg', NULL, NULL),
+(3, 'Masashi Kishimoto', '1974-11-08', 'img/authors/naruto.jpg', NULL, NULL),
+(4, 'Horikoshi Kohei', '1980-08-12', 'img/authors/myhero.jpg', NULL, NULL),
+(5, 'Fujiko F. Fujio', '1934-03-10', 'img/authors/dorae.jpg', NULL, '2022-04-07'),
+(6, 'Isayama Hajime', '1986-08-29', 'img/authors/attackontitan.jpg', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bookofaut`
+--
+
+CREATE TABLE `bookofaut` (
+  `aut_id` int(11) NOT NULL,
+  `b_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `category`
 --
-USE tiem_sach;
 
 CREATE TABLE `category` (
   `ID` int(11) NOT NULL,
@@ -108,7 +139,6 @@ CREATE TABLE `category` (
 --
 -- Dumping data for table `category`
 --
-USE tiem_sach;
 
 INSERT INTO `category` (`ID`, `Name`) VALUES
 (1, 'Hoạt động'),
@@ -122,7 +152,6 @@ INSERT INTO `category` (`ID`, `Name`) VALUES
 --
 -- Table structure for table `comment`
 --
-USE tiem_sach;
 
 CREATE TABLE `comment` (
   `ID` int(11) NOT NULL,
@@ -135,7 +164,6 @@ CREATE TABLE `comment` (
 --
 -- Dumping data for table `comment`
 --
-USE tiem_sach;
 
 INSERT INTO `comment` (`ID`, `Content`, `CreatedAt`, `NewsID`, `UserID`) VALUES
 (2, 'Bình luận 1.2', '2025-04-30 15:41:00', 1, 2),
@@ -153,7 +181,6 @@ INSERT INTO `comment` (`ID`, `Content`, `CreatedAt`, `NewsID`, `UserID`) VALUES
 --
 -- Table structure for table `commentlike`
 --
-USE tiem_sach;
 
 CREATE TABLE `commentlike` (
   `UserID` int(11) NOT NULL,
@@ -163,7 +190,6 @@ CREATE TABLE `commentlike` (
 --
 -- Dumping data for table `commentlike`
 --
-USE tiem_sach;
 
 INSERT INTO `commentlike` (`UserID`, `CommentID`) VALUES
 (1, 2),
@@ -176,7 +202,6 @@ INSERT INTO `commentlike` (`UserID`, `CommentID`) VALUES
 --
 -- Table structure for table `commentreply`
 --
-USE tiem_sach;
 
 CREATE TABLE `commentreply` (
   `CommentID` int(11) NOT NULL,
@@ -186,7 +211,6 @@ CREATE TABLE `commentreply` (
 --
 -- Dumping data for table `commentreply`
 --
-USE tiem_sach;
 
 INSERT INTO `commentreply` (`CommentID`, `ParrentCommentID`) VALUES
 (7, 3),
@@ -195,9 +219,25 @@ INSERT INTO `commentreply` (`CommentID`, `ParrentCommentID`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `contact`
+--
+
+CREATE TABLE `contact` (
+  `ct_id` int(11) NOT NULL,
+  `ct_name` varchar(100) NOT NULL,
+  `ct_email` varchar(100) NOT NULL,
+  `ct_title` varchar(100) NOT NULL,
+  `ct_content` varchar(2000) NOT NULL,
+  `ct_time` datetime NOT NULL,
+  `ct_is_read` tinyint(1) NOT NULL,
+  `ct_is_responsed` tinyint(1) NOT NULL
+) ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `don_dat_hang`
 --
-USE tiem_sach;
 
 CREATE TABLE `don_dat_hang` (
   `id` int(11) NOT NULL,
@@ -216,18 +256,15 @@ CREATE TABLE `don_dat_hang` (
 --
 -- Dumping data for table `don_dat_hang`
 --
-USE tiem_sach;
 
 INSERT INTO `don_dat_hang` (`id`, `ho_va_ten`, `email`, `phone`, `dia_chi`, `thanh_pho`, `huyen`, `xa`, `total`, `book`, `status`) VALUES
-(1, '1234', '1234@gmail.com', '1234', '1234', 'Tỉnh Hưng Yên', 'Huyện Yên Mỹ', 'Xã Yên Phú', '349700', '{id: 177(số lượng: 1),id: 178(số lượng: 1),id: 172(số lượng: 1),id: 176(số lượng: 1),id: 176(số lượng: 1),id: 173(số lượng: 1)}', 'Đã giao'),
-(2, '123', '123', '123', '123', 'Tỉnh Vĩnh Phúc', 'Thành phố Phúc Yên', 'Phường Phúc Thắng', '44990000', '{id: 123(số lượng: 1)}', 'Đã hủy');
+(1, '1234', '1234@gmail.com', '1234', '1234', 'Tỉnh Hưng Yên', 'Huyện Yên Mỹ', 'Xã Yên Phú', '349700', '{id: 177(số lượng: 1),id: 178(số lượng: 1),id: 172(số lượng: 1),id: 176(số lượng: 1),id: 176(số lượng: 1),id: 173(số lượng: 1)}', 'Đã giao');
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `favorite`
 --
-USE tiem_sach;
 
 CREATE TABLE `favorite` (
   `id` int(255) NOT NULL,
@@ -249,7 +286,6 @@ CREATE TABLE `favorite` (
 --
 -- Dumping data for table `favorite`
 --
-USE tiem_sach;
 
 INSERT INTO `favorite` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `tap`, `tac_gia`, `doi_tuong`, `khuon_kho`, `so_trang`, `trong_luong`, `Page`, `Status`, `phone`) VALUES
 (10, 'Rèn nhân cách - Luyện tài năng - Bác Hồ - Tấm gương yêu nước', '20000', '18000', '10', 'truyện lẻ', 'Phạm Văn Hòa ', 'Thiếu niên (11 – 15)', '13x19 cm', '76', '95', 'tat_ca_san_pham', 'Active', '9'),
@@ -260,9 +296,34 @@ INSERT INTO `favorite` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `tap`, `tac_
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `generalinfo`
+--
+
+CREATE TABLE `generalinfo` (
+  `id` int(11) NOT NULL,
+  `main_address` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `company_name` varchar(200) NOT NULL,
+  `company_inter_name` varchar(200) NOT NULL,
+  `agency` varchar(200) NOT NULL,
+  `established_date` date NOT NULL,
+  `phone` varchar(50) NOT NULL,
+  `director` varchar(100) NOT NULL,
+  `license` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `generalinfo`
+--
+
+INSERT INTO `generalinfo` (`id`, `main_address`, `email`, `company_name`, `company_inter_name`, `agency`, `established_date`, `phone`, `director`, `license`) VALUES
+(1, 'Đường sách Nguyễn Văn Bình, Quận 1, TP.HCM', 'huyen.tran170704@hcmut.edu.vn', 'Nhà xuất bản Kim Đồng', 'Kim Dong Publishing House', 'Trung ương Đoàn TNCS Hồ Chí Minh', '1957-06-17', '028-3829-3180', 'Bùi Tuấn Nghĩa', '517/GP-BTTTT ngày 6/10/2015 của Bộ Thông tin và Truyền thông');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `kien_thuc_khoa_hoc`
 --
-USE tiem_sach;
 
 CREATE TABLE `kien_thuc_khoa_hoc` (
   `id` int(255) NOT NULL,
@@ -283,7 +344,6 @@ CREATE TABLE `kien_thuc_khoa_hoc` (
 --
 -- Dumping data for table `kien_thuc_khoa_hoc`
 --
-USE tiem_sach;
 
 INSERT INTO `kien_thuc_khoa_hoc` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `tap`, `tac_gia`, `doi_tuong`, `khuon_kho`, `so_trang`, `trong_luong`, `Page`, `Status`) VALUES
 (98, 'Theo bước thời gian - Các công trình tiêu biểu của Sài Gòn - Thành phố Hồ Chí Minh', '180000', '144000', '20', 'truyện lẻ', 'Võ Thị Mai Chi, Hồ Quốc Cường', 'Mọi lứa tuổi', '25x25 cm', '84', '900', 'Kien_thuc_khoa_hoc', 'Active'),
@@ -324,7 +384,6 @@ INSERT INTO `kien_thuc_khoa_hoc` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `t
 --
 -- Table structure for table `lich_su_truyen_thong`
 --
-USE tiem_sach;
 
 CREATE TABLE `lich_su_truyen_thong` (
   `id` int(255) NOT NULL,
@@ -345,7 +404,6 @@ CREATE TABLE `lich_su_truyen_thong` (
 --
 -- Dumping data for table `lich_su_truyen_thong`
 --
-USE tiem_sach;
 
 INSERT INTO `lich_su_truyen_thong` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `tap`, `tac_gia`, `doi_tuong`, `khuon_kho`, `so_trang`, `trong_luong`, `Page`, `Status`) VALUES
 (1, 'Đội Việt Nam tuyên truyền giải phóng quân', '65000', '52000', '20', 'truyện lẻ', 'Nguyễn Mạnh Hà', 'Tuổi mới lớn (15 – 18), Tuổi trưởng thành (trên 18 tuổi)', '14,5x20,5 cm', '252', '290', 'Lich_su_truyen_thong', 'Active'),
@@ -387,9 +445,35 @@ INSERT INTO `lich_su_truyen_thong` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `locations`
+--
+
+CREATE TABLE `locations` (
+  `time_open` time NOT NULL,
+  `time_close` time NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `branch_name` varchar(50) NOT NULL,
+  `branch_address` varchar(100) NOT NULL,
+  `main_branch` tinyint(1) NOT NULL,
+  `location_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `locations`
+--
+
+INSERT INTO `locations` (`time_open`, `time_close`, `phone`, `branch_name`, `branch_address`, `main_branch`, `location_id`) VALUES
+('08:00:00', '21:00:00', '0909000111', 'Chi nhánh Nguyễn Văn Bình', 'Đường sách Nguyễn Văn Bình, Quận 1, TP.HCM', 1, 1),
+('08:30:00', '21:00:00', '0909123456', 'Chi nhánh Phan Văn Trị', '104 Phan Văn Trị, Phường 10, Gò Vấp, TP.HCM', 0, 2),
+('09:00:00', '18:00:00', '0911222333', 'Chi nhánh Cộng Hòa', '415 Cộng Hòa, Phường 15, Tân Bình, TP.HCM', 0, 3),
+('08:00:00', '20:00:00', '0988111222', 'Chi nhánh Vincom Bà Triệu', '191 Bà Triệu, Hai Bà Trưng, Hà Nội', 0, 4),
+('09:00:00', '19:30:00', '0977666555', 'Chi nhánh Trần Thái Tông', '139 Trần Thái Tông, Cầu Giấy, Hà Nội', 0, 5);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `news`
 --
-USE tiem_sach;
 
 CREATE TABLE `news` (
   `ID` int(11) NOT NULL,
@@ -405,7 +489,6 @@ CREATE TABLE `news` (
 --
 -- Dumping data for table `news`
 --
-USE tiem_sach;
 
 INSERT INTO `news` (`ID`, `Title`, `Text`, `Thumbnail`, `Status`, `CategoryID`, `WrittenByAdminID`, `WrittenDate`) VALUES
 (1, 'Một kỉ niệm khó quên về bà Nguyễn Thị Bình', 'Trong không khí kỉ niệm 50 năm ngày đất nước thống nhất, trên khắp cả nước, muôn người dân đất Việt cùng hân hoan chào đón ngày lịch sử trọng đại này. Các chương trình thời sự liên tục chiếu lại những thước phim về những trận đánh lớn, về những người lính trẻ đã hòa máu thịt mình vào Đất Mẹ cho ngày độc lập hôm nay, rồi những nhân chứng lịch sử đã từng lăn lộn ngoài trận mạc kể về đồng đội đã không tiếc tuổi xanh, quyết không lùi bước trước bom đạn của kẻ thù. Tôi không sao quên được lời một cựu chiến binh chia sẻ: Hòa Bình giá đắt lắm, phải cố mà giữ lấy Hòa Bình. Lời nói mộc mạc của người cựu chiến binh như được rút ra từ dòng máu con tim, nghe mà thấm thía mà tự hào.\nRồi hình ảnh bà Nguyễn Thị Bình ký văn kiện Hiệp định Paris năm 1973 buộc Mĩ chấm dứt chiến tranh ở Việt Nam xuất hiện liên tục. Bà đã trở thành huyền thoại, là nhà ngoại giao tài ba khiến cộng đồng quốc tế phải nể phục. Nhìn người phụ nữ dịu dàng nhưng lại vô cùng mạnh mẽ quyết đoán ấy, tôi bỗng nhớ tới một kỉ niệm đẹp khó quên với bà.\nhttps://file.hstatic.net/200000343865/file/2845_5b496d621df39d757f4590b1e904c829_1c5a86c1d7274ae2822385ebc4ca1005_grande.jpg\nĐó là vào những năm cuối của thế kỉ 20, Nhà xuất bản Kim Đồng bắt đầu xây dựng một số tủ sách lớn như: Tủ sách Danh nhân Việt Nam, Tủ sách Anh hùng liệt sĩ, Tủ sách Vàng, Thơ với tuổi thơ, Tủ sách Tranh truyện dân gian Việt Nam... Trong hơn 60 bộ sách mà Nhà xuất bản Kim Đồng xây dựng, Tủ sách Danh nhân Việt Nam nổi lên như một viên ngọc sáng, nhằm tri ân những bậc hiền tài đã đóng góp cho đất nước trên nhiều lĩnh vực như văn hóa, chính trị, kinh tế, ngoại giao, xây dựng và bảo vệ tổ quốc...\nChúng tôi cảm thấy thật thiếu sót nếu trong Tủ sách lại vắng bóng gương mặt người phụ nữ tài ba Nguyễn Thị Bình. Chính từ ý tưởng ấy mà ông Nguyễn Thắng Vu, nguyên giám đốc Nhà xuất bản Kim Đồng đã liên hệ, đặt lịch được gặp bà.\nVậy là tôi được theo chân ông Nguyễn Thắng Vu đến gặp bà Nguyễn Thị Bình mà bấy lâu tôi chỉ được biết qua sách báo. Ngôi nhà bà sinh sống cũng thật giản dị. Bà nói, nước ta chỉ có một nhà làm sách cho trẻ em, đấy là Nhà xuất bản Kim Đồng, công việc thật vinh quang nhưng trách nhiệm thì nặng nề lắm. Rồi bà hỏi hiện nay trẻ em ta thích đọc loại sách nào nhất, sách xuất bản hàng năm có đủ cho các em đọc không, rồi có cách gì để trẻ em miền núi cũng được tiếp cận sách như miền xuôi.\nKhi nghe ông Nguyễn Thắng Vu trả lời từng câu hỏi, bà mỉm cười hiền hậu nói: “Tôi thấy Nhà xuất bản Kim Đồng làm tốt đấy, nội dung sách như một món quà lành mạnh góp phần hình thành nhân cách cho các cháu, trách nhiệm lớn lắm đó!” \nKhi câu chuyện đã trở nên thân tình, Giám đốc Nguyễn Thắng Vu mới trình bày rõ mong muốn của nhà xuất bản là có một cuốn sách viết về bà trong Tủ sách Danh nhân Việt Nam. Ông Nguyễn Thắng Vu dứt lời, bà Bình trầm ngâm một lúc rồi nói: “Xin cảm ơn nhã ý của Nhà xuất bản Kim Đồng, nhưng tôi nghĩ đất nước mình còn nhiều người tài giỏi lắm, hãy viết về họ trước đi, còn tôi, tôi xin phép thư thư.” \nÔi một con người huyền thoại, bản lĩnh kiên cường trước truyền thông quốc tế mà sao khi nói về bản thân lại khiêm nhường là vậy! Việc không thành nhưng tôi đã có một kỉ niệm đẹp và thật sự hạnh phúc khi được trực tiếp gặp người phụ nữ đã trở thành huyền thoại của Việt Nam trên mặt trận ngoại giao trong cuộc kháng chiến trường kì của dân tộc. ', 'https://file.hstatic.net/200000343865/file/2845_5b496d621df39d757f4590b1e904c829_1c5a86c1d7274ae2822385ebc4ca1005_grande.jpg', 'published', 1, 1, '2025-04-30 11:44:19'),
@@ -423,7 +506,6 @@ INSERT INTO `news` (`ID`, `Title`, `Text`, `Thumbnail`, `Status`, `CategoryID`, 
 --
 -- Table structure for table `newsupdatelog`
 --
-USE tiem_sach;
 
 CREATE TABLE `newsupdatelog` (
   `AdminID` int(11) NOT NULL,
@@ -434,7 +516,6 @@ CREATE TABLE `newsupdatelog` (
 --
 -- Dumping data for table `newsupdatelog`
 --
-USE tiem_sach;
 
 INSERT INTO `newsupdatelog` (`AdminID`, `NewID`, `UpdateAt`) VALUES
 (1, 1, '2025-04-30 14:24:30');
@@ -444,7 +525,6 @@ INSERT INTO `newsupdatelog` (`AdminID`, `NewID`, `UpdateAt`) VALUES
 --
 -- Table structure for table `relatednew`
 --
-USE tiem_sach;
 
 CREATE TABLE `relatednew` (
   `NewID` int(11) NOT NULL,
@@ -454,7 +534,6 @@ CREATE TABLE `relatednew` (
 --
 -- Dumping data for table `relatednew`
 --
-USE tiem_sach;
 
 INSERT INTO `relatednew` (`NewID`, `RelatedNewID`) VALUES
 (1, 2),
@@ -471,7 +550,6 @@ INSERT INTO `relatednew` (`NewID`, `RelatedNewID`) VALUES
 --
 -- Table structure for table `store`
 --
-USE tiem_sach;
 
 CREATE TABLE `store` (
   `id` int(255) NOT NULL,
@@ -494,7 +572,6 @@ CREATE TABLE `store` (
 --
 -- Dumping data for table `store`
 --
-USE tiem_sach;
 
 INSERT INTO `store` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `tap`, `tac_gia`, `doi_tuong`, `khuon_kho`, `so_trang`, `trong_luong`, `Page`, `Status`, `so_luong`, `phone`) VALUES
 (33, 'Ngàn năm sử Việt – Nhà Nguyễn – Bùi Viện một tấm lòng', '30000', '27000', '10', 'truyện lẻ', 'Phan Trần Chúc', 'Thiếu niên (11 – 15)', '13,5x20,5 cm', '96', '120', 'tat_ca_san_pham', 'Active', 1, '1'),
@@ -506,7 +583,6 @@ INSERT INTO `store` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `tap`, `tac_gia
 --
 -- Table structure for table `tat_ca_san_pham`
 --
-USE tiem_sach;
 
 CREATE TABLE `tat_ca_san_pham` (
   `id` int(255) NOT NULL,
@@ -528,7 +604,6 @@ CREATE TABLE `tat_ca_san_pham` (
 --
 -- Dumping data for table `tat_ca_san_pham`
 --
-USE tiem_sach;
 
 INSERT INTO `tat_ca_san_pham` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `tap`, `tac_gia`, `doi_tuong`, `khuon_kho`, `so_trang`, `trong_luong`, `Page`, `Status`, `from`) VALUES
 (1, 'Đội Việt Nam tuyên truyền giải phóng quân', '65000', '52000', '20', 'truyện lẻ', 'Nguyễn Mạnh Hà', 'Tuổi mới lớn (15 – 18), Tuổi trưởng thành (trên 18 tuổi)', '14,5x20,5 cm', '252', '290', 'tat_ca_san_pham', 'Active', ''),
@@ -717,7 +792,6 @@ INSERT INTO `tat_ca_san_pham` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `tap`
 --
 -- Table structure for table `truyen_tranh`
 --
-USE tiem_sach;
 
 CREATE TABLE `truyen_tranh` (
   `id` int(255) NOT NULL,
@@ -738,7 +812,6 @@ CREATE TABLE `truyen_tranh` (
 --
 -- Dumping data for table `truyen_tranh`
 --
-USE tiem_sach;
 
 INSERT INTO `truyen_tranh` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `tap`, `tac_gia`, `doi_tuong`, `khuon_kho`, `so_trang`, `trong_luong`, `Page`, `Status`) VALUES
 (130, 'Cuộc sống là gì thế?', '75000', '60000', '20', 'truyện lẻ', 'Aldebert, Maud Roegiers', 'Nhi đồng (6 – 11)', '24x28 cm', '48', '230', 'Truyen_tranh', 'Active'),
@@ -777,7 +850,6 @@ INSERT INTO `truyen_tranh` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `tap`, `
 --
 -- Table structure for table `user`
 --
-USE tiem_sach;
 
 CREATE TABLE `user` (
   `ID` int(11) NOT NULL
@@ -786,7 +858,6 @@ CREATE TABLE `user` (
 --
 -- Dumping data for table `user`
 --
-USE tiem_sach;
 
 INSERT INTO `user` (`ID`) VALUES
 (1),
@@ -800,7 +871,6 @@ INSERT INTO `user` (`ID`) VALUES
 --
 -- Table structure for table `van_hoc_nuoc_ngoai`
 --
-USE tiem_sach;
 
 CREATE TABLE `van_hoc_nuoc_ngoai` (
   `id` int(255) NOT NULL,
@@ -821,7 +891,6 @@ CREATE TABLE `van_hoc_nuoc_ngoai` (
 --
 -- Dumping data for table `van_hoc_nuoc_ngoai`
 --
-USE tiem_sach;
 
 INSERT INTO `van_hoc_nuoc_ngoai` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `tap`, `tac_gia`, `doi_tuong`, `khuon_kho`, `so_trang`, `trong_luong`, `Page`, `Status`) VALUES
 (67, 'Gia đình ong', '55000', '44000', '20', 'truyện lẻ', 'Anja Mugerli', 'Tuổi trưởng thành (trên 18 tuổi)', '13,5x20,5 cm', '164', '180', 'Van_hoc_nuoc_ngoai', 'Active'),
@@ -861,7 +930,6 @@ INSERT INTO `van_hoc_nuoc_ngoai` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `t
 --
 -- Table structure for table `van_hoc_viet_nam`
 --
-USE tiem_sach;
 
 CREATE TABLE `van_hoc_viet_nam` (
   `id` int(255) NOT NULL,
@@ -882,7 +950,6 @@ CREATE TABLE `van_hoc_viet_nam` (
 --
 -- Dumping data for table `van_hoc_viet_nam`
 --
-USE tiem_sach;
 
 INSERT INTO `van_hoc_viet_nam` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `tap`, `tac_gia`, `doi_tuong`, `khuon_kho`, `so_trang`, `trong_luong`, `Page`, `Status`) VALUES
 (36, 'Ve sầu phiêu du Bắc Cực', '86000', '68800', '20', 'truyện lẻ', 'Mai Anh Đoàn', 'Nhi đồng (6 – 11), Thiếu niên (11 – 15)', '18x24 cm', '76', '200', 'Van_hoc_Viet_Nam', 'Active'),
@@ -923,7 +990,6 @@ INSERT INTO `van_hoc_viet_nam` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `tap
 --
 -- Table structure for table `wings_book`
 --
-USE tiem_sach;
 
 CREATE TABLE `wings_book` (
   `id` int(255) NOT NULL,
@@ -944,8 +1010,6 @@ CREATE TABLE `wings_book` (
 --
 -- Dumping data for table `wings_book`
 --
-USE tiem_sach;
-
 
 INSERT INTO `wings_book` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `tap`, `tac_gia`, `doi_tuong`, `khuon_kho`, `so_trang`, `trong_luong`, `Page`, `Status`) VALUES
 (160, 'Trị liệu nghệ thuật - Giải phóng cảm xúc qua nghệ thuật', '130000', '104000', '20', 'truyện lẻ', 'Nhóm Viết Chữa Lành', 'Tuổi trưởng thành (trên 18 tuổi)', '14.5x20.5 cm', '244', '325', 'Wings_book', 'Active'),
@@ -977,8 +1041,6 @@ INSERT INTO `wings_book` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `tap`, `ta
 --
 -- Indexes for table `account`
 --
-USE tiem_sach;
-
 ALTER TABLE `account`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`),
@@ -987,8 +1049,6 @@ ALTER TABLE `account`
 --
 -- Indexes for table `accountadmin`
 --
-USE tiem_sach;
-
 ALTER TABLE `accountadmin`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
@@ -996,24 +1056,31 @@ ALTER TABLE `accountadmin`
 --
 -- Indexes for table `admin`
 --
-USE tiem_sach;
-
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`ID`);
 
 --
+-- Indexes for table `author`
+--
+ALTER TABLE `author`
+  ADD PRIMARY KEY (`aut_id`);
+
+--
+-- Indexes for table `bookofaut`
+--
+ALTER TABLE `bookofaut`
+  ADD PRIMARY KEY (`aut_id`,`b_id`),
+  ADD KEY `b_id` (`b_id`);
+
+--
 -- Indexes for table `category`
 --
-USE tiem_sach;
-
 ALTER TABLE `category`
   ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `comment`
 --
-USE tiem_sach;
-
 ALTER TABLE `comment`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `NewsID` (`NewsID`),
@@ -1022,8 +1089,6 @@ ALTER TABLE `comment`
 --
 -- Indexes for table `commentlike`
 --
-USE tiem_sach;
-
 ALTER TABLE `commentlike`
   ADD PRIMARY KEY (`UserID`,`CommentID`),
   ADD KEY `commentlike_ibfk_2` (`CommentID`);
@@ -1031,33 +1096,37 @@ ALTER TABLE `commentlike`
 --
 -- Indexes for table `commentreply`
 --
-USE tiem_sach;
-
 ALTER TABLE `commentreply`
   ADD PRIMARY KEY (`CommentID`),
   ADD KEY `fk_commentreply_parent` (`ParrentCommentID`);
 
 --
+-- Indexes for table `contact`
+--
+ALTER TABLE `contact`
+  ADD PRIMARY KEY (`ct_id`);
+
+--
 -- Indexes for table `don_dat_hang`
 --
-USE tiem_sach;
-
 ALTER TABLE `don_dat_hang`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `favorite`
 --
-USE tiem_sach;
-
 ALTER TABLE `favorite`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `generalinfo`
+--
+ALTER TABLE `generalinfo`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `kien_thuc_khoa_hoc`
 --
-USE tiem_sach;
-
 ALTER TABLE `kien_thuc_khoa_hoc`
   ADD PRIMARY KEY (`id`);
 
@@ -1068,10 +1137,14 @@ ALTER TABLE `lich_su_truyen_thong`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `locations`
+--
+ALTER TABLE `locations`
+  ADD PRIMARY KEY (`location_id`);
+
+--
 -- Indexes for table `news`
 --
-USE tiem_sach;
-
 ALTER TABLE `news`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `CategoryID` (`CategoryID`),
@@ -1080,8 +1153,6 @@ ALTER TABLE `news`
 --
 -- Indexes for table `newsupdatelog`
 --
-USE tiem_sach;
-
 ALTER TABLE `newsupdatelog`
   ADD PRIMARY KEY (`NewID`,`AdminID`),
   ADD KEY `newsupdatelog_ibfk_1` (`AdminID`);
@@ -1089,8 +1160,6 @@ ALTER TABLE `newsupdatelog`
 --
 -- Indexes for table `relatednew`
 --
-USE tiem_sach;
-
 ALTER TABLE `relatednew`
   ADD PRIMARY KEY (`NewID`,`RelatedNewID`),
   ADD KEY `RelatedNewID` (`RelatedNewID`);
@@ -1098,8 +1167,6 @@ ALTER TABLE `relatednew`
 --
 -- Indexes for table `store`
 --
-USE tiem_sach;
-
 ALTER TABLE `store`
   ADD PRIMARY KEY (`id`);
 
@@ -1112,40 +1179,30 @@ ALTER TABLE `tat_ca_san_pham`
 --
 -- Indexes for table `truyen_tranh`
 --
-USE tiem_sach;
-
 ALTER TABLE `truyen_tranh`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `user`
 --
-USE tiem_sach;
-
 ALTER TABLE `user`
   ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `van_hoc_nuoc_ngoai`
 --
-USE tiem_sach;
-
 ALTER TABLE `van_hoc_nuoc_ngoai`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `van_hoc_viet_nam`
 --
-USE tiem_sach;
-
 ALTER TABLE `van_hoc_viet_nam`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `wings_book`
 --
-USE tiem_sach;
-
 ALTER TABLE `wings_book`
   ADD PRIMARY KEY (`id`);
 
@@ -1156,74 +1213,80 @@ ALTER TABLE `wings_book`
 --
 -- AUTO_INCREMENT for table `account`
 --
-USE tiem_sach;
-
 ALTER TABLE `account`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `accountadmin`
 --
-USE tiem_sach;
-
 ALTER TABLE `accountadmin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `admin`
 --
-USE tiem_sach;
-
 ALTER TABLE `admin`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `author`
+--
+ALTER TABLE `author`
+  MODIFY `aut_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `category`
 --
-USE tiem_sach;
-
 ALTER TABLE `category`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `comment`
 --
-USE tiem_sach;
-
 ALTER TABLE `comment`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
+-- AUTO_INCREMENT for table `contact`
+--
+ALTER TABLE `contact`
+  MODIFY `ct_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `don_dat_hang`
 --
-USE tiem_sach;
-
 ALTER TABLE `don_dat_hang`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `favorite`
 --
-USE tiem_sach;
-
 ALTER TABLE `favorite`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=181;
 
 --
+-- AUTO_INCREMENT for table `generalinfo`
+--
+ALTER TABLE `generalinfo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `kien_thuc_khoa_hoc`
 --
-USE tiem_sach;
-
 ALTER TABLE `kien_thuc_khoa_hoc`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483648;
 
 --
 -- AUTO_INCREMENT for table `lich_su_truyen_thong`
 --
-USE tiem_sach;
-
 ALTER TABLE `lich_su_truyen_thong`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483648;
+
+--
+-- AUTO_INCREMENT for table `locations`
+--
+ALTER TABLE `locations`
+  MODIFY `location_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `news`
@@ -1234,48 +1297,36 @@ ALTER TABLE `news`
 --
 -- AUTO_INCREMENT for table `store`
 --
-USE tiem_sach;
-
 ALTER TABLE `store`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=178;
 
 --
 -- AUTO_INCREMENT for table `tat_ca_san_pham`
 --
-USE tiem_sach;
-
 ALTER TABLE `tat_ca_san_pham`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483648;
 
 --
 -- AUTO_INCREMENT for table `truyen_tranh`
 --
-USE tiem_sach;
-
 ALTER TABLE `truyen_tranh`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483648;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
-USE tiem_sach;
-
 ALTER TABLE `user`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `van_hoc_nuoc_ngoai`
 --
-USE tiem_sach;
-
 ALTER TABLE `van_hoc_nuoc_ngoai`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483648;
 
 --
 -- AUTO_INCREMENT for table `van_hoc_viet_nam`
 --
-USE tiem_sach;
-
 ALTER TABLE `van_hoc_viet_nam`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483648;
 
@@ -1288,6 +1339,13 @@ ALTER TABLE `wings_book`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `bookofaut`
+--
+ALTER TABLE `bookofaut`
+  ADD CONSTRAINT `bookofaut_ibfk_1` FOREIGN KEY (`b_id`) REFERENCES `tat_ca_san_pham` (`id`),
+  ADD CONSTRAINT `bookofaut_ibfk_2` FOREIGN KEY (`aut_id`) REFERENCES `author` (`aut_id`);
 
 --
 -- Constraints for table `comment`
@@ -1335,112 +1393,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-CREATE TABLE author(
-aut_id INT PRIMARY KEY auto_increment,
-aut_name VARCHAR(50) NOT NULL,
-aut_birthday DATE ,
-aut_img MEDIUMBLOB,
-aut_desc VARCHAR(1000),
-dead DATE
-);
-ALTER TABLE author 
-MODIFY COLUMN aut_img VARCHAR(255);
-CREATE TABLE bookofAut(
-  aut_id INT NOT NULL,
-  b_id INT NOT NULL,
-  primary key(aut_id, b_id),
-  foreign key (b_id) references tat_ca_san_pham(id), 
-  foreign key (aut_id) references author(aut_id)
-);
-INSERT INTO author (aut_name, aut_birthday, aut_img, dead)
-VALUES 
-('Miyazaki Hayao', '1950-08-17', 'img/authors/vdlh.jpg', NULL),
-('Eiichiro Oda','1975-01-01', 'img/authors/oda.jpg', NULL),
-('Masashi Kishimoto', '1974-11-08', 'img/authors/naruto.jpg', NULL),
-('Horikoshi Kohei', '1980-08-12', 'img/authors/myhero.jpg', NULL),
-('Fujiko F. Fujio', '1934-03-10', 'img/authors/dorae.jpg', '2022-04-07'),
-('Isayama Hajime', '1986-08-29', 'img/authors/attackontitan.jpg', NULL);
-CREATE TABLE locations(
-time_open time NOT NULL,
-time_close time not null,
-phone VARCHAR (20) NOT null,
-branch_name VARCHAR (50) NOT NULL,
-branch_address VARCHAR (100) NOT NULL,
-main_branch boolean not null,
-location_id INT PRIMARY KEY AUTO_INCREMENT
-);
-INSERT INTO locations (time_open, time_close, phone, branch_name, branch_address, main_branch) VALUES
-('08:00:00', '21:00:00', '0909000111', 'Chi nhánh Nguyễn Văn Bình', 'Đường sách Nguyễn Văn Bình, Quận 1, TP.HCM', true),
-('08:30:00', '21:00:00', '0909123456', 'Chi nhánh Phan Văn Trị', '104 Phan Văn Trị, Phường 10, Gò Vấp, TP.HCM', false),
-('09:00:00', '18:00:00', '0911222333', 'Chi nhánh Cộng Hòa', '415 Cộng Hòa, Phường 15, Tân Bình, TP.HCM', false),
-('08:00:00', '20:00:00', '0988111222', 'Chi nhánh Vincom Bà Triệu', '191 Bà Triệu, Hai Bà Trưng, Hà Nội', false),
-('09:00:00', '19:30:00', '0977666555', 'Chi nhánh Trần Thái Tông', '139 Trần Thái Tông, Cầu Giấy, Hà Nội', false);
-
-CREATE TABLE contact (
-  ct_id INT AUTO_INCREMENT PRIMARY KEY,
-  ct_name VARCHAR(100) NOT NULL,
-  ct_email VARCHAR(100) NOT NULL,
-  ct_title VARCHAR(100) NOT NULL,
-  ct_content VARCHAR(2000) NOT NULL,
-  ct_time DATETIME NOT NULL,
-  ct_is_read BOOLEAN NOT NULL,
-  ct_is_responsed BOOLEAN NOT NULL,
-  CHECK (CHAR_LENGTH(ct_content) BETWEEN 100 AND 2000)
-);
-CREATE TABLE generalInfo(
-   id int auto_increment primary key,
-   main_address VARCHAR (100) not null,
-   email VARCHAR (100) not null,
-   company_name VARCHAR (200) not null,
-   company_inter_name  VARCHAR (200) not null,
-   agency VARCHAR(200) not null,
-   established_date DATE not null,
-   phone VARCHAR(50) not null,
-   director VARCHAR (100) not null,
-   license varchar (255) not null
-);
-INSERT INTO generalInfo (
-    main_address,
-    email,
-    company_name,
-    company_inter_name,
-    agency,
-    established_date,
-    phone,
-    director,
-    license
-) VALUES (
-    'Đường sách Nguyễn Văn Bình, Quận 1, TP.HCM',
-    'huyen.tran170704@hcmut.edu.vn',
-    'Nhà xuất bản Kim Đồng',
-    'Kim Dong Publishing House',
-    'Trung ương Đoàn TNCS Hồ Chí Minh',
-    '1957-06-17',
-    '028-3829-3180',
-    'Bùi Tuấn Nghĩa',
-    '517/GP-BTTTT ngày 6/10/2015 của Bộ Thông tin và Truyền thông'
-);
-
-select * from account;
-select * from contact;
-select * from generalInfo;
-select * from author;
-select * from locations;
-select * from category;
-select * from don_dat_hang;
-select * from comment;
-select * from commentLike;
-select * from commentreply;
-select * from favorite;
-select * from kien_thuc_khoa_hoc;
-select * from lich_su_truyen_thong;
-select * from news;
-select * from newsupdatelog;
-select * from relatednew;
-select * from store;
-select * from tat_ca_san_pham;
-select * from truyen_tranh;
-select * from user;
-select * from van_hoc_nuoc_ngoai;
-select * from van_hoc_viet_nam;
-select * from wings_book;

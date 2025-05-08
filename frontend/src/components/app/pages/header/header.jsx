@@ -605,7 +605,7 @@ export default function Header(item) {
                   onClick={() => {
                     sessionStorage.clear();
                     localStorage.clear();
-                    window.location.reload();
+                    window.location = "main/Tat_ca_san_pham?page=1";
                   }}
                   className="cursor-pointer bg-[red] transition-transform transform hover:scale-105 w-full mx-[3%] text-[20px] font-bold text-[white] flex items-center justify-center py-[10px] border-3 rounded-lg border-[red] mt-[50px]"
                 >
