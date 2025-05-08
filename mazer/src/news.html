@@ -1,0 +1,88 @@
+{% set title = 'News' %}
+{% set filename = 'news.html' %}
+
+{% extends 'src/layouts/master.html' %}
+{% block content %}
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Danh sách bài viết</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="news.html">Quản lý bài viết</a></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <button class="btn btn-primary block" onclick="window.location.href='form-editor-ckeditor.html'">Thêm bài viết</button>
+    </div>
+    <section id="content-types">
+        <div class="row" id="card">
+        </div>
+    </section>
+</div>
+<script>
+    fetch('http://localhost/BTL_WEB_1/api/News/getNews')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            const cardContainer = document.getElementById('card');
+            data.data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'col-md-6 col-sm-12';
+                card.innerHTML = `
+                    <div class="card">
+                        <div class="card-content">
+                            <img class="img-fluid w-auto mx-auto d-block" src="${item.Thumbnail}"
+                            alt="Card image cap" style="height: 20rem" />
+                            <div class="card-body">
+                                <h4 class="card-title">${item.Title}</h4>
+                                <p class="card-text">
+                                    ${item.Text?.slice(0, 150)}...
+                                </p>
+                                <button class="btn btn-primary block" onclick="handleEdit(${item.ID})">Chỉnh sửa</button>
+                                <button class="btn btn-danger block" onclick="handleDelete(${item.ID})"">Xóa</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                cardContainer.appendChild(card);
+            });
+        })
+        .catch(error => {
+            console.error('Lỗi:', error);
+        });
+        function handleEdit(id) {
+            window.location.href = `edit.html?id=${id}`;
+        }
+        function handleDelete(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa bài viết này không?')) {
+                fetch(`http://localhost/BTL_WEB_1/api/News/deleteNew`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: id })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('Xóa bài viết thành công!');
+                        location.reload();
+                    } else {
+                        alert('Xóa bài viết thất bại: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi:', error);
+                });
+            }
+        }
+        
+</script>
+{% endblock %}

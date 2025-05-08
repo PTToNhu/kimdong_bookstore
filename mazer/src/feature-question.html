@@ -1,0 +1,231 @@
+{% set title = 'Feature-Question' %}
+{% set filename = 'feature-question.html' %}
+{% extends 'src/layouts/master.html' %}
+
+{% block content %}
+<div class="page-heading">
+    <div class="page-title">
+        <h3>FAQ Feature Management</h3>
+    </div>
+
+    <section id="multiple-column-form">
+        <!-- Form ADD -->
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Add Question</h4>
+            </div>
+            <div class="card-body">
+                <form id="add-question-form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Select Feature:</label>
+                            <select class="form-select" id="add-featureSelect" required></select>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Question:</label>
+                            <input type="text" id="add-question" class="form-control" required />
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <label>Answer:</label>
+                            <textarea class="form-control" id="add-answer" rows="3" required></textarea>
+                        </div>
+                    </div>
+                    <div class="mt-3 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                        <button type="reset" class="btn btn-secondary ms-2">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Form EDIT (Modal) -->
+        <div class="modal fade" id="editModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>Edit Question</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-question-form">
+                            <input type="hidden" id="edit-id" />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Select Feature:</label>
+                                    <select class="form-select" disabled id="edit-featureSelect" required></select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Question:</label>
+                                    <input type="text" id="edit-question" class="form-control" required />
+                                </div>
+                                <div class="col-md-12 mt-2">
+                                    <label>Answer:</label>
+                                    <textarea class="form-control" id="edit-answer" rows="3" required></textarea>
+                                </div>
+                            </div>
+                            <div class="mt-3 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="button" class="btn btn-light-secondary ms-2"
+                                    data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="row mt-4" id="feature-questions-container"></div>
+    </section>
+</div>
+
+<script>
+    const baseApi = "http://localhost/kim_dong/kimdong_bookstore/api/index.php?url=FAQ";
+    let allFeatures = [];
+
+    function loadFeatures() {
+        fetch(`${baseApi}/getFeatures`)
+            .then(res => res.json())
+            .then(data => {
+                allFeatures = data;
+                renderSelect("add-featureSelect", data);
+                renderSelect("edit-featureSelect", data);
+                renderFeatureCards(data);
+            });
+    }
+
+    function renderSelect(selectId, features) {
+        const select = document.getElementById(selectId);
+        select.innerHTML = "";
+        features.forEach(f => {
+            const opt = document.createElement("option");
+            opt.value = f.id;
+            opt.textContent = f.title;
+            select.appendChild(opt);
+        });
+    }
+
+    function renderFeatureCards(features) {
+        const container = document.getElementById("feature-questions-container");
+        container.innerHTML = "";
+        features.forEach(feature => {
+            const col = document.createElement("div");
+            col.className = "col-12";
+            col.innerHTML = `
+            <div class="card mb-3">
+                <div class="card-header bg-light">
+                    <h5>${feature.title}</h5>
+                    <small>${feature.description}</small>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr><th>ID</th><th>Question</th><th>Answer</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="questions-${feature.id}"><tr><td colspan="4">Loading...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>`;
+            container.appendChild(col);
+            loadQuestionsByFeature(feature.id);
+        });
+    }
+
+    function loadQuestionsByFeature(featureId) {
+        fetch(`${baseApi}/getQuestionsByFeature/${featureId}`)
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.getElementById(`questions-${featureId}`);
+                tbody.innerHTML = "";
+                if (data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4"><em>No questions yet.</em></td></tr>`;
+                    return;
+                }
+                data.forEach(q => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                    <td>${q.id}</td>
+                    <td>${q.question}</td>
+                    <td>${q.answer}</td>
+                    <td class="d-flex gap-1">
+                        <button class="btn btn-sm btn-warning" onclick="openEditModal(${q.id}, ${featureId})"><i data-feather="edit"></i></button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteQuestion(${q.id}, ${featureId})"><i data-feather="trash-2"></i></button>
+                    </td>`;
+                    tbody.appendChild(row);
+                });
+                feather.replace();
+            });
+    }
+
+    // Handle Add
+    document.getElementById("add-question-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const feature_id = document.getElementById("add-featureSelect").value;
+        const question = document.getElementById("add-question").value;
+        const answer = document.getElementById("add-answer").value;
+
+        fetch(`${baseApi}/addQuestion`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ feature_id, question, answer })
+        })
+            .then(res => res.json())
+            .then(json => {
+                alert(json.message);
+                this.reset();
+                loadQuestionsByFeature(feature_id);
+            });
+    });
+
+    // Handle Edit Open
+    function openEditModal(id, featureId) {
+        fetch(`${baseApi}/getQuestionsByFeature/${featureId}`)
+            .then(res => res.json())
+            .then(data => {
+                const item = data.find(f => f.id == id);
+                if (item) {
+                    document.getElementById("edit-id").value = item.id;
+                    document.getElementById("edit-featureSelect").value = item.feature_id;
+                    document.getElementById("edit-question").value = item.question;
+                    document.getElementById("edit-answer").value = item.answer;
+                    new bootstrap.Modal(document.getElementById("editModal")).show();
+                }
+            });
+    }
+
+    // Handle Edit Submit
+    document.getElementById("edit-question-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const id = document.getElementById("edit-id").value;
+        const feature_id = document.getElementById("edit-featureSelect").value;
+        const question = document.getElementById("edit-question").value;
+        const answer = document.getElementById("edit-answer").value;
+
+        fetch(`${baseApi}/updateQuestion`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, feature_id, question, answer })
+        })
+            .then(res => res.json())
+            .then(json => {
+                alert(json.message);
+                bootstrap.Modal.getInstance(document.getElementById("editModal")).hide();
+                loadQuestionsByFeature(feature_id);
+            });
+    });
+
+    // Handle Delete
+    function deleteQuestion(id, featureId) {
+        if (confirm("Bạn có chắc muốn xóa câu hỏi này?")) {
+            fetch(`${baseApi}/deleteQuestion/${id}`, { method: "DELETE" })
+                .then(res => res.json())
+                .then(json => {
+                    alert(json.message);
+                    loadQuestionsByFeature(featureId);
+                });
+        }
+    }
+
+    loadFeatures();
+</script>
+{% endblock %}

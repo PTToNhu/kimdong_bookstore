@@ -29,9 +29,9 @@ header {
   cursor: pointer;
 }
 
-button:hover {
+/* button:hover {
   background: #005bb5;
-}
+} */
 /* Popup container */
 .popup {
   position: relative;

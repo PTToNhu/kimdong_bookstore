@@ -1,0 +1,282 @@
+{% set title = 'Add Feature' %}
+{% set filename = 'feature.html' %}
+{% extends 'src/layouts/master.html' %}
+
+{% block content %}
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>FAQ Feature Management</h3>
+            </div>
+        </div>
+    </div>
+
+    <section id="multiple-column-form">
+        <!-- ADD FORM -->
+        <div class="row match-height">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Add Feature</h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                            <form id="feature-form" class="form">
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label>Feature Name:</label>
+                                            <input type="text" id="first-name-column" class="form-control"
+                                                placeholder="Feature Name" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="description" class="form-label">Description:</label>
+                                            <textarea class="form-control" id="description" rows="3"
+                                                required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group">
+                                            <label>Upload Icon:</label>
+                                            <input type="file" id="icon-column" class="form-control" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button type="submit" onclick="" class="btn btn-primary me-1 mb-1">Add</button>
+                                        <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="row match-height">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Manage Features</h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Feature Name</th>
+                                            <th>Description</th>
+                                            <th >Icon</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="feature-table-body">
+                                        <!-- Loaded via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- MODAL FOR EDIT -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Feature</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-feature-form">
+                    <input type="hidden" id="edit-id" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="edit-title" class="form-label">Feature Name:</label>
+                            <input type="text" id="edit-title" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="edit-description" class="form-label">Description:</label>
+                            <textarea class="form-control" id="edit-description" rows="3" required></textarea>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <label for="edit-icon" class="form-label">Upload Icon:</label>
+                            <input type="file" id="edit-icon" class="form-control" />
+                            <img id="edit-icon-preview" src="" alt="Icon preview" class="mt-2"
+                                style="margin-top: 10px; max-height: 150px; " />
+                        </div>
+
+                    </div>
+                    <div class="mt-3 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary me-2">Update</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS SCRIPT -->
+<script>
+    const apiBase = "http://localhost/kim_dong/kimdong_bookstore/api/index.php?url=FAQ";
+
+    // Load on init
+    loadFeatures();
+
+    function loadFeatures() {
+        fetch(`${apiBase}/getFeatures`)
+            .then(res => res.json())
+            .then(data => renderFeatureTable(data))
+            .catch(err => console.error("Load error:", err));
+    }
+
+    function renderFeatureTable(features) {
+        const tbody = document.getElementById("feature-table-body");
+        tbody.innerHTML = "";
+
+        features.forEach(f => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${f.id}</td>
+                <td>${f.title}</td>
+                <td style = "max-width: 250px;">${f.description || ''}</td>
+                <td style = "max-width: 250px;">${f.icon}</td>
+                <td>
+                    <button onclick="editFeature(${f.id})" class="btn btn-sm btn-outline-warning me-1">
+                        <i data-feather="edit"></i>
+                    </button>
+                    <button onclick="deleteFeature(${f.id})" class="btn btn-sm btn-outline-danger">
+                        <i data-feather="trash-2"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        feather.replace();
+    }
+
+    // Add feature
+    document.getElementById("feature-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const name = document.getElementById("first-name-column").value;
+        const description = document.getElementById("description").value;
+        const iconFile = document.getElementById("icon-column").files[0];
+
+        if (!iconFile) return alert("Vui lòng chọn icon!");
+
+        const formData = new FormData();
+        formData.append("file", iconFile);
+
+        fetch("http://localhost/kim_dong/kimdong_bookstore/api/upload/UploadFile", {
+            method: "POST",
+            body: formData
+        })
+            .then(res => res.json())
+            .then(result => {
+                const icon = result.location;
+                return fetch(`${apiBase}/addFeature`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, description, icon })
+                });
+            })
+            .then(res => res.json())
+            .then(json => {
+                alert(json.message);
+                this.reset();
+                loadFeatures();
+            })
+            .catch(err => console.error("Add error:", err));
+    });
+
+
+    // Edit modal open
+    function editFeature(id) {
+        fetch(`${apiBase}/getFeatures`)
+            .then(res => res.json())
+            .then(data => {
+                const item = data.find(f => f.id == id);
+                if (item) {
+                    document.getElementById("edit-id").value = item.id;
+                    document.getElementById("edit-title").value = item.title;
+                    document.getElementById("edit-description").value = item.description || "";
+                    document.getElementById("edit-icon").value = "";
+
+                    document.getElementById("edit-icon-preview").src = item.icon;
+                    new bootstrap.Modal(document.getElementById("editModal")).show();
+                }
+            });
+    }
+
+    document.getElementById("edit-feature-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const id = document.getElementById("edit-id").value;
+        const name = document.getElementById("edit-title").value;
+        const description = document.getElementById("edit-description").value;
+        const iconFile = document.getElementById("edit-icon").files[0];
+        const oldIcon = document.getElementById("edit-icon-preview").src;
+
+        const uploadAndUpdate = (iconUrl) => {
+            fetch(`${apiBase}/updateFeature`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id, name, description, icon: iconUrl })
+            })
+                .then(res => res.json())
+                .then(json => {
+                    alert(json.message);
+                    bootstrap.Modal.getInstance(document.getElementById("editModal")).hide();
+                    loadFeatures();
+                })
+                .catch(err => console.error("Edit error:", err));
+        };
+
+        if (iconFile) {
+            const formData = new FormData();
+            formData.append("file", iconFile);
+
+            fetch("http://localhost/kim_dong/kimdong_bookstore/api/upload/UploadFile", {
+                method: "POST",
+                body: formData
+            })
+                .then(res => res.json())
+                .then(result => uploadAndUpdate(result.location))
+                .catch(err => {
+                    console.error("Upload error:", err);
+                    alert("Lỗi khi upload icon.");
+                });
+        } else {
+            uploadAndUpdate(oldIcon);
+        }
+    });
+
+
+    // Delete
+    function deleteFeature(id) {
+        if (confirm("Bạn có chắc muốn xóa?")) {
+            fetch(`${apiBase}/deleteFeature/${id}`, { method: "DELETE" })
+                .then(res => res.json())
+                .then(json => {
+                    alert(json.message);
+                    loadFeatures();
+                })
+                .catch(err => console.error("Delete error:", err));
+        }
+    }
+</script>
+{% endblock %}

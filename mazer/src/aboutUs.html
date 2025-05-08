@@ -1,0 +1,1173 @@
+{% set title = 'AboutUs' %}
+{% set filename = 'aboutUs.html' %}
+{% extends 'src/layouts/master.html' %}
+
+{% block content %}
+<style>
+    .json-field code {
+        color: #d63384;
+        font-weight: bold;
+    }
+
+    .json-field {
+        margin-bottom: 0.5rem;
+        font-family: monospace;
+    }
+
+    td.action-buttons {
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    td.wrap-text {
+        max-width: 400px;
+        white-space: normal;
+        word-break: break-word;
+    }
+</style>
+
+<div class="page-heading">
+    <div class="page-title">
+        <h3>AboutUs Management (JSON-style Display)</h3>
+    </div>
+
+    <!-- Intro -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Intro</h4>
+                <div class="json-field"><code>intro_section</code>:
+                    <button class="btn btn-sm btn-outline-primary ms-2"
+                        onclick="alert('Edit intro_section')">Edit</button>
+                </div>
+                <div class="table-responsive mb-3">
+                    <table class="table table-hover table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Subtitle</th>
+                                <th>Highlight</th>
+                                <th>Image</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="intro-title"></td>
+                                <td id="intro-subtitle"></td>
+                                <td id="intro-highlight"></td>
+                                <td id="intro-image" style="max-width: 300px; max-height: 60px;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="json-field"><code>intro_paragraphs</code>:
+                    <button class="btn btn-sm btn-outline-success ms-2"
+                        onclick="alert('Add intro_paragraph')">Add</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Paragraph</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="intro-content"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Social -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Social</h4>
+                <div class="json-field"><code>social_section</code>:
+                    <button class="btn btn-sm btn-outline-primary ms-2"
+                        onclick="alert('Edit social_section')">Edit</button>
+                </div>
+                <div class="table-responsive mb-3">
+                    <table class="table table-hover table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Image</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="social-title"></td>
+                                <td id="social-image"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="json-field"><code>social_schools</code>:
+                    <button class="btn btn-sm btn-outline-success ms-2"
+                        onclick="alert('Add social_school')">Add</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Year</th>
+                                <th>Location</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="social-schools"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- International -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">International</h4>
+                <div class="json-field"><code>international_section</code>:
+                    <button class="btn btn-sm btn-outline-primary ms-2"
+                        onclick="alert('Edit international_section')">Edit</button>
+                </div>
+                <div class="table-responsive mb-3">
+                    <table class="table table-hover table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="int-title"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="json-field"><code>international_partners</code>:
+                    <button class="btn btn-sm btn-outline-success ms-2" onclick="alert('Add partner')">Add</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Region</th>
+                                <th>Country</th>
+                                <th style="max-width: 300px;">Flag</th>
+                                <th>Count</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="int-partners"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Author -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Author</h4>
+                <div class="json-field"><code>author_section</code>:
+                    <button class="btn btn-sm btn-outline-primary ms-2"
+                        onclick="alert('Edit author_section')">Edit</button>
+                </div>
+                <div class="table-responsive mb-3">
+                    <table class="table table-hover table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Subtitle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="author-title"></td>
+                                <td id="author-subtitle"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="json-field"><code>author_paragraphs</code>:
+                    <button class="btn btn-sm btn-outline-success ms-2"
+                        onclick="alert('Add author_paragraph')">Add</button>
+                </div>
+                <div class="table-responsive mb-3">
+                    <table class="table table-hover table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Paragraph</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="author-content"></tbody>
+                    </table>
+                </div>
+
+                <div class="json-field"><code>author_activities</code>:
+                    <button class="btn btn-sm btn-outline-success ms-2"
+                        onclick="alert('Add author_activity')">Add</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="author-activities"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Phần popup -->
+    <!-- Intro Modal -->
+    <div class="modal fade" id="editIntroModal" tabindex="-1" aria-labelledby="editIntroLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Intro Section</h5>
+                </div>
+                <div class="modal-body">
+                    <label for="intro-title-input">Title</label>
+                    <input class="form-control mb-2" id="intro-title-input" placeholder="Title">
+
+                    <label for="intro-subtitle-input">Subtitle</label>
+                    <input class="form-control mb-2" id="intro-subtitle-input" placeholder="Subtitle">
+
+                    <label for="intro-highlight-input">Highlight</label>
+                    <textarea class="form-control mb-2" id="intro-highlight-input" placeholder="Highlight"
+                        rows="6"></textarea>
+
+
+                    <label for="intro-image-url" class="form-label">Upload Image</label>
+                    <input type="file" class="form-control mb-2" id="intro-image-url" />
+                    <img id="intro-image-preview" src="" class="img-fluid w-auto mx-auto d-block" alt="Current image" />
+
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" onclick="saveIntro()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Social Modal -->
+    <div class="modal fade" id="editSocialModal" tabindex="-1" aria-labelledby="editSocialLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Social Section</h5>
+                </div>
+                <div class="modal-body">
+                    <label for="social-title-input" class="form-label">Title</label>
+                    <input type="text" class="form-control mb-2" id="social-title-input"
+                        placeholder="Enter section title">
+
+                    <label for="social-image-url" class="form-label">Upload Image</label>
+                    <input type="file" class="form-control mb-2" id="social-image-url" />
+                    <img id="social-image-preview" src="" class="img-fluid w-auto mx-auto d-block"
+                        alt="Current image" />
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" onclick="saveSocial()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- International Modal -->
+    <div class="modal fade" id="editInternationalModal" tabindex="-1" aria-labelledby="editIntLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit International Section</h5>
+                </div>
+                <div class="modal-body">
+                    <label for="international-title-input" class="form-label">Title</label>
+                    <input type="text" class="form-control mb-2" id="international-title-input"
+                        placeholder="Enter section title">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" onclick="saveInternational()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Author Modal -->
+    <div class="modal fade" id="editAuthorModal" tabindex="-1" aria-labelledby="editAuthorLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Author Section</h5>
+                </div>
+                <div class="modal-body">
+                    <label for="author-title-input" class="form-label">Title</label>
+                    <input type="text" class="form-control mb-2" id="author-title-input"
+                        placeholder="Enter section title">
+
+                    <label for="author-subtitle-input" class="form-label">Subtitle</label>
+                    <input type="text" class="form-control mb-2" id="author-subtitle-input"
+                        placeholder="Enter subtitle">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" onclick="saveAuthor()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Intro Paragraph Modal -->
+    <div class="modal fade" id="addIntroParagraphModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Intro Paragraph</h5>
+                </div>
+                <div class="modal-body">
+                    <label for="add-intro-paragraph-input" class="form-label">Paragraph Content</label>
+                    <textarea class="form-control" id="add-intro-paragraph-input" placeholder="Enter paragraph content"
+                        rows="8" required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="saveIntroParagraph()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Social School Modal -->
+    <div class="modal fade" id="addSocialSchoolModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Social School</h5>
+                </div>
+                <div class="modal-body">
+                    <label for="add-social-year-input" class="form-label">Year</label>
+                    <input type="number" class="form-control mb-2" id="add-social-year-input" placeholder="Year"
+                        required />
+
+                    <label for="add-social-location-input" class="form-label">Location</label>
+                    <input type="text" class="form-control" id="add-social-location-input" placeholder="Location"
+                        required />
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="saveSocialSchool()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- International Partner Modal -->
+    <div class="modal fade" id="addInternationalPartnerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add International Partner</h5>
+                </div>
+                <div class="modal-body">
+                    <label for="add-intl-region-input" class="form-label">Region</label>
+                    <input type="text" class="form-control mb-2" id="add-intl-region-input" placeholder="Region"
+                        required />
+
+                    <label for="add-intl-country-input" class="form-label">Country Name</label>
+                    <input type="text" class="form-control mb-2" id="add-intl-country-input" placeholder="Country Name"
+                        required />
+
+                    <label for="add-intl-flag-input" class="form-label">Upload Image</label>
+                    <input type="file" class="form-control mb-2" id="add-intl-flag-input" />
+
+                    <label for="add-intl-count-input" class="form-label">Count</label>
+                    <input type="number" class="form-control" id="add-intl-count-input" placeholder="Count" required />
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="saveInternationalPartner()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Author Paragraph Modal -->
+    <div class="modal fade" id="addAuthorParagraphModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Author Paragraph</h5>
+                </div>
+                <div class="modal-body">
+                    <label for="add-author-paragraph-input" class="form-label">Paragraph Content</label>
+                    <textarea class="form-control" id="add-author-paragraph-input" placeholder="Enter paragraph content"
+                        rows="8" required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="saveAuthorParagraph()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Author Activity Modal -->
+    <div class="modal fade" id="addAuthorActivityModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Author Activity</h5>
+                </div>
+                <div class="modal-body">
+                    <label for="add-author-from-input" class="form-label">Year From</label>
+                    <input type="number" class="form-control mb-2" id="add-author-from-input" placeholder="Year From"
+                        required />
+
+                    <label for="add-author-to-input" class="form-label">Year To</label>
+                    <input type="number" class="form-control mb-2" id="add-author-to-input" placeholder="Year To"
+                        required />
+
+                    <label for="add-author-desc-input" class="form-label">Description</label>
+                    <input type="text" class="form-control" id="add-author-desc-input" placeholder="Description"
+                        required />
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="saveAuthorActivity()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Edit popup for  -->
+    <!-- Edit Intro Paragraph Modal -->
+    <div class="modal fade" id="editIntroParagraphModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Intro Paragraph</h5>
+                </div>
+                <div class="modal-body">
+                    <label for="edit-intro-paragraph-input" class="form-label">Paragraph Content</label>
+                    <textarea class="form-control" id="edit-intro-paragraph-input" rows="8" required></textarea>
+                    <input type="hidden" id="edit-intro-paragraph-id" />
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="updateIntroParagraph()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Social School Modal -->
+    <div class="modal fade" id="editSocialSchoolModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Social School</h5>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="edit-social-id" />
+
+                    <label for="edit-social-year-input" class="form-label">Year</label>
+                    <input type="number" class="form-control mb-2" id="edit-social-year-input" placeholder="Year"
+                        required />
+
+                    <label for="edit-social-location-input" class="form-label">Location</label>
+                    <input type="text" class="form-control" id="edit-social-location-input" placeholder="Location"
+                        required />
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="updateSocialSchool()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit International Partner Modal -->
+    <div class="modal fade" id="editInternationalPartnerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit International Partner</h5>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="edit-intl-id" />
+
+                    <label for="edit-intl-region-input" class="form-label">Region</label>
+                    <input type="text" class="form-control mb-2" id="edit-intl-region-input" placeholder="Region"
+                        required />
+
+                    <label for="edit-intl-country-input" class="form-label">Country Name</label>
+                    <input type="text" class="form-control mb-2" id="edit-intl-country-input" placeholder="Country Name"
+                        required />
+
+                    <label for="edit-intl-flag-input" class="form-label">Upload Image</label>
+                    <input type="file" class="form-control mb-2" id="edit-intl-flag-input" />
+                    <img id="edit-intl-flag-preview" src="" class="img-fluid w-auto mx-auto d-block"
+                        alt="Current image" />
+
+                    <label for="edit-intl-count-input" class="form-label">Count</label>
+                    <input type="number" class="form-control" id="edit-intl-count-input" placeholder="Count" required />
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="updateInternationalPartner()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Author Paragraph Modal -->
+    <div class="modal fade" id="editAuthorParagraphModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Author Paragraph</h5>
+                </div>
+                <div class="modal-body">
+                    <label for="edit-author-paragraph-input" class="form-label">Paragraph Content</label>
+                    <textarea class="form-control" id="edit-author-paragraph-input" rows="8" required></textarea>
+                    <input type="hidden" id="edit-author-paragraph-id" />
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="updateAuthorParagraph()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Author Activity Modal -->
+    <div class="modal fade" id="editAuthorActivityModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Author Activity</h5>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="edit-author-activity-id" />
+
+                    <label for="edit-author-from-input" class="form-label">Year From</label>
+                    <input type="number" class="form-control mb-2" id="edit-author-from-input" placeholder="Year From"
+                        required />
+
+                    <label for="edit-author-to-input" class="form-label">Year To</label>
+                    <input type="number" class="form-control mb-2" id="edit-author-to-input" placeholder="Year To"
+                        required />
+
+                    <label for="edit-author-desc-input" class="form-label">Description</label>
+                    <input type="text" class="form-control" id="edit-author-desc-input" placeholder="Description"
+                        required />
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="updateAuthorActivity()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    const baseAPI = "http://localhost/kim_dong/kimdong_bookstore/api/index.php?url=AboutUs";
+
+    let intro, social, intl, author;
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        intro = await (await fetch(baseAPI + "/getAdminIntro")).json();
+        document.getElementById("intro-title").innerText = intro.intro_section.title;
+        document.getElementById("intro-subtitle").innerText = intro.intro_section.subtitle;
+        document.getElementById("intro-highlight").innerText = intro.intro_section.highlight;
+        document.getElementById("intro-image").innerText = intro.intro_section.image_url;
+        intro.intro_paragraphs.forEach(p => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+        <td>${p.id}</td><td>${p.content}</td>
+        <td class="action-buttons">
+            <button class="btn btn-sm btn-outline-primary">Edit</button>
+            <button class="btn btn-sm btn-outline-danger">Delete</button>
+        </td>`;
+            const deleteBtn = row.querySelector(".btn-outline-danger");
+            deleteBtn.onclick = () => deleteItem(baseAPI + "/deleteIntroParagraph", p.id);
+            document.getElementById("intro-content").appendChild(row);
+            // Intro Paragraph - Edit
+            const editIntroBtn = row.querySelector(".btn-outline-primary");
+            editIntroBtn.onclick = () => {
+                document.getElementById("edit-intro-paragraph-id").value = p.id;
+                document.getElementById("edit-intro-paragraph-input").value = p.content;
+                new bootstrap.Modal(document.getElementById("editIntroParagraphModal")).show();
+            };
+        });
+
+        social = await (await fetch(baseAPI + "/getAdminSocial")).json();
+        document.getElementById("social-title").innerText = social.social_section.title;
+        document.getElementById("social-image").innerText = social.social_section.image_url;
+        social.social_schools.forEach(s => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+        <td>${s.id}</td><td>${s.year}</td><td>${s.location}</td>
+        <td class="action-buttons">
+            <button class="btn btn-sm btn-outline-primary">Edit</button>
+            <button class="btn btn-sm btn-outline-danger">Delete</button>
+        </td>`;
+            const deleteBtn = row.querySelector(".btn-outline-danger");
+            deleteBtn.onclick = () => deleteItem(baseAPI + "/deleteSocialSchool", s.id);
+            document.getElementById("social-schools").appendChild(row);
+            // Social School - Edit
+            const editSocialBtn = row.querySelector(".btn-outline-primary");
+            editSocialBtn.onclick = () => {
+                document.getElementById("edit-social-id").value = s.id;
+                document.getElementById("edit-social-year-input").value = s.year;
+                document.getElementById("edit-social-location-input").value = s.location;
+                new bootstrap.Modal(document.getElementById("editSocialSchoolModal")).show();
+            };
+
+        });
+
+        intl = await (await fetch(baseAPI + "/getAdminInternational")).json();
+        document.getElementById("int-title").innerText = intl.international_section.title;
+        intl.international_partners.forEach(p => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+        <td>${p.id}</td><td>${p.region}</td><td>${p.country_name}</td><td style="max-width: 300px;">${p.flag_url}</td><td>${p.count}</td>
+        <td class="action-buttons">
+            <button class="btn btn-sm btn-outline-primary">Edit</button>
+            <button class="btn btn-sm btn-outline-danger">Delete</button>
+        </td>`;
+            const deleteBtn = row.querySelector(".btn-outline-danger");
+            deleteBtn.onclick = () => deleteItem(baseAPI + "/deleteInternationalPartner", p.id);
+            document.getElementById("int-partners").appendChild(row);
+            // International Partner - Edit
+            const editIntlBtn = row.querySelector(".btn-outline-primary");
+            editIntlBtn.onclick = () => {
+                document.getElementById("edit-intl-id").value = p.id;
+                document.getElementById("edit-intl-region-input").value = p.region;
+                document.getElementById("edit-intl-country-input").value = p.country_name;
+                document.getElementById("edit-intl-flag-preview").src = p.flag_url;
+
+                // Reset input file
+                document.getElementById("edit-intl-flag-input").value = "";
+                document.getElementById("edit-intl-count-input").value = p.count;
+                new bootstrap.Modal(document.getElementById("editInternationalPartnerModal")).show();
+            };
+
+        });
+
+        author = await (await fetch(baseAPI + "/getAdminAuthor")).json();
+        document.getElementById("author-title").innerText = author.author_section.title;
+        document.getElementById("author-subtitle").innerText = author.author_section.subtitle;
+        author.author_paragraphs.forEach(p => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+        <td>${p.id}</td><td>${p.content}</td>
+        <td class="action-buttons">
+            <button class="btn btn-sm btn-outline-primary">Edit</button>
+            <button class="btn btn-sm btn-outline-danger">Delete</button>
+        </td>`;
+            const deleteBtn = row.querySelector(".btn-outline-danger");
+            deleteBtn.onclick = () => deleteItem(baseAPI + "/deleteAuthorParagraph", p.id);
+            document.getElementById("author-content").appendChild(row);
+            // Author Paragraph - Edit
+            const editAuthorPBtn = row.querySelector(".btn-outline-primary");
+            editAuthorPBtn.onclick = () => {
+                document.getElementById("edit-author-paragraph-id").value = p.id;
+                document.getElementById("edit-author-paragraph-input").value = p.content;
+                new bootstrap.Modal(document.getElementById("editAuthorParagraphModal")).show();
+            };
+
+        });
+        author.author_activities.forEach(a => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+        <td>${a.id}</td><td>${a.year_from}</td><td>${a.year_to}</td><td>${a.description}</td>
+        <td class="action-buttons">
+            <button class="btn btn-sm btn-outline-primary">Edit</button>
+            <button class="btn btn-sm btn-outline-danger">Delete</button>
+        </td>`;
+            const deleteBtn = row.querySelector(".btn-outline-danger");
+            deleteBtn.onclick = () => deleteItem(baseAPI + "/deleteAuthorActivity", a.id);
+            document.getElementById("author-activities").appendChild(row);
+            // Author Activity - Edit
+            const editAuthorABtn = row.querySelector(".btn-outline-primary");
+            editAuthorABtn.onclick = () => {
+                document.getElementById("edit-author-activity-id").value = a.id;
+                document.getElementById("edit-author-from-input").value = a.year_from;
+                document.getElementById("edit-author-to-input").value = a.year_to;
+                document.getElementById("edit-author-desc-input").value = a.description;
+                new bootstrap.Modal(document.getElementById("editAuthorActivityModal")).show();
+            };
+
+        });
+
+        // Modal trigger setup
+        document.querySelector('[onclick="alert(\'Edit intro_section\')"]').onclick = () => {
+            document.getElementById("intro-title-input").value = intro.intro_section.title;
+            document.getElementById("intro-subtitle-input").value = intro.intro_section.subtitle;
+            document.getElementById("intro-highlight-input").value = intro.intro_section.highlight;
+
+            document.getElementById("intro-image-preview").src = intro.intro_section.image_url;
+
+            // Reset input file
+            document.getElementById("intro-image-url").value = "";
+
+            new bootstrap.Modal(document.getElementById("editIntroModal")).show();
+        };
+
+        document.querySelector('[onclick="alert(\'Edit social_section\')"]').onclick = () => {
+            document.getElementById("social-title-input").value = social.social_section.title;
+            document.getElementById("social-image-preview").src = social.social_section.image_url;
+
+            // Reset input file
+            document.getElementById("social-image-url").value = "";
+            new bootstrap.Modal(document.getElementById("editSocialModal")).show();
+        };
+
+        document.querySelector('[onclick="alert(\'Edit international_section\')"]').onclick = () => {
+            document.getElementById("international-title-input").value = intl.international_section.title;
+            new bootstrap.Modal(document.getElementById("editInternationalModal")).show();
+        };
+
+        document.querySelector('[onclick="alert(\'Edit author_section\')"]').onclick = () => {
+            document.getElementById("author-title-input").value = author.author_section.title;
+            document.getElementById("author-subtitle-input").value = author.author_section.subtitle;
+            new bootstrap.Modal(document.getElementById("editAuthorModal")).show();
+        };
+        // ADD - POPUP triggers
+        document.querySelector('[onclick="alert(\'Add intro_paragraph\')"]').onclick = () => {
+            document.getElementById("add-intro-paragraph-input").value = "";
+            new bootstrap.Modal(document.getElementById("addIntroParagraphModal")).show();
+        };
+
+        document.querySelector('[onclick="alert(\'Add social_school\')"]').onclick = () => {
+            document.getElementById("add-social-year-input").value = "";
+            document.getElementById("add-social-location-input").value = "";
+            new bootstrap.Modal(document.getElementById("addSocialSchoolModal")).show();
+        };
+
+        document.querySelector('[onclick="alert(\'Add partner\')"]').onclick = () => {
+            document.getElementById("add-intl-region-input").value = "";
+            document.getElementById("add-intl-country-input").value = "";
+            document.getElementById("add-intl-flag-input").value = "";
+            document.getElementById("add-intl-count-input").value = "";
+            new bootstrap.Modal(document.getElementById("addInternationalPartnerModal")).show();
+        };
+
+        document.querySelector('[onclick="alert(\'Add author_paragraph\')"]').onclick = () => {
+            document.getElementById("add-author-paragraph-input").value = "";
+            new bootstrap.Modal(document.getElementById("addAuthorParagraphModal")).show();
+        };
+
+        document.querySelector('[onclick="alert(\'Add author_activity\')"]').onclick = () => {
+            document.getElementById("add-author-from-input").value = "";
+            document.getElementById("add-author-to-input").value = "";
+            document.getElementById("add-author-desc-input").value = "";
+            new bootstrap.Modal(document.getElementById("addAuthorActivityModal")).show();
+        };
+
+    });
+
+    // Save functions
+    async function saveSocial() {
+        const title = document.getElementById("social-title-input").value;
+        const fileInput = document.getElementById("social-image-url");
+        const imageFile = fileInput.files[0];
+        const postDataFromDB = social.social_section;
+
+        if (!title) {
+            alert("Vui lòng nhập tiêu đề!");
+            return;
+        }
+
+        if (imageFile) {
+            const formData = new FormData();
+            formData.append("file", imageFile);
+
+            try {
+                const response = await fetch("http://localhost/kim_dong/kimdong_bookstore/api/upload/UploadFile", {
+                    method: "POST",
+                    body: formData
+                });
+                const result = await response.json();
+                const image_url = result.location || postDataFromDB.image_url;
+
+                sendUpdateSocial(title, image_url);
+            } catch (error) {
+                console.error("Lỗi upload ảnh:", error);
+                alert("Lỗi khi upload ảnh.");
+            }
+        } else {
+            const image_url = postDataFromDB.image_url;
+            sendUpdateSocial(title, image_url);
+        }
+    }
+
+    // Hàm gửi request cập nhật Social section
+    function sendUpdateSocial(title, image_url) {
+        fetch(baseAPI + "/updateSocialSection", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title, image_url })
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.success ? "Cập nhật thành công!" : "Cập nhật thất bại!");
+                if (data.success) location.reload();
+            })
+            .catch(err => {
+                console.error("API update error:", err);
+                alert("Lỗi kết nối tới máy chủ.");
+            });
+    }
+
+
+    function saveInternational() {
+        fetch(baseAPI + "/updateInternationalSection", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                title: document.getElementById("international-title-input").value
+            })
+        }).then(() => location.reload());
+    }
+
+    function saveAuthor() {
+        fetch(baseAPI + "/updateAuthorSection", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                title: document.getElementById("author-title-input").value,
+                subtitle: document.getElementById("author-subtitle-input").value
+            })
+        }).then(() => location.reload());
+    }
+    function deleteItem(apiURL, id) {
+        if (!confirm("Bạn có chắc chắn muốn xóa?")) return;
+
+        fetch(apiURL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: id })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Xóa thành công!");
+                    location.reload();
+                } else {
+                    alert("Xóa thất bại!");
+                    console.error(data);
+                }
+            })
+            .catch(err => {
+                console.error("Lỗi fetch:", err);
+                alert("Lỗi khi gửi yêu cầu xóa.");
+            });
+    }
+    // ADD - SAVE functions
+    function saveIntroParagraph() {
+        const content = document.getElementById("add-intro-paragraph-input").value.trim();
+        if (!content) return alert("Vui lòng nhập nội dung.");
+
+        fetch(baseAPI + "/addIntroParagraph", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ content })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Thêm đoạn văn thành công!");
+                    location.reload();
+                } else {
+                    alert("Thêm thất bại: " + (data.message || "Lỗi không xác định"));
+                    console.error("Lỗi thêm intro paragraph:", data);
+                }
+            })
+            .catch(err => {
+                alert("Lỗi kết nối đến máy chủ!");
+                console.error("Fetch error:", err);
+            });
+    }
+
+
+    function saveSocialSchool() {
+        const year = document.getElementById("add-social-year-input").value;
+        const location = document.getElementById("add-social-location-input").value.trim();
+        if (!year || !location) return alert("Vui lòng nhập đầy đủ thông tin.");
+
+        fetch(baseAPI + "/addSocialSchool", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ year, location })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Thêm thành công!");
+                } else {
+                    alert("Thêm thất bại!");
+                }
+            })
+            .catch(err => {
+                location.reload();
+                alert("Lỗi kết nối đến máy chủ!");
+                console.error("Fetch error:", err);
+            });
+    }
+    async function saveInternationalPartner() {
+            const region = document.getElementById("add-intl-region-input").value.trim();
+            const country_name = document.getElementById("add-intl-country-input").value.trim();
+            const count = document.getElementById("add-intl-count-input").value;
+            const fileInput = document.getElementById("add-intl-flag-input");
+            const flagFile = fileInput.files[0];
+
+            if (!region || !country_name || !count) {
+                return alert("Vui lòng điền đủ thông tin.");
+            }
+
+            if (flagFile) {
+                const formData = new FormData();
+                formData.append("file", flagFile);
+
+                try {
+                    const res = await fetch("http://localhost/kim_dong/kimdong_bookstore/api/upload/UploadFile", {
+                        method: "POST",
+                        body: formData
+                    });
+                    const result = await res.json();
+                    const flag_url = result.location;
+
+                    sendAddPartner(region, country_name, flag_url, count);
+                } catch (err) {
+                    console.error("Upload error:", err);
+                    alert("Lỗi khi upload hình ảnh.");
+                }
+            } else {
+                alert("Vui lòng chọn ảnh cờ quốc gia.");
+            }
+        }
+
+        // Hàm tách riêng gọi API thêm dữ liệu
+        function sendAddPartner(region, country_name, flag_url, count) {
+            fetch(baseAPI + "/addInternationalPartner", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ region, country_name, flag_url, count })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    alert(data.success ? "Thêm International Partner thành công!" : "Thêm thất bại!");
+                    if (data.success) location.reload();
+                })
+                .catch(err => {
+                    console.error("Fetch error:", err);
+                    alert("Lỗi khi gửi yêu cầu.");
+                });
+        }
+
+    function saveAuthorParagraph() {
+        const content = document.getElementById("add-author-paragraph-input").value.trim();
+        if (!content) return alert("Vui lòng nhập nội dung.");
+
+        fetch(baseAPI + "/addAuthorParagraph", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ content })
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.success ? "Thêm Author Paragraph thành công!" : "Thêm thất bại!");
+                if (data.success) location.reload();
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Lỗi khi thêm Author Paragraph.");
+            });
+    }
+    function saveAuthorActivity() {
+        const year_from = document.getElementById("add-author-from-input").value;
+        const year_to = document.getElementById("add-author-to-input").value;
+        const description = document.getElementById("add-author-desc-input").value.trim();
+        if (!year_from || !year_to || !description) return alert("Vui lòng điền đầy đủ.");
+
+        fetch(baseAPI + "/addAuthorActivity", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ year_from, year_to, description })
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.success ? "Thêm Author Activity thành công!" : "Thêm thất bại!");
+                if (data.success) location.reload();
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Lỗi khi thêm Author Activity.");
+            });
+    }
+    // 1. Update Intro Paragraph
+    function updateIntroParagraph() {
+        const id = document.getElementById("edit-intro-paragraph-id").value;
+        const content = document.getElementById("edit-intro-paragraph-input").value.trim();
+        if (!id || !content) return alert("Vui lòng nhập nội dung.");
+
+        fetch(baseAPI + "/updateIntroParagraph", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, content })
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.success ? "Cập nhật thành công!" : "Cập nhật thất bại!");
+                if (data.success) location.reload();
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Lỗi khi cập nhật Intro Paragraph.");
+            });
+    }
+
+    // 2. Update Social School
+    function updateSocialSchool() {
+        const id = document.getElementById("edit-social-id").value;
+        const year = document.getElementById("edit-social-year-input").value;
+        const location = document.getElementById("edit-social-location-input").value.trim();
+        if (!id || !year || !location) return alert("Vui lòng điền đầy đủ thông tin.");
+
+        fetch(baseAPI + "/updateSocialSchool", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, year, location })
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.success ? "Cập nhật thành công!" : "Cập nhật thất bại!");
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Lỗi khi cập nhật Social School.");
+            });
+    }
+
+    // 3. Update International Partner
+    async function updateInternationalPartner() {
+        const id = document.getElementById("edit-intl-id").value;
+        const region = document.getElementById("edit-intl-region-input").value.trim();
+        const country_name = document.getElementById("edit-intl-country-input").value.trim();
+        const count = document.getElementById("edit-intl-count-input").value;
+        const fileInput = document.getElementById("edit-intl-flag-input");
+        const imageFile = fileInput.files[0];
+        const oldImageUrl = document.getElementById("edit-intl-flag-preview").src;
+
+        if (!id || !region || !country_name || !count) return alert("Vui lòng nhập đầy đủ thông tin.");
+
+        let flag_url = oldImageUrl;
+
+        // Nếu người dùng chọn ảnh mới
+        if (imageFile) {
+            const formData = new FormData();
+            formData.append("file", imageFile);
+
+            try {
+                const res = await fetch("http://localhost/kim_dong/kimdong_bookstore/api/upload/UploadFile", {
+                    method: "POST",
+                    body: formData
+                });
+                const result = await res.json();
+                flag_url = result.location || oldImageUrl;
+            } catch (error) {
+                console.error("Lỗi khi upload ảnh:", error);
+                alert("Lỗi upload ảnh.");
+                return;
+            }
+        }
+
+        // Gửi dữ liệu cập nhật
+        fetch(baseAPI + "/updateInternationalPartner", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, region, country_name, flag_url, count })
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.success ? "Cập nhật thành công!" : "Cập nhật thất bại!");
+                if (data.success) location.reload();
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Lỗi khi cập nhật International Partner.");
+            });
+    }
+
+
+    // 4. Update Author Paragraph
+    function updateAuthorParagraph() {
+        const id = document.getElementById("edit-author-paragraph-id").value;
+        const content = document.getElementById("edit-author-paragraph-input").value.trim();
+        if (!id || !content) return alert("Vui lòng nhập nội dung.");
+
+        fetch(baseAPI + "/updateAuthorParagraph", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, content })
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.success ? "Cập nhật thành công!" : "Cập nhật thất bại!");
+                if (data.success) location.reload();
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Lỗi khi cập nhật Author Paragraph.");
+            });
+    }
+
+    // 5. Update Author Activity
+    function updateAuthorActivity() {
+        const id = document.getElementById("edit-author-activity-id").value;
+        const year_from = document.getElementById("edit-author-from-input").value;
+        const year_to = document.getElementById("edit-author-to-input").value;
+        const description = document.getElementById("edit-author-desc-input").value.trim();
+
+        if (!id || !year_from || !year_to || !description) return alert("Vui lòng nhập đầy đủ thông tin.");
+
+        fetch(baseAPI + "/updateAuthorActivity", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, year_from, year_to, description })
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.success ? "Cập nhật thành công!" : "Cập nhật thất bại!");
+                if (data.success) location.reload();
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Lỗi khi cập nhật Author Activity.");
+            });
+    }
+
+
+
+</script>
+
+{% endblock %}
