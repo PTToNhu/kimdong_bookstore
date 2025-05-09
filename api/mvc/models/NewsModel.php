@@ -50,14 +50,13 @@ class NewsModel extends Database
         $title = mysqli_real_escape_string($this->connection, $data['title']);
         $text = mysqli_real_escape_string($this->connection, $data['text']);
         $thumbnail = mysqli_real_escape_string($this->connection, $data['thumbnail']);
-        $scheduleAt = mysqli_real_escape_string($this->connection, $data['scheduleAt']);
         $status = (int)$data['status'];
         $categoryID = (int)$data['categoryID'];
         $writtenByAdminID = (int)$data['writtenByAdminID'];
         $writtenDate = mysqli_real_escape_string($this->connection, $data['writtenDate']);
 
-        $query = "INSERT INTO `news`(`Title`, `Text`, `Thumbnail`, `ScheduledAt`, `Status`, `CategoryID`, `WrittenByAdminID`, `WrittenDate`) 
-              VALUES ('$title', '$text', '$thumbnail', '$scheduleAt', $status, $categoryID, $writtenByAdminID, '$writtenDate')";
+        $query = "INSERT INTO `news`(`Title`, `Text`, `Thumbnail`, `Status`, `CategoryID`, `WrittenByAdminID`, `WrittenDate`) 
+              VALUES ('$title', '$text', '$thumbnail', $status, $categoryID, $writtenByAdminID, '$writtenDate')";
 
         if (mysqli_query($this->connection, $query)) {
             return [
@@ -83,6 +82,28 @@ class NewsModel extends Database
             return [
                 'status' => 'error',
                 'message' => 'Xóa bài viết thất bại: ' . mysqli_error($this->connection),
+            ];
+        }
+    }
+    public function updateNew($data)
+    {
+        $id = (int)$data['id'];
+        $title = mysqli_real_escape_string($this->connection, $data['title']);
+        $text = mysqli_real_escape_string($this->connection, $data['text']);
+        $thumbnail = mysqli_real_escape_string($this->connection, $data['thumbnail']);
+        $status = (int)$data['status'];
+        $categoryID = (int)$data['categoryID'];
+        $query = "UPDATE `news` SET `Title`='$title',`Text`='$text',`Thumbnail`='$thumbnail',`Status`=$status,`CategoryID`=$categoryID WHERE id=$id";
+
+        if (mysqli_query($this->connection, $query)) {
+            return [
+                'status' => 'success',
+                'message' => 'Cập nhật bài viết thành công',
+            ];
+        } else {
+            return [
+                'status' => 'error',
+                'message' => 'Cập nhật bài viết thất bại: ' . mysqli_error($this->connection),
             ];
         }
     }

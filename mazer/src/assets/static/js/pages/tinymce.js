@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     : {
         skin: "oxide",
         content_css: "default",
-      }
+      };
 
   // Cấu hình cho editor đầu tiên
   tinymce.init({
@@ -18,7 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
       "undo redo styleselect bold italic alignleft aligncenter alignright bullist numlist outdent indent code image", // Thêm nút "image"
     image_uploadtab: true, // Kích hoạt tab upload image
     automatic_uploads: true, // Tự động upload ảnh khi được chèn vào
-    images_upload_url: "/upload_image", // Đường dẫn xử lý upload ảnh (cần thay đổi cho phù hợp với server của bạn)
+    images_upload_url:
+      "http://localhost/kimdong_bookstore/api/upload/UploadFile", // Đường dẫn xử lý upload ảnh (cần thay đổi cho phù hợp với server của bạn)
     file_picker_types: "image", // Đảm bảo chỉ chọn ảnh
     file_picker_callback: function (callback, value, meta) {
       var input = document.createElement("input");
@@ -34,11 +35,20 @@ document.addEventListener("DOMContentLoaded", () => {
           var formData = new FormData();
           formData.append("file", file);
 
-          fetch("http://localhost/BTL_WEB_1/api/upload/UploadFile", { method: "POST", body: formData })
+          fetch("http://localhost/kimdong_bookstore/api/upload/UploadFile", {
+            method: "POST",
+            body: formData,
+          })
             .then((response) => response.json())
             .then((data) => {
-              // callback để chèn ảnh vào editor
-              callback(data.location); // data.location là URL ảnh trả về từ server
+              console.log("Upload response:", data);
+
+              if (data && typeof data.location === "string") {
+                callback(data.location);
+              } else {
+                console.error("Upload failed: Invalid response format");
+                alert(`Upload ảnh thất bại: ${data}.`);
+              }
             })
             .catch((error) => console.error("Error uploading image:", error));
         };
@@ -57,7 +67,8 @@ document.addEventListener("DOMContentLoaded", () => {
       "undo redo styleselect bold italic alignleft aligncenter alignright bullist numlist outdent indent code image", // Thêm nút "image"
     image_uploadtab: true, // Kích hoạt tab upload image
     automatic_uploads: true, // Tự động upload ảnh khi được chèn vào
-    images_upload_url: "/upload_image", // Đường dẫn xử lý upload ảnh
+    images_upload_url:
+      "http://localhost/kimdong_bookstore/api/upload/UploadFile", // Đường dẫn xử lý upload ảnh
     file_picker_types: "image", // Đảm bảo chỉ chọn ảnh
     file_picker_callback: function (callback, value, meta) {
       var input = document.createElement("input");
@@ -73,7 +84,10 @@ document.addEventListener("DOMContentLoaded", () => {
           var formData = new FormData();
           formData.append("file", file);
 
-          fetch("/http://localhost/BTL_WEB_1/api/upload/UploadFile", { method: "POST", body: formData })
+          fetch("/http://localhost/kimdong_bookstore/api/upload/UploadFile", {
+            method: "POST",
+            body: formData,
+          })
             .then((response) => response.json())
             .then((data) => {
               callback(data.location);

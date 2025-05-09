@@ -1,9 +1,10 @@
 <?php
-class Database{
+class Database
+{
     public $connection;
     public $servername = "localhost";
-    public $username= "root";
-    public $password =""; 
+    public $username = "root";
+    public $password = "";
     public $databasename = "tiem_sach";
 
     function __construct()
@@ -14,8 +15,5 @@ class Database{
         }
         mysqli_select_db($this->connection, $this->databasename);
         mysqli_query($this->connection, "SET NAMES 'utf8'");
-
-        
     }
 }
-?>

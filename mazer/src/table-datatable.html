@@ -8,7 +8,8 @@
         <div class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
                 <h3>DataTable</h3>
-                <p class="text-subtitle text-muted">A sortable, searchable, paginated table without dependencies thanks to simple-datatables.</p>
+                <p class="text-subtitle text-muted">A sortable, searchable, paginated table without
+                    dependencies thanks to simple-datatables.</p>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
@@ -20,6 +21,96 @@
             </div>
         </div>
     </div>
+    
+    <div class="compose-new-mail-sidebar ps">
+        <div class="card shadow-none quill-wrapper p-0">
+            <div class="card-header">
+                <h3 class="card-title" id="emailCompose">New Message</h3>
+                <button type="button" class="close close-icon email-compose-new-close-btn">
+                    <i class="bi bi-x"></i>
+                </button>
+            </div>
+            <!-- form start -->
+            <form id="compose-form">
+                <div class="card-content">
+                    <div class="card-body pt-0">
+                        <div class="form-group pb-50">
+                            <label for="emailfrom">From</label>
+                            <input type="text" id="emailfrom" class="form-control"
+                                placeholder="Your email will show here" readonly>
+                        </div>
+                        <div class="form-label-group">
+                            <label for="emailTo">To</label>
+                            <input type="email" id="emailTo" class="form-control" placeholder="To"
+                                required="">
+
+                        </div>
+                        <div class="form-label-group">
+                            <label for="emailSubject">Subject</label>
+                            <input type="text" id="emailSubject" class="form-control" placeholder="Subject">
+
+                        </div>
+                        <div class="form-label-group">
+                            <label for="emailCC">CC</label>
+                            <input type="text" id="emailCC" class="form-control" placeholder="CC">
+
+                        </div>
+                        <div class="form-label-group">
+                            <label for="emailBCC">BCC</label>
+                            <input type="text" id="emailBCC" class="form-control" placeholder="BCC">
+                            <label for="emailBCC">Content</label>
+                        </div>
+                        <div class="snow-container border rounded p-50">
+                            <div class="compose-editor mx-75 ql-container ql-snow">
+                                <div class="ql-editor ql-blank" data-gramm="false"
+                                    data-placeholder="Type something....." contenteditable="true">
+                                    <p><br></p>
+                                </div>
+                                <div class="ql-clipboard" tabindex="-1" contenteditable="true"></div>
+                                <div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank"
+                                        href="about:blank"></a>
+                                    <input type="text" data-formula="e=mc^2" data-link="https://quilljs.com"
+                                        data-video="Embed URL">
+                                    <a class="ql-action"></a><a class="ql-remove"></a>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <div class="compose-quill-toolbar pb-0 ql-toolbar ql-snow">
+
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="id_response" id="id_response">
+
+                        <input type="hidden" name="emailBody" id="emailBody">
+
+                        <div class="form-group mt-2">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="emailAttach">
+                                <label class="custom-file-label" for="emailAttach">Attach File</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-end pt-0">
+                    <button type="reset" class="btn btn-light-secondary cancel-btn me-1">
+                        <i class="bi bi-x me-3"></i>
+                        <span class="d-sm-inline d-none">Cancel</span>
+                    </button>
+                    <button type="submit" class="btn-send btn btn-primary">
+                        <i class="bi bi-send me-3"></i> <span class="d-sm-inline d-none">Send</span>
+                    </button>
+                </div>
+            </form>
+            <!-- form start end-->
+        </div>
+        <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+        </div>
+        <div class="ps__rail-y" style="top: 0px; right: 0px;">
+            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+        </div>
+    </div>
     <section class="section">
         <div class="card">
             <div class="card-header">
@@ -27,265 +118,405 @@
                     Simple Datatable
                 </h5>
             </div>
+
             <div class="card-body">
+                <div class="dataTable-dropdown">
+                    <select class="dataTable-selector form-select">
+                        <option value="5">5</option>
+                        <option value="10" selected="">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                    </select><label> entries per page</label>
+                </div>
+                <!-- <style>
+                    /* Tăng độ rộng cho cột Content và cho phép xuống dòng */
+                    #table1 td:nth-child(5),
+                    #table1 th:nth-child(5) {
+                        min-width: 300px;
+                        max-width: 400px;
+                        word-break: break-word;
+                        white-space: normal;
+                    }
+                </style>
+                <div class="table-responsive"> -->
+
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Phone</th>
-                            <th>City</th>
+                            <th>Title</th>
+                            <th>Content</th>
+                            <th>Time</th>
                             <th>Status</th>
+                            <th>Response</th>
+                            <th>Xóa</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Graiden</td>
-                            <td>vehicula.aliquet@semconsequat.co.uk</td>
-                            <td>076 4820 8838</td>
-                            <td>Offenburg</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td>
-                                <span class="badge bg-success">Active</span>
+                                <span class="badge bg-success">Đã xem / chưa xem</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-success">Đã đã phản hồi / chưa phản hồi</span>
                             </td>
                         </tr>
-                        <tr>
-                            <td>Dale</td>
-                            <td>fringilla.euismod.enim@quam.ca</td>
-                            <td>0500 527693</td>
-                            <td>New Quay</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Nathaniel</td>
-                            <td>mi.Duis@diam.edu</td>
-                            <td>(012165) 76278</td>
-                            <td>Grumo Appula</td>
-                            <td>
-                                <span class="badge bg-danger">Inactive</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Darius</td>
-                            <td>velit@nec.com</td>
-                            <td>0309 690 7871</td>
-                            <td>Ways</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Oleg</td>
-                            <td>rhoncus.id@Aliquamauctorvelit.net</td>
-                            <td>0500 441046</td>
-                            <td>Rossignol</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Kermit</td>
-                            <td>diam.Sed.diam@anteVivamusnon.org</td>
-                            <td>(01653) 27844</td>
-                            <td>Patna</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Jermaine</td>
-                            <td>sodales@nuncsit.org</td>
-                            <td>0800 528324</td>
-                            <td>Mold</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Ferdinand</td>
-                            <td>gravida.molestie@tinciduntadipiscing.org</td>
-                            <td>(016977) 4107</td>
-                            <td>Marlborough</td>
-                            <td>
-                                <span class="badge bg-danger">Inactive</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Kuame</td>
-                            <td>Quisque.purus@mauris.org</td>
-                            <td>(0151) 561 8896</td>
-                            <td>Tresigallo</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Deacon</td>
-                            <td>Duis.a.mi@sociisnatoquepenatibus.com</td>
-                            <td>07740 599321</td>
-                            <td>Karapınar</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Channing</td>
-                            <td>tempor.bibendum.Donec@ornarelectusante.ca</td>
-                            <td>0845 46 49</td>
-                            <td>Warrnambool</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Aladdin</td>
-                            <td>sem.ut@pellentesqueafacilisis.ca</td>
-                            <td>0800 1111</td>
-                            <td>Bothey</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Cruz</td>
-                            <td>non@quisturpisvitae.ca</td>
-                            <td>07624 944915</td>
-                            <td>Shikarpur</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Keegan</td>
-                            <td>molestie.dapibus@condimentumDonecat.edu</td>
-                            <td>0800 200103</td>
-                            <td>Assen</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Ray</td>
-                            <td>placerat.eget@sagittislobortis.edu</td>
-                            <td>(0112) 896 6829</td>
-                            <td>Hofors</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Maxwell</td>
-                            <td>diam@dapibus.org</td>
-                            <td>0334 836 4028</td>
-                            <td>Thane</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Carter</td>
-                            <td>urna.justo.faucibus@orci.com</td>
-                            <td>07079 826350</td>
-                            <td>Biez</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Stone</td>
-                            <td>velit.Aliquam.nisl@sitametrisus.com</td>
-                            <td>0800 1111</td>
-                            <td>Olivar</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Berk</td>
-                            <td>fringilla.porttitor.vulputate@taciti.edu</td>
-                            <td>(0101) 043 2822</td>
-                            <td>Sanquhar</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Philip</td>
-                            <td>turpis@euenimEtiam.org</td>
-                            <td>0500 571108</td>
-                            <td>Okara</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Kibo</td>
-                            <td>feugiat@urnajustofaucibus.co.uk</td>
-                            <td>07624 682306</td>
-                            <td>La Cisterna</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Bruno</td>
-                            <td>elit.Etiam.laoreet@luctuslobortisClass.edu</td>
-                            <td>07624 869434</td>
-                            <td>Rocca d"Arce</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Leonard</td>
-                            <td>blandit.enim.consequat@mollislectuspede.net</td>
-                            <td>0800 1111</td>
-                            <td>Lobbes</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Hamilton</td>
-                            <td>mauris@diam.org</td>
-                            <td>0800 256 8788</td>
-                            <td>Sanzeno</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Harding</td>
-                            <td>Lorem.ipsum.dolor@etnetuset.com</td>
-                            <td>0800 1111</td>
-                            <td>Obaix</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Emmanuel</td>
-                            <td>eget.lacus.Mauris@feugiatSednec.org</td>
-                            <td>(016977) 8208</td>
-                            <td>Saint-Remy-Geest</td>
-                            <td>
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                        </tr>
+
                     </tbody>
                 </table>
+                <!-- </div> -->
+                <div class="col-sm-12 col-md-7">
+                    <div class="dataTables_paginate paging_simple_numbers" id="table1_paginate">
+                        <ul class="pagination pagination-primary">
+                            <!-- Nội dung sẽ được JS thay thế hoàn toàn -->
+                        </ul>
+                    </div>
+                </div>
+
             </div>
         </div>
 
     </section>
 </div>
+
+<footer>
+    <div class="footer clearfix mb-0 text-muted">
+        <div class="float-start">
+            <p>2023 &copy; Mazer</p>
+        </div>
+        <div class="float-end">
+            <p>Crafted with <span class="text-danger"><i class="bi bi-heart-fill icon-mid"></i></span>
+                by <a href="https://saugi.me">Saugi</a></p>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+<script>
+
+document.getElementById("compose-form").addEventListener("submit", async function (e) {
+e.preventDefault(); // Ngăn form gửi truyền thống
+
+const from = document.getElementById("emailfrom").value.trim();
+const id = document.getElementById("id_response").value.trim();
+const to = document.getElementById("emailTo").value.trim();
+const subject = document.getElementById("emailSubject").value.trim();
+const cc = document.getElementById("emailCC").value.trim();
+const bcc = document.getElementById("emailBCC").value.trim();
+const editorContent = document.querySelector(".ql-editor").innerText.trim();
+const body = editorContent;
+
+if (!from || !to || !subject || !body) {
+    alert("Vui lòng điền đầy đủ thông tin bắt buộc (From, To, Subject, Nội dung).");
+    return;
+}
+if (!id) {
+    alert("Không tìm thấy phản hồi tương ứng, hãy thử lại.");
+    return;
+}
+
+const formData = new FormData();
+formData.append("from", from);
+formData.append("id", id);
+formData.append("to", to);
+formData.append("subject", subject);
+formData.append("cc", cc);
+formData.append("bcc", bcc);
+formData.append("content", body);
+
+const attachment = document.getElementById("emailAttach").files[0];
+if (attachment) {
+    formData.append("attachment", attachment);
+}
+
+try {
+    const response = await fetch("http://localhost/Ass2/kimdong_bookstore/api/Mail/send", {
+        method: "POST",
+        body: formData,
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+        alert("📩 Email đã được gửi thành công!");
+        document.getElementById("compose-form").reset();
+        document.querySelector(".ql-editor").innerText = ""; // reset nội dung editor
+        document.querySelector('.compose-new-mail-sidebar').classList.remove('show');
+        location.reload();
+
+    } else {
+        alert("❌ Gửi email thất bại: " + result.message);
+    }
+} catch (error) {
+    console.error("Lỗi khi gửi API:", error);
+    alert("❌ Đã xảy ra lỗi khi gửi email.");
+}
+});
+
+
+
+
+function loadData() {
+const activePageItem = document.querySelector('.pagination .page-item.active a');
+let page = activePageItem ? parseInt(activePageItem.textContent) : 1;
+const selector = document.querySelector('.dataTable-selector');
+
+let num = selector.value;
+
+// Lấy trang hiện tại từ phần tử có class "page-item active"
+
+// let page = 1;
+console.log (page);
+console.log (num);
+fetch('http://localhost/Ass2/kimdong_bookstore/api/Contact/getContacts', {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ num, page })
+})
+    .then(response => response.json())
+    .then(data => {
+        if (data.success && Array.isArray(data.data)) {
+            const tbody = document.querySelector("#table1 tbody");
+            tbody.innerHTML = "";
+            data.data.forEach(item => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                            <td>${item.ct_id}</td>
+                            <td>${item.ct_name}</td>
+                            <td>${item.ct_email}</td>
+                            <td>${item.ct_title}</td>
+                            <td>${item.ct_content}</td>
+                            <td>${item.ct_time}</td>
+                            <td>
+                            <span 
+                                class="badge ${item.ct_is_read == 1 ? 'bg-success' : 'bg-secondary'} status-toggle" 
+                                style="cursor: pointer;" 
+                                data-id="${item.ct_id}">
+                                ${item.ct_is_read == 1 ? 'Seen' : 'Unseen'}
+                            </span>
+                            </td>
+                            <td> 
+                                <span 
+                                    class="badge ${item.ct_is_responsed == 1 ? 'bg-success' : 'bg-secondary'} respond-btn" 
+                                    style="cursor: pointer;"
+                                    data-id="${item.ct_id}"
+                                    data-email = "${item.ct_email}">
+                                    ${item.ct_is_responsed == 1 ? 'Responsed' : 'Add new'}
+                                </span>
+                            </td>
+
+                            <td>
+                        <span 
+                        class="badge bg-danger delete-btn" 
+                        style="cursor: pointer;" 
+                        data-id="${item.ct_id}">
+                        Xóa
+                        </span>
+                    </td>
+                        `;
+                tbody.appendChild(tr);
+            });
+            const paginationWrapper = document.querySelector('#table1_paginate .pagination');
+            paginationWrapper.innerHTML = '';
+
+            // Nút Previous
+
+            paginationWrapper.innerHTML += `
+            <li class="paginate_button page-item ${page === 1 ? 'disabled' : ''}" id="table1_previous">
+                <a class="previous" href="#" data-page="${page -1}">Previous</a>
+            </li>
+            `;
+
+            // Các nút số trang
+            for (let i = 1; i <= data.total_page; i++) {
+                paginationWrapper.innerHTML += `
+<li class="paginate_button page-item ${page === i ? 'active' : ''}">
+  <a class="page-link" href="#" data-page="${i}">${i}</a>
+</li>
+`;
+            }
+
+            // Nút Next
+            paginationWrapper.innerHTML += `
+<li class="paginate_button page-item ${page === data.total_page ? 'disabled' : ''}" id="table1_next">
+<a class="next" href="#" data-page="${page + 1}">Next</a>
+</li>
+`;
+            function setActivePage(pageNumber) {
+                document.querySelectorAll('#table1_paginate .page-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                const pageLinks = document.querySelectorAll('#table1_paginate .page-link');
+                pageLinks.forEach(link => {
+                    if (parseInt(link.getAttribute('data-page')) === pageNumber) {
+                        link.parentElement.classList.add('active');
+                    }
+                });
+            }
+            document.querySelectorAll('#table1_paginate .next').forEach(link => {
+link.addEventListener("click", function (e) {
+e.preventDefault();
+const nextPage = page < data.total_page ? page + 1 : data.total_page;
+if (nextPage <= data.total_page) {
+setActivePage(nextPage); 
+loadData(); // truyền nextPage
+}
+else {
+setActivePage(data.total_page); 
+loadData();
+}
+});
+});
+
+// Gắn sự kiện cho nút Previous
+document.querySelectorAll('#table1_paginate .previous').forEach(link => {
+link.addEventListener("click", function (e) {
+e.preventDefault();
+const prevPage = page > 1 ? page - 1 : 1;
+if (prevPage >= 1) {
+setActivePage(prevPage); 
+loadData(); // truyền prevPage
+}
+else {
+setActivePage(1); 
+loadData();
+}
+});
+});
+            document.querySelectorAll('#table1_paginate .page-link').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const newPage = parseInt(this.getAttribute('data-page'));
+                    if (!isNaN(newPage) && newPage >= 1 && newPage <= data.total_page) {
+                        setActivePage(newPage); // cập nhật class active
+                        loadData(); // gọi lại với trang mới
+                    }
+                    else{
+                        setActivePage(1); 
+                        loadData();
+                    }
+                });
+            });
+            selector.addEventListener('change', function () {
+    setActivePage(1); 
+    loadData(); 
+});
+
+            document.querySelectorAll(".respond-btn").forEach(btn => {
+                btn.addEventListener("click", function () {
+                    const id = this.dataset.id;
+                    const to_email = this.dataset.email;
+                    console.log("Đã click phản hồi cho ID:", id);
+
+                    // Gán email người nhận
+                    document.getElementById("emailTo").value = to_email;
+                    document.getElementById("id_response").value = id;
+                    // Gọi API để lấy email người gửi
+                    fetch("http://localhost/Ass2/kimdong_bookstore/api/Contact/getGeneralInfo")
+                        .then(response => response.json())
+                        .then(result => {
+                            const send_email = result.success && result.data?.email ? result.data.email : "";
+                            const emailFromInput = document.getElementById("emailfrom");
+
+                            if (send_email) {
+                                emailFromInput.value = send_email;
+                                emailFromInput.placeholder = "";
+                            } else {
+                                emailFromInput.value = "";
+                                emailFromInput.placeholder = "You need to add your company email to use this feature.";
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Lỗi khi gọi API:", error);
+                            const emailFromInput = document.getElementById("emailfrom");
+                            emailFromInput.value = "";
+                            emailFromInput.placeholder = "You need to add your company email to use this feature.";
+                        });
+
+                    // Hiện form phản hồi
+                    document.querySelector('.compose-new-mail-sidebar').classList.add('show');
+                });
+            });
+
+
+            document.querySelector('.email-compose-new-close-btn').addEventListener('click', () => {
+                document.querySelector('.compose-new-mail-sidebar').classList.remove('show');
+            });
+            document.querySelectorAll(".status-toggle").forEach(span => {
+                span.addEventListener("click", function () {
+                    const id = this.dataset.id;
+                    fetch('http://localhost/Ass2/kimdong_bookstore/api/Contact/changeStatus', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ id: id })
+                    })
+                        .then(res => res.json())
+                        .then(response => {
+                            console.log("Phản hồi:", response);
+                            loadData();
+                        })
+                        .catch(err => {
+                            console.error("Lỗi cập nhật trạng thái:", err);
+                        });
+                });
+            });
+
+            document.querySelectorAll(".delete-btn").forEach(span => {
+                span.addEventListener("click", function () {
+                    const id = this.dataset.id;
+                    if (confirm(`Bạn có chắc muốn xóa liên hệ có ID = ${id}?`)) {
+                        fetch('http://localhost/Ass2/kimdong_bookstore/api/contact/deleteContact', {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ id: id })
+                        })
+                            .then(res => res.json())
+                            .then(response => {
+                                
+                                    alert(response.message || "Đã xóa.");
+                                    loadData();
+                            
+                                
+                            })
+                            .catch(err => {
+                                console.error("Lỗi khi xóa:", err);
+                            });
+                    }
+                });
+            });
+
+        } else {
+            console.error("Dữ liệu API không hợp lệ hoặc rỗng.");
+        }
+    })
+    .catch(error => {
+        console.error("Lỗi khi gọi API:", error);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", loadData);
+</script>
 {% endblock %}
 {% block styles %}
 <link rel="stylesheet" href="assets/extensions/simple-datatables/style.css">
 <link rel="stylesheet" href="assets/scss/pages/simple-datatables.scss">
 {% endblock %}
 {% block js %}
-<script src="assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
-<script src="assets/static/js/pages/simple-datatables.js"></script>
+<!-- <script src="assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
+<script src="assets/static/js/pages/simple-datatables.js"></script> -->
 {% endblock %}

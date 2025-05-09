@@ -7,9 +7,9 @@ class FAQforCmtModel extends Database
 
         // 1. Lấy thông tin câu hỏi và user
         $queryQuestion = "
-        SELECT q.*, u.name, u.avatar_url 
+        SELECT q.*, u.name, u.avt
         FROM questions q
-        JOIN users u ON q.user_id = u.id
+        JOIN account u ON q.user_id = u.id
         WHERE q.id = '$id'
     ";
         $resultQuestion = mysqli_query($this->connection, $queryQuestion);
@@ -25,15 +25,15 @@ class FAQforCmtModel extends Database
             "created_at" => $question["created_at"],
             "user" => [
                 "name" => $question["name"],
-                "avatar_url" => $question["avatar_url"]
+                "avatar_url" => $question["avt"]
             ]
         ];
 
         // 2. Lấy toàn bộ answer (bao gồm cả reply)
         $queryAnswers = "
-        SELECT a.*, u.name, u.avatar_url
+        SELECT a.*, u.name, u.avt
         FROM answers a
-        JOIN users u ON a.user_id = u.id
+        JOIN account u ON a.user_id = u.id
         WHERE a.question_id = '$id'
         ORDER BY a.created_at ASC
     ";
@@ -44,7 +44,7 @@ class FAQforCmtModel extends Database
         while ($row = mysqli_fetch_assoc($resultAnswers)) {
             $row["user"] = [
                 "name" => $row["name"],
-                "avatar_url" => $row["avatar_url"]
+                "avatar_url" => $row["avt"]
             ];
             $row["replies"] = [];
             $allAnswers[$row["id"]] = $row;

@@ -28,6 +28,12 @@
       "icon": "grid-fill"
     },
   {
+    "name": "Quản lý liên hệ",
+    "url": "table-datatable.html",
+    "icon": "grid-fill"
+  }
+  ,
+  {
     "name": "Components",
     "key": "component",
     "icon": "stack",
@@ -256,10 +262,7 @@
     "key": "table-datatable",
     "icon": "file-earmark-spreadsheet-fill",
     "submenu": [
-      {
-        "name": "Datatable",
-        "url": "table-datatable.html"
-      },
+      
       {
         "name": "Datatable (jQuery)",
         "url": "table-datatable-jquery.html"

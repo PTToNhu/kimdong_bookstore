@@ -73,11 +73,6 @@
                                 <option value="3">Bản nháp</option>
                             </select>
                         </div>
-                        <div>
-                            <h4 class="card-title">Ngày đăng</h4>
-                            <input type="datetime-local" name="ScheduledDate" id="ScheduledDate" class="form-control"
-                                placeholder="Chọn ngày đăng bài viết" required>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -98,9 +93,8 @@
         const thumbnail = document.getElementById('Thumbnail').files[0];
         const categoryID = document.getElementById('CategoryID').value;
         const status = document.getElementById('Status').value;
-        const scheduledDate = document.getElementById('ScheduledDate').value;
 
-        if (!title || !content || !thumbnail || !categoryID || !status || !scheduledDate) {
+        if (!title || !content || !thumbnail || !categoryID || !status) {
             alert('Vui lòng điền đầy đủ thông tin!');
             return;
         }
@@ -108,7 +102,7 @@
         const formData = new FormData();
         formData.append('file', thumbnail);
 
-        fetch('http://localhost/BTL_WEB_1/api/upload/UploadFile', {
+        fetch('http://localhost/kimdong_bookstore/api/upload/UploadFile', {
             method: 'POST',
             body: formData
         })
@@ -125,12 +119,11 @@
                         thumbnail: imageUrl,
                         categoryID: categoryID,
                         status: status,
-                        scheduleAt: scheduledDate,
-                        writtenByAdminID: 1,  // Giả sử admin đang đăng bài
-                        writtenDate: new Date().toISOString()  // Thêm thời gian đăng bài
+                        writtenByAdminID: 1,
+                        writtenDate: new Date().toISOString()
                     };
 
-                    return fetch('http://localhost/BTL_WEB_1/api/News/postNews', {
+                    return fetch('http://localhost/kimdong_bookstore/api/News/postNews', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
