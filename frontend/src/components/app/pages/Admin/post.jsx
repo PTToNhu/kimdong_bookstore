@@ -314,7 +314,7 @@ export default function Post() {
         } else if (Use === "Delete") {
             for (let index = 0; index < checkedItems.length; index++) {
                 try {
-                    const response = fetch(`http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/delete.php?&id=${encodeURIComponent(checkedItems[index])}`);
+                    const response = fetch(`http://localhost/kimdong_bookstore/api/BackEnd/phpgit/delete.php?&id=${encodeURIComponent(checkedItems[index])}`);
                 } catch (error) {
                     console.error("Error deleting item:", error);
                 }
