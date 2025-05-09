@@ -706,7 +706,9 @@ export default function Header(item) {
             </div>
             <ul className="text-white flex text-[20px] max-lg:hidden">
               <li className="px-[10px] hover:text-[#15A78A] cursor-pointer">
+                <a href="/Home">
                 HOME <FontAwesomeIcon icon={faChevronDown} />
+                </a>
               </li>
               <li className="px-[10px] hover:text-[#15A78A] cursor-pointer">
                 SHOP <FontAwesomeIcon icon={faChevronDown} />
@@ -717,6 +719,11 @@ export default function Header(item) {
               <li className="px-[10px] hover:text-[#15A78A] cursor-pointer">
                 <a href="/news">
                   TIN TỨC <FontAwesomeIcon icon={faChevronDown} />
+                </a>
+              </li>
+              <li className="px-[10px] hover:text-[#15A78A] cursor-pointer">
+                <a href="/Contact">
+                  LIÊN LẠC <FontAwesomeIcon icon={faChevronDown} />
                 </a>
               </li>
             </ul>

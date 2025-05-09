@@ -1,0 +1,271 @@
+@import "leaflet/dist/leaflet.css";
+
+.leaflet-container {
+  height: 400px;
+  width: 100%;
+}
+
+
+
+@media only screen and (max-width: 46.25em) { /* 740px */
+
+    .Location{
+        display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width:80lvw;
+    align-self: center;
+
+
+    }
+    
+.pageContact .Location .Location-col1{
+    margin-left: auto;
+    margin-right: auto;
+    flex: 1;
+}
+.pageContact .Location .Location-col2{
+    flex: 1;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: aqua;
+    width: 90%;
+}
+.pageContact .FormContact .inputInfo-box {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-items: center;
+    width: 100%;
+}
+.FormContact-col1{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    
+}
+.FormContact-col1 input{
+    
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: fit-content;
+    background-color: white;
+    border-radius: 5px;
+}
+.FormContact-col2{
+    height: 100%;
+    width: 100%;
+    flex: 1;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+}
+@media only screen and (min-width: 46.25em) and (max-width: 63.9375em) { /* 740px - 1023px */
+    .Location{
+        display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width:80lvw;
+    align-self: center;
+
+
+    }
+    
+.pageContact .Location .Location-col1{
+    margin-left: auto;
+    margin-right: auto;
+    flex: 1;
+}
+.pageContact .Location .Location-col2{
+    flex: 1;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: aqua;
+    width: 200px;
+}
+.pageContact .FormContact .inputInfo-box {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-items: center;
+    width: 100%;
+}
+.FormContact-col1{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    
+}
+.FormContact-col1 input{
+    
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: fit-content;
+    background-color: white;
+    border-radius: 5px;
+}
+.FormContact-col2{
+    height: 100%;
+    width: 100%;
+    flex: 1;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
+}
+@media only screen and (min-width: 64em) { /* 1024px */
+
+    .pageContact .Location{
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        width:80lvw;
+        align-self: center;
+    }
+    
+.pageContact .Location .Location-col1{
+    margin-left: 0px;
+    margin-right: auto;
+    flex: 1;
+}
+.pageContact .Location .Location-col2{
+    flex: 1;
+    margin-right: 0px;
+    margin-left: auto;
+    background-color: aqua;
+    width: 200px;
+}
+.pageContact .FormContact .inputInfo-box {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    justify-items: center;
+    width: 100%;
+}
+.FormContact-col1{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
+    
+}
+.FormContact-col1 input{
+    
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: fit-content;
+    background-color: white;
+    border-radius: 5px;
+}
+.FormContact-col2{
+    height: 100%;
+    width: 100%;
+    flex: 1;
+    margin-right: 0px;
+    margin-left: auto;
+}
+
+
+
+}
+
+.pageContact{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+    height: 100vh;
+    /* background-color: rgb(164, 196, 196); */
+}
+.title0{
+    font-size: xx-large;
+    font-weight: bold;
+}
+.Location-banner{
+    margin-top: 100px;
+    background-image: url("/login/download.jpg");
+    background-size: cover; /* Để hình nền phủ toàn màn hình */
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-height: 200px;
+    color: rgb(14, 1, 1);
+}
+.Location-banner a{
+    color: rgb(21, 1, 1);
+}
+.Location-banner .title20{
+    color:black;
+    
+}
+.Location-banner .title20 :hover{
+    color:brown;
+}
+
+.pageContact .FormContact{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width:80lvw;
+    align-self: center;
+    background-color: rgba(235, 255, 246, 0.292);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding: 20px;
+    margin-top: 30px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    /* max-width: 1000px; */
+}
+
+
+.FormContact-col2 textarea{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: white;
+    border-radius: 5px;
+    height: 100%;
+    width: 100%;
+    
+}
+.FormContact button{
+    width: fit-content;
+    padding-left: 20px;
+    padding-right: 20px;
+    align-self: center;
+    background-color: rgba(165, 42, 42, 0.5);
+}
+.FormContact button:hover{
+    background-color: brown;
+    color: white;
+   
+    border: 0px;
+}
+.Location-col1 .address .title25{
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}

@@ -9,7 +9,9 @@ import Question from "./components/app/pages/Question/Question.jsx";
 import News from "./components/app/pages/News/News.jsx";
 import PostNew from "./components/app/pages/PostNew/PostNew.jsx";
 import AboutUs from "./components/app/pages/AboutUs/AboutUs.jsx";
+import Contact from "./components/app/pages/ContactUs/contact.jsx"
 import Test from "./components/app/pages/Test/Test.jsx";
+import Home from "./components/app/pages/Home/Home.jsx"
 import "./App.css";
 import SelectMethodPage from "./components/app/pages/payment/page";
 import SignupForm from "./components/app/pages/header/sign_up";
@@ -61,6 +63,8 @@ function App() {
         {ID && <Route path="/User" element={<Detail_infor ID={ID} />} />}
         <Route path="/news" element={<News />}></Route>
         <Route path="/about_us" element={<AboutUs />} />
+        <Route path="/contact" element ={<Contact/>}/>
+        <Route path="/home" element ={<Home/>}/>
         <Route path="/new" element={<Master_Classe />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/faq/question" element={<Question />} />

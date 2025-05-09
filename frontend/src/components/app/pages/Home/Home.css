@@ -1,0 +1,530 @@
+@media only screen and (max-width: 46.25em) { /* 740px */
+    .about-KD {
+        padding: 40px;
+    }
+    
+    .about-KD-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        align-items: flex-start;
+    }
+    
+    .about-KD-content {
+        flex: 1;
+    }
+    
+    .about-KD-image {
+        flex: 1;
+        text-align: center;
+    }
+    
+    .about-KD-image img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+    
+    .homepage{
+        padding: 20px;
+        gap: 10px;
+    }
+    .incg-book-container,
+    .authors-container{
+       
+        margin-top: 10px;
+
+    }
+    .row2{
+        gap: 5px;
+        padding: 0px;
+    }
+    
+    .incg-book-container .row2 .container .card .writer-img-container{
+        width:  120px;
+        height: 180px; 
+        
+    }
+    .authors-container .row2 .container .card .writer-img-container{
+        width: 120px;
+        height: 120px; 
+       
+
+    }
+    .news-slider{
+        width: 500px;
+        /* background-color: rgb(255, 153, 0); */
+        overflow-x: hidden;
+        align-self: center;  
+    }
+    
+    .news-slider{
+        height: fit-content;
+        display:flex;
+        flex-direction:column;
+        align-items: center;
+        justify-content: center;
+        overflow-x: auto;
+        scrollbar-width: none; /* Ẩn scrollbar trên Firefox */
+        -ms-overflow-style: none; 
+        
+    }
+    .news-wrapper{
+        display: flex;
+        flex-direction: row;
+        width: 500px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        white-space: nowrap;
+       
+        align-items: start;
+        height: fit-content;
+        
+    }
+    .title30{
+        font-size: 30px;
+    }
+    .news-card{
+        min-width: 500px;
+        display: flex;
+        flex-direction: column;
+        word-wrap: break-word; 
+        white-space: normal;
+        height: fit-content;
+        /* background-color: rgb(215, 205, 205); */
+        
+    }
+    .baner-img-container{
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .baner-img-container img{
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .posts{
+        margin-top: 30px;
+    }
+}
+@media only screen and (min-width: 46.25em) and (max-width: 63.9375em) { /* 740px - 1023px */
+    .homepage{
+        padding: 30px;
+        gap: 30px;
+    }
+    .homepage{
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+    }
+    .news-slider .news-wrapper .news-card a{
+        color: black;
+    }
+    .incg-book-container,
+    .authors-container{
+        
+        margin-top: 30px;
+    }
+    .row2{
+        
+        gap: 20px;
+        
+        padding: 20px;
+    }
+    
+    .incg-book-container .row2 .container .card .writer-img-container{
+        width: 200px;
+        height: 300px; 
+    }
+    .authors-container .row2 .container .card .writer-img-container{
+        width: 200px;
+        height: 200px; 
+       
+    
+    }
+    .news-slider{
+        width: 700px;
+        /* background-color: rgb(255, 153, 0); */
+        overflow-x: hidden;  
+    }
+    
+    .news-slider{
+        height: fit-content;
+        display:flex;
+        flex-direction:column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+    .news-wrapper{
+        display: flex;
+        flex-direction: row;
+        width: 700px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        white-space: nowrap;
+        align-items: start;
+        height: fit-content;
+    }
+    .news-card{
+        min-width: 700px;
+        display: flex;
+        flex-direction: column;
+        word-wrap: break-word; 
+        white-space: normal;
+        height: fit-content;
+        /* background-color: rgb(215, 205, 205); */
+        
+    }
+    .baner-img-container{
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .baner-img-container img{
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .posts{
+        margin-top: 30px;
+    }
+    .about-KD {
+        padding: 40px;
+    }
+    
+    .about-KD-grid {
+        display: flex;
+        gap: 40px;
+        align-items: flex-start;
+    }
+    
+    .about-KD-content {
+        flex: 1;
+    }
+    
+    .about-KD-image {
+        flex: 1;
+        text-align: center;
+    }
+    
+    .about-KD-image img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+    
+}
+@media only screen and (min-width: 64em) { /* 1024px */
+    .homepage{
+        padding: 50px;
+        gap: 30px;
+    }
+    .homepage{
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+    }
+    .news-slider .news-wrapper .news-card a{
+        color: black;
+    }
+    .incg-book-container,
+    .authors-container{
+
+        
+        margin-top: 30px;
+    }
+    .row2{
+       
+        gap: 20px;
+        padding: 20px;
+    }
+    .row1{
+        padding: 20px;
+    }
+    
+    
+    
+    .incg-book-container .row2 .container .card .writer-img-container{
+        width: 200px;
+        height: 300px; 
+        
+    }
+    .authors-container .row2 .container .card .writer-img-container{
+        width: 200px;
+        height: 200px; 
+       
+    
+    }
+    .news-slider{
+        width: 800px;
+        /* background-color: rgb(255, 153, 0); */
+        overflow-x: hidden;  
+    }
+    
+    .news-slider{
+        height: fit-content;
+        display:flex;
+        flex-direction:column;
+        align-items: center;
+        justify-content: center;
+        /* width: 100%; */
+    }
+    .news-wrapper{
+        display: flex;
+        flex-direction: row;
+        width: 800px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        white-space: nowrap;
+        align-items: start;
+        height: fit-content;
+        overflow-x: auto;
+     scrollbar-width: none; /* Ẩn scrollbar trên Firefox */
+     -ms-overflow-style: none; 
+    }
+    .news-card{
+        min-width: 800px;
+        display: flex;
+        flex-direction: column;
+        word-wrap: break-word; 
+        white-space: normal;
+        height: fit-content;
+        /* background-color: rgba(215, 205, 205, 0.47); */
+        
+    }
+    .baner-img-container{
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .baner-img-container img{
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .homepage-row1{
+        margin-top: 100px;
+        display: flex;
+        flex-direction: row;
+        gap: 30px;
+    }
+    .homepage-row1 .news-slider{
+        margin-left: 0px;
+        margin-right: auto;
+        flex: 2;
+    }
+    .homepage-row1 .posts{
+        flex: 1;
+    }
+    .about-KD {
+        padding: 40px;
+    }
+    
+    .about-KD-grid {
+        display: flex;
+        gap: 40px;
+        align-items: flex-start;
+    }
+    
+    .about-KD-content {
+        flex: 1;
+    }
+    
+    .about-KD-image {
+        flex: 1;
+        text-align: center;
+    }
+    
+    .about-KD-image img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+    
+   
+}
+
+
+.row2{
+    height: fit-content;
+    /* background-color: rgba(232, 216, 169, 0.5); */
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+   
+
+}
+.incg-book-container,
+.authors-container{
+
+        border-top: 2px solid brown;
+        display: flex;
+        flex-direction: column;
+        height: fit-content;
+        align-items: center;
+        overflow-x: auto;
+    scrollbar-width: none; /* Ẩn scrollbar trên Firefox */
+    -ms-overflow-style: none;
+}
+.row1{
+    height: fit-content;
+    width: 100%;
+    /* background-color: beige; */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    
+    
+}
+.row1 .col1{
+    margin-left: 0;
+    margin-right: auto;
+}
+.row1 .col2{
+    margin-left: auto;
+    margin-right: 0px;
+}
+
+.incg-book-container .row2 .container,
+.authors-container .row2 .container{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    white-space: nowrap;
+    padding: 10px;
+    align-items: start;
+    height: fit-content;
+    overflow-x: auto;
+       scrollbar-width: none; /* Ẩn scrollbar trên Firefox */
+       -ms-overflow-style: none; 
+   
+
+
+}
+.incg-book-container  .row2 .container .card,
+.authors-container .row2 .container .card{
+    width: 200px;
+    /* background-color: rgb(201, 225, 225); */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    word-wrap: break-word; /* Cho phép xuống hàng khi từ quá dài */
+    white-space: normal; /* Đảm bảo chữ không bị giữ trên cùng một dòng */
+    text-align: center;
+    height: fit-content;
+    
+}
+.incg-book-container .row2 .container .card .writer-img-container{
+     
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.authors-container .row2 .container .card .writer-img-container{
+   
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%; /* Đảm bảo vùng chứa cũng là hình tròn */
+
+}
+.incg-book-container .row2 .container .card .writer-img-container img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
+.authors-container .row2 .container .card .writer-img-container img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
+    border-radius: 50%; /* Làm ảnh tròn */
+    border: 2px solid brown;
+}
+.incg-book-container .row2 .authors-container button,
+.authors-container .row2 .authors-container button{
+    height: fit-content;
+    padding: 10px;
+    
+}
+.about-KD{
+    display: flex;
+    flex-direction: column;
+    text-align: justify;
+    gap: 10px;
+    margin-top: 30px;
+}
+.about-KD .title20{
+    color:brown;
+}
+.highlight3{
+    color: brown;
+    font-style: italic;
+}
+.about-KD button{
+    width: fit-content;
+    padding-left: 20px;
+    padding-right: 20px;
+    align-self: left;
+    background-color: rgba(165, 42, 42, 0.5);
+}
+.about-KD button:hover{
+    background-color:brown;
+    color: white;
+    border: 0px;
+}
+.baner-button {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+.baner-button button{
+    width: fit-content;
+    padding: 5px;
+    background-color: rgba(240, 248, 255, 0.526);
+}
+
+.posts .post-card{
+    display: flex;
+    flex-direction: row;
+    align-items: center; /* căn giữa theo chiều dọc */
+
+    
+}
+.post-card .post-img-container{
+    flex: 1;
+
+    width: 100%;
+
+}
+.post-card .post-img-container img{
+    width: 100%;
+}
+.post-card .postTitle{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    
+    
+}
+.news-card{
+    padding-bottom: 20px;
+}
