@@ -51,7 +51,7 @@ class AboutUs extends Controller
         header("Access-Control-Allow-Headers: Content-Type, Authorization");
         header('Content-Type: application/json');
 
-        $model = $this->model("AuthorModel");
+        $model = $this->model("AuthorsModel");
 
         // Lấy title, subtitle, content
         $infoResult = $model->getAuthorInfo();
@@ -268,7 +268,7 @@ class AboutUs extends Controller
         header("Access-Control-Allow-Headers: Content-Type");
         header('Content-Type: application/json');
 
-        $model = $this->model("AuthorModel");
+        $model = $this->model("AuthorsModel");
 
         $mainResult = $model->getAuthorMain();
         $paragraphResult = $model->getAuthorParagraphs();
@@ -395,7 +395,7 @@ class AboutUs extends Controller
             return;
         }
 
-        $model = $this->model("AuthorModel");
+        $model = $this->model("AuthorsModel");
         $result = $model->updateAuthorSection($data['title'], $data['subtitle']);
 
         if ($result) {
@@ -482,7 +482,7 @@ class AboutUs extends Controller
             return;
         }
 
-        $model = $this->model("AuthorModel");
+        $model = $this->model("AuthorsModel");
         $result = $model->deleteAuthorParagraph($data['id']);
 
         echo json_encode(["success" => $result]);
@@ -502,7 +502,7 @@ class AboutUs extends Controller
             return;
         }
 
-        $model = $this->model("AuthorModel");
+        $model = $this->model("AuthorsModel");
         $result = $model->deleteAuthorActivity($data['id']);
 
         echo json_encode(["success" => $result]);
@@ -630,7 +630,7 @@ class AboutUs extends Controller
             return;
         }
 
-        $model = $this->model("AuthorModel");
+        $model = $this->model("AuthorsModel");
         $result = $model->addAuthorParagraph($data['content']);
 
         echo json_encode(["success" => $result]);
@@ -660,7 +660,7 @@ class AboutUs extends Controller
             return;
         }
 
-        $model = $this->model("AuthorModel");
+        $model = $this->model("AuthorsModel");
         $result = $model->addAuthorActivity(
             $data['year_from'],
             $data['year_to'],
@@ -763,7 +763,7 @@ class AboutUs extends Controller
             return;
         }
 
-        $model = $this->model("AuthorModel");
+        $model = $this->model("AuthorsModel");
         $result = $model->updateAuthorParagraph($data['id'], $data['content']);
         echo json_encode(["success" => $result]);
     }
@@ -787,7 +787,7 @@ class AboutUs extends Controller
             return;
         }
 
-        $model = $this->model("AuthorModel");
+        $model = $this->model("AuthorsModel");
         $result = $model->updateAuthorActivity($data['id'], $data['year_from'], $data['year_to'], $data['description']);
         echo json_encode(["success" => $result]);
     }

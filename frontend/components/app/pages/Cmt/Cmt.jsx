@@ -19,12 +19,12 @@ const Cmt = () => {
     useEffect(() => {
         if (!id) return;
 
-        fetch(`http://localhost/kim_dong/kimdong_bookstore/api/index.php?url=FAQforCmt/getFAQById/${id}`)
+        fetch(`http://localhost/kimdong_bookstore/api/index.php?url=FAQforCmt/getFAQById/${id}`)
             .then(res => res.json())
             .then(data => setFaq(data))
             .catch(err => console.error("Lỗi khi fetch FAQ:", err));
 
-        fetch(`http://localhost/kim_dong/kimdong_bookstore/api/index.php?url=FAQ/getQuestionById/${id}`)
+        fetch(`http://localhost/kimdong_bookstore/api/index.php?url=FAQ/getQuestionById/${id}`)
             .then(res => res.json())
             .then(data => setQuestionInfo(data[0]))
             .catch(err => console.error("Lỗi khi fetch question:", err));
@@ -66,7 +66,7 @@ const Cmt = () => {
         }
 
         try {
-            const res = await fetch("http://localhost/kim_dong/kimdong_bookstore/api/index.php?url=FAQforCmt/addAnswer", {
+            const res = await fetch("http://localhost/kimdong_bookstore/api/index.php?url=FAQforCmt/addAnswer", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
@@ -101,7 +101,7 @@ const Cmt = () => {
         };
 
         try {
-            const res = await fetch("http://localhost/kim_dong/kimdong_bookstore/api/index.php?url=FAQforCmt/addQuestion", {
+            const res = await fetch("http://localhost/kimdong_bookstore/api/index.php?url=FAQforCmt/addQuestion", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),

@@ -34,7 +34,7 @@ class Upload extends Controller
 
         if (move_uploaded_file($file["tmp_name"], $target_file)) {
             echo json_encode([
-                "location" => "http://localhost/kim_dong/kimdong_bookstore/api/uploads/" . $newFileName
+                "location" => "http://localhost/kimdong_bookstore/api/uploads/" . $newFileName
             ]);
         } else {
             http_response_code(500);

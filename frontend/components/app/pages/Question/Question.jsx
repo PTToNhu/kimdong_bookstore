@@ -9,7 +9,7 @@ const Question = () => {
     const [keyword, setKeyword] = useState("");
 
     useEffect(() => {
-        fetch("http://localhost/kim_dong/kimdong_bookstore/api/index.php?url=FAQ/getQuestions")
+        fetch("http://localhost/kimdong_bookstore/api/index.php?url=FAQ/getQuestions")
             .then((res) => res.json())
             .then((data) => {
                 setFaqs(data);
@@ -57,7 +57,7 @@ const Question = () => {
         };
 
         try {
-            const res = await fetch("http://localhost/kim_dong/kimdong_bookstore/api/index.php?url=FAQforCmt/addQuestion", {
+            const res = await fetch("http://localhost/kimdong_bookstore/api/index.php?url=FAQforCmt/addQuestion", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),

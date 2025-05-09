@@ -4,7 +4,7 @@ class Database{
     public $servername = "localhost";
     public $username= "root";
     public $password =""; 
-    public $databasename ="kimdong_bookstore";
+    public $databasename = "tiem_sach";
 
     function __construct()
     {

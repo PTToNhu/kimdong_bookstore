@@ -588,7 +588,7 @@
 </div>
 
 <script>
-    const baseAPI = "http://localhost/kim_dong/kimdong_bookstore/api/index.php?url=AboutUs";
+    const baseAPI = "http://localhost/kimdong_bookstore/api/index.php?url=AboutUs";
 
     let intro, social, intl, author;
 
@@ -802,7 +802,7 @@
             formData.append("file", imageFile);
 
             try {
-                const response = await fetch("http://localhost/kim_dong/kimdong_bookstore/api/upload/UploadFile", {
+                const response = await fetch("http://localhost/kimdong_bookstore/api/upload/UploadFile", {
                     method: "POST",
                     body: formData
                 });
@@ -848,6 +848,61 @@
             })
         }).then(() => location.reload());
     }
+    async function saveIntro() {
+            const title = document.getElementById("intro-title-input").value.trim();
+            const subtitle = document.getElementById("intro-subtitle-input").value.trim();
+            const highlight = document.getElementById("intro-highlight-input").value.trim();
+            const fileInput = document.getElementById("intro-image-url");
+            const imageFile = fileInput.files[0];
+
+            const postDataFromDB = intro.intro_section; // Giả sử bạn đã load dữ liệu cũ từ DB vào biến `intro`
+
+            if (!title || !subtitle || !highlight) {
+                alert("Vui lòng điền đầy đủ tiêu đề, phụ đề và highlight.");
+                return;
+            }
+
+            if (imageFile) {
+                const formData = new FormData();
+                formData.append("file", imageFile);
+
+                try {
+                    const response = await fetch("http://localhost/kimdong_bookstore/api/upload/UploadFile", {
+                        method: "POST",
+                        body: formData
+                    });
+                    const result = await response.json();
+                    const image_url = result.location || postDataFromDB.image_url;
+
+                    sendUpdateIntro(title, subtitle, highlight, image_url);
+                } catch (error) {
+                    console.error("Lỗi upload ảnh:", error);
+                    alert("Lỗi khi upload ảnh.");
+                }
+            } else {
+                const image_url = postDataFromDB.image_url;
+                sendUpdateIntro(title, subtitle, highlight, image_url);
+            }
+        }
+
+        function sendUpdateIntro(title, subtitle, highlight, image_url) {
+            fetch(baseAPI + "/updateIntroSection", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title, subtitle, highlight, image_url })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    alert(data.success ? "Cập nhật thành công!" : "Cập nhật thất bại!");
+                    if (data.success) location.reload();
+                })
+                .catch(err => {
+                    console.error("API update error:", err);
+                    alert("Lỗi kết nối tới máy chủ.");
+                });
+        }
+
+
 
     function saveAuthor() {
         fetch(baseAPI + "/updateAuthorSection", {
@@ -934,55 +989,55 @@
             });
     }
     async function saveInternationalPartner() {
-            const region = document.getElementById("add-intl-region-input").value.trim();
-            const country_name = document.getElementById("add-intl-country-input").value.trim();
-            const count = document.getElementById("add-intl-count-input").value;
-            const fileInput = document.getElementById("add-intl-flag-input");
-            const flagFile = fileInput.files[0];
+        const region = document.getElementById("add-intl-region-input").value.trim();
+        const country_name = document.getElementById("add-intl-country-input").value.trim();
+        const count = document.getElementById("add-intl-count-input").value;
+        const fileInput = document.getElementById("add-intl-flag-input");
+        const flagFile = fileInput.files[0];
 
-            if (!region || !country_name || !count) {
-                return alert("Vui lòng điền đủ thông tin.");
-            }
-
-            if (flagFile) {
-                const formData = new FormData();
-                formData.append("file", flagFile);
-
-                try {
-                    const res = await fetch("http://localhost/kim_dong/kimdong_bookstore/api/upload/UploadFile", {
-                        method: "POST",
-                        body: formData
-                    });
-                    const result = await res.json();
-                    const flag_url = result.location;
-
-                    sendAddPartner(region, country_name, flag_url, count);
-                } catch (err) {
-                    console.error("Upload error:", err);
-                    alert("Lỗi khi upload hình ảnh.");
-                }
-            } else {
-                alert("Vui lòng chọn ảnh cờ quốc gia.");
-            }
+        if (!region || !country_name || !count) {
+            return alert("Vui lòng điền đủ thông tin.");
         }
 
-        // Hàm tách riêng gọi API thêm dữ liệu
-        function sendAddPartner(region, country_name, flag_url, count) {
-            fetch(baseAPI + "/addInternationalPartner", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ region, country_name, flag_url, count })
-            })
-                .then(res => res.json())
-                .then(data => {
-                    alert(data.success ? "Thêm International Partner thành công!" : "Thêm thất bại!");
-                    if (data.success) location.reload();
-                })
-                .catch(err => {
-                    console.error("Fetch error:", err);
-                    alert("Lỗi khi gửi yêu cầu.");
+        if (flagFile) {
+            const formData = new FormData();
+            formData.append("file", flagFile);
+
+            try {
+                const res = await fetch("http://localhost/kimdong_bookstore/api/upload/UploadFile", {
+                    method: "POST",
+                    body: formData
                 });
+                const result = await res.json();
+                const flag_url = result.location;
+
+                sendAddPartner(region, country_name, flag_url, count);
+            } catch (err) {
+                console.error("Upload error:", err);
+                alert("Lỗi khi upload hình ảnh.");
+            }
+        } else {
+            alert("Vui lòng chọn ảnh cờ quốc gia.");
         }
+    }
+
+    // Hàm tách riêng gọi API thêm dữ liệu
+    function sendAddPartner(region, country_name, flag_url, count) {
+        fetch(baseAPI + "/addInternationalPartner", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ region, country_name, flag_url, count })
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.success ? "Thêm International Partner thành công!" : "Thêm thất bại!");
+                if (data.success) location.reload();
+            })
+            .catch(err => {
+                console.error("Fetch error:", err);
+                alert("Lỗi khi gửi yêu cầu.");
+            });
+    }
 
     function saveAuthorParagraph() {
         const content = document.getElementById("add-author-paragraph-input").value.trim();
@@ -1088,7 +1143,7 @@
             formData.append("file", imageFile);
 
             try {
-                const res = await fetch("http://localhost/kim_dong/kimdong_bookstore/api/upload/UploadFile", {
+                const res = await fetch("http://localhost/kimdong_bookstore/api/upload/UploadFile", {
                     method: "POST",
                     body: formData
                 });

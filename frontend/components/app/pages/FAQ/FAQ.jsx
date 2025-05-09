@@ -7,7 +7,7 @@ const FAQ = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch("http://localhost/kim_dong/kimdong_bookstore/api/index.php?url=FAQ/getFeatures")
+        fetch("http://localhost/kimdong_bookstore/api/index.php?url=FAQ/getFeatures")
             .then(res => res.json())
             .then(data => setFigures(data))
             .catch(err => console.error("Lỗi khi fetch features:", err));

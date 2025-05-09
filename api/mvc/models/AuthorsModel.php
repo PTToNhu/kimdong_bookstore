@@ -1,5 +1,5 @@
 <?php
-class AuthorModel extends Database
+class AuthorsModel extends Database
 {
     // GET
     public function getAuthorInfo()

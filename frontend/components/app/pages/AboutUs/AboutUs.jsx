@@ -27,19 +27,19 @@ const AboutUs = () => {
     }
   };
   useEffect(() => {
-    fetch("http://localhost/kim_dong/kimdong_bookstore/api/index.php?url=AboutUs/getIntro")
+    fetch("http://localhost/kimdong_bookstore/api/index.php?url=AboutUs/getIntro")
       .then(res => res.json())
       .then(data => setIntroSection(data));
 
-    fetch("http://localhost/kim_dong/kimdong_bookstore/api/index.php?url=AboutUs/getAuthor")
+    fetch("http://localhost/kimdong_bookstore/api/index.php?url=AboutUs/getAuthor")
       .then(res => res.json())
       .then(data => setAuthorSection(data));
 
-    fetch("http://localhost/kim_dong/kimdong_bookstore/api/index.php?url=AboutUs/getSocial")
+    fetch("http://localhost/kimdong_bookstore/api/index.php?url=AboutUs/getSocial")
       .then(res => res.json())
       .then(data => setSocialSection(data));
 
-    fetch("http://localhost/kim_dong/kimdong_bookstore/api/index.php?url=AboutUs/getInternational")
+    fetch("http://localhost/kimdong_bookstore/api/index.php?url=AboutUs/getInternational")
       .then(res => res.json())
       .then(data => setInternationalSection(data));
   }, []);
