@@ -1,0 +1,301 @@
+{% set title = 'Input' %}
+{% set filename = 'home_page.html' %}
+
+{% extends 'src/layouts/master.html' %}
+{% block content %}
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Chỉnh sửa trang Home Page</h3>
+                <p class="text-subtitle text-muted"><br/></p>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Home_page</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <section class="section">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Chỉnh sửa các thông tin chung</h4>
+            </div>
+            <div class="card-body">
+                <form id="generalInfoForm">
+                    <div class="row">
+                        <div class="col-md-6">
+    
+                            <div class="form-group">
+                                <label for="company_name">Company Name</label>
+                                <input type="text" class="form-control" id="company_name" name="company_name">
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="company_inter_name">International Name</label>
+                                <input type="text" class="form-control" id="company_inter_name" name="company_inter_name">
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="agency">Agency</label>
+                                <input type="text" class="form-control" id="agency" name="agency">
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="established_date">Established Date</label>
+                                <input type="date" class="form-control" id="established_date" name="established_date">
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="pass">Email App Password</label>
+                                <input type="password" class="form-control" id="pass" name="pass" placeholder ="****">
+                            </div>
+                            <div class="form-group">
+                                <label for="key">Key</label>
+                                <input type="password" class="form-control" id="key" name="key" placeholder="****">
+                            </div>
+    
+                        </div>
+    
+                        <div class="col-md-6">
+    
+                            <div class="form-group">
+                                <label for="main_address">Main Address</label>
+                                <input type="text" class="form-control" id="main_address" name="main_address">
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="email">Contact Email</label>
+                                <input type="email" class="form-control" id="email" name="email">
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="text" class="form-control" id="phone" name="phone">
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="director">Director</label>
+                                <input type="text" class="form-control" id="director" name="director">
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="license">License</label>
+                                <input type="text" class="form-control" id="license" name="license">
+                            </div>
+                            <div class="text-left mt-3">
+                                <br/>
+                                <button type="submit" class="btn btn-outline-success btn-sm">Submit</button>
+                            </div>
+    
+                        </div>
+                    </div>
+                </form>
+                
+            </div>
+            
+                    </div>
+        
+
+    </section>
+    <section class="section">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Chỉnh sửa phần Giới thiệu</h4>
+            </div>
+            <div class="card-body">
+                <form id="overviewForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="title">Tiêu đề</label>
+                                <input type="text" class="form-control" id="title" name="title">
+                            </div>
+            
+                            <div class="form-group">
+                                <label for="header">Tiêu đề phụ (Header)</label>
+                                <input type="text" class="form-control" id="header" name="header">
+                            </div>
+            
+                            <div class="form-group">
+                                <label for="img">Ảnh (Image URL)</label>
+                                <input type="text" class="form-control" id="img" name="img">
+                            </div>
+            
+                            <div class="text-left mt-3">
+                                <br/>
+                                <button type="submit" class="btn btn-outline-success btn-sm">Submit</button>
+                            </div>
+            
+                        </div>
+            
+                        <div class="col-md-6">
+            
+                            <div class="form-group">
+                                <label for="content">Nội dung (Content)</label>
+                                <textarea class="form-control" id="content" name="content" rows="10"></textarea>
+                            </div>
+            
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+    </section>
+    
+    
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("generalInfoForm");
+            const apiUrl = "http://localhost/Ass2/kimdong_bookstore/api/contact/getGeneralInfo";
+            const updateUrl = "http://localhost/Ass2/kimdong_bookstore/api/Contact/updateInfo";
+        
+            let originalData = {};
+        
+            // 1. Gọi API lấy dữ liệu ban đầu
+            fetch(apiUrl)
+                .then(res => res.json())
+                .then(json => {
+                    if (json.success && json.data) {
+                        originalData = json.data;
+                        for (const key in originalData) {
+                            const input = document.getElementById(key);
+                            if (input && input.type !== "password") {
+                                input.value = originalData[key];
+                                input.placeholder = originalData[key];
+                            }
+                        }
+                    }
+                });
+        
+            // 2. Khi form được submit
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+        
+                const formData = new FormData(form);
+                const currentData = {};
+                formData.forEach((value, key) => {
+                    currentData[key] = value.trim();
+                });
+        
+                // Kiểm tra thay đổi
+                let changed = false;
+                for (const key in currentData) {
+                    if (key === "pass" || key === "key") continue; // không so sánh password/key
+                    if (currentData[key] !== originalData[key]) {
+                        changed = true;
+                        break;
+                    }
+                }
+        
+                if (!changed && !currentData.pass && !currentData.key) {
+                    alert("Không có dữ liệu thay đổi.");
+                    return;
+                }
+        
+                // 3. Gửi dữ liệu cập nhật
+                fetch(updateUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(currentData)
+                })
+                .then(res => res.json())
+                .then(json => {
+                    if (json.success) {
+                        alert("Cập nhật thành công.");
+                    } else {
+                        alert("Cập nhật thất bại.");
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Có lỗi khi cập nhật.");
+                });
+            });
+        });
+        </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("overviewForm");
+            const apiUrl = "http://localhost/Ass2/kimdong_bookstore/api/contact/getOverview";
+            const updateUrl = "http://localhost/Ass2/kimdong_bookstore/api/contact/updateOverview";
+        
+            let originalData = {};
+            function load(){
+                fetch(apiUrl)
+                .then(res => res.json())
+                .then(json => {
+                    if (json.success && json.data) {
+                        originalData = json.data;
+                        for (const key in originalData) {
+                            const input = document.getElementById(key);
+                            if (input) {
+                                input.value = originalData[key];
+                                input.placeholder = originalData[key];
+                            }
+                        }
+                    }
+                });
+            }
+            load();
+            
+        
+            // 2. Khi form được submit
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+        
+                const formData = new FormData(form);
+                const currentData = {};
+                formData.forEach((value, key) => {
+                    currentData[key] = value.trim();
+                });
+        
+                // Kiểm tra thay đổi
+                let changed = false;
+                for (const key in currentData) {
+                    if (currentData[key] !== originalData[key]) {
+                        changed = true;
+                        break;
+                    }
+                }
+        
+                if (!changed) {
+                    alert("Không có dữ liệu thay đổi.");
+                    return;
+                }
+        
+                // 3. Gửi dữ liệu cập nhật
+                fetch(updateUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(currentData)
+                })
+                .then(res => res.json())
+                .then(json => {
+                    if (json.success) {
+                        alert("Cập nhật thành công.");
+                        load();
+                    } else {
+                        alert("Cập nhật thất bại.");
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Có lỗi khi cập nhật.");
+                });
+            });
+        });
+        </script>
+        
+        
+
+    <!-- validations end -->
+
+</div>
+{% endblock %}

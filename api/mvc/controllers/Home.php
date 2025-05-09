@@ -1,11 +1,20 @@
 <?php
 require_once __DIR__ . '/../models/AuthorModel.php';
 require_once __DIR__ . '/../models/PostModel.php';
-require_once __DIR__ . '/../models/BookModel.php';
+require_once __DIR__ . '/../models/BookhpModel.php';
 class Home extends Controller
 {
     function Sayhi()
     {
+        // echo "Home-Sayhi";
+        // $book = $this->model("BookModel");
+        // $category = $book->GetCategory();
+        // $categories = [];
+        // while ($row = $category->fetch_assoc()) {
+        //     $categories[] = $row;
+        // }
+        // print_r($categories);
+        // $this->view("home", ["Danh_muc" => $category]);
     }
     public function getListAuthor() {
         $data = json_decode(file_get_contents("php://input"), true);
@@ -74,8 +83,12 @@ class Home extends Controller
     }
     public function getListBook(){
         $data = json_decode(file_get_contents("php://input"), true);
+    
+        // Optional: fallback if num not sent
         $num = isset($data['num']) ? intval($data['num']) : 10;
-        $BookModel = new BookModel();
+    
+        // Get authors
+        $BookModel = new BookhpModel();
         $books = $BookModel->GetListBook($num); // Assuming this returns an array
     
         if (count($books) > 0) {

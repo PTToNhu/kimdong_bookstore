@@ -9,6 +9,12 @@
     "icon": "grid-fill"
   },
   {
+    "name": "Quản lý trang chủ",
+    "url": "home_page.html",
+    "icon": "grid-fill"
+  }
+  ,
+  {
     "name": "Quản lý liên hệ",
     "url": "table-datatable.html",
     "icon": "grid-fill"

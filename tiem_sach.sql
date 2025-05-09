@@ -917,6 +917,86 @@ INSERT INTO `wings_book` (`id`, `name`, `gia_goc`, `gia`, `giam_gia`, `tap`, `ta
 (178, 'Kujima hót, cả nhà véo von - Tập 3 (Tặng Mini-Card)', '40000', '36000', '10', '3', 'Akira Konno', 'Tuổi mới lớn (15 – 18), Tuổi trưởng thành (trên 18 tuổi)', '13x18 cm', '144', '175', 'Wings_book', 'Active'),
 (179, 'Hai thằng này nhìn cứ nghi nghi', '35000', '31500', '10', 'truyện lẻ', 'Mayo Onizawa', 'Tuổi mới lớn (15 – 18), Tuổi trưởng thành (trên 18 tuổi)', '13x18 cm', '164', '265', 'Wings_book', 'Active');
 
+
+
+
+
+CREATE TABLE tiem_sach.bookhp(
+b_id INT primary KEY auto_increment,
+b_name VARCHAR (100) NOT NULL,
+pubdate DATE,
+b_img mediumblob,
+b_desc VARCHAR (1000),
+quantity INT NOT NULL,
+i_quantity INT NOT NULL,
+iprice INT NOT NULL,
+sprice INT NOT NULL
+);
+INSERT INTO tiem_sach.bookhp (
+  b_name,
+  pubdate,
+  b_img,
+  b_desc,
+  quantity,
+  i_quantity,
+  iprice,
+  sprice
+)
+VALUES 
+('Doraemon: Chú mèo máy đến từ tương lai', '2021-06-10', 'img/books/d1.webp', 'Một bộ truyện kinh điển với chú mèo máy đến từ thế kỷ 22.', 120, 100, 25000, 30000),
+('Doraemon: Truyền kì về bóng chày siêu cấp', '2020-08-15', 'img/books/d2.webp', 'Doraemon và những trận bóng chày huyền thoại!', 90, 80, 28000, 32000),
+('Doraemon: Truyện ngắn dành cho thiếu nhi', '2022-01-25', 'img/books/d3.webp', 'Tuyển tập những câu chuyện ngắn hài hước và ý nghĩa.', 150, 130, 22000, 27000),
+('Thiên sứ nhà bên', '2023-02-12', 'img/books/d4.webp', 'Một câu chuyện tình nhẹ nhàng và lãng mạn.', 110, 95, 32000, 38000),
+('Kujima hót cả nhà véo von', '2022-04-07', 'img/books/d5.webp', 'Chuyện kể về ngôi làng nơi những chú chim biết hát.', 85, 70, 26000, 31000),
+('Thị trấn mèo', '2019-11-03', 'img/books/d6.webp', 'Một thị trấn yên bình với những cư dân mèo kỳ lạ.', 100, 90, 24000, 29000),
+('Chúa tể bóng tối', '2023-07-19', 'img/books/d7.webp', 'Cuộc phiêu lưu kỳ bí chống lại thế lực hắc ám.', 95, 85, 35000, 41000);
+
+
+CREATE TABLE tiem_sach.posts(
+p_title VARCHAR (200) NOT NULL,
+p_id INT primary key auto_increment,
+p_content VARCHAR (5000) NOT NULL,
+p_img mediumblob,
+p_writter VARCHAR (100) NOT NULL,
+p_date DATE
+);
+INSERT INTO tiem_sach.posts (p_title, p_content, p_img, p_writter, p_date)
+VALUES 
+(
+  'Chào mừng ngày sách và văn hóa đọc Việt Nam',
+  'Ngày sách và văn hóa đọc Việt Nam là dịp để tôn vinh giá trị của sách, khuyến khích thói quen đọc và phát triển văn hóa đọc trong cộng đồng. Hãy cùng nhau chia sẻ những cuốn sách yêu thích và lan tỏa tình yêu với tri thức.',
+  'img/posts/ms_banner_img1.webp',
+  'NXB Kim Đồng',
+  '2024-04-21'
+),
+(
+  'Cậu bé Bi Đất: Bụng tròn chứa đầy niềm tin',
+  '“Cậu bé Bi Đất” là câu chuyện cảm động về hành trình trưởng thành của một cậu bé nhỏ nhắn nhưng đầy ắp niềm tin và dũng cảm. Tác phẩm là món quà quý giá dành cho trẻ nhỏ và những ai yêu mến truyện thiếu nhi.',
+  'img/posts/ms_banner_img2.webp',
+  'Nguyễn Ngọc Thạch',
+  '2024-04-15'
+),
+(
+  'Bầy cừu bay ngang thành phố',
+  'Tựa truyện mang màu sắc kỳ ảo, đầy chất thơ và suy tưởng về tuổi thơ, sự ngây ngô và trí tưởng tượng bay xa. “Bầy cừu bay ngang thành phố” gợi lên hình ảnh trong trẻo và cảm xúc yên bình giữa cuộc sống hiện đại.',
+  'img/posts/ms_banner_img3.webp',
+  'Nguyễn Nhật Ánh',
+  '2024-04-10'
+),
+(
+  'Không thể bỏ lỡ: Spy x Family',
+  'Một gia đình bất thường với điệp viên, sát thủ và nhà ngoại cảm đã tạo nên sức hút khổng lồ cho “Spy x Family”. Bộ truyện là sự kết hợp hài hòa giữa hành động, hài hước và tình cảm gia đình, đáng để đọc trong mùa hè này.',
+  'img/posts/ms_banner_img4.webp',
+  'Trần Bảo Trân',
+  '2024-04-12'
+),
+(
+  'Cẩm nang về tâm tình và mối quan hệ cho mọi người',
+  'Cuốn sách là lời thủ thỉ nhẹ nhàng nhưng sâu sắc về cảm xúc cá nhân, mối quan hệ xã hội và cách yêu thương bản thân. Một cẩm nang đáng quý dành cho người trẻ hiện đại đang tìm kiếm sự thấu hiểu và cân bằng trong cuộc sống.',
+  'img/posts/ms_banner_img5.webp',
+  'Lê Hồng Nhung',
+  '2024-04-18'
+);
 --
 -- Indexes for dumped tables
 --

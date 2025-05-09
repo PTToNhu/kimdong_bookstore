@@ -4,7 +4,7 @@ class Database
     public $connection;
     public $servername = "localhost";
     public $username = "root";
-    public $password = "";
+    public $password = "Moimoi5@";
     public $databasename = "tiem_sach";
 
     function __construct()
@@ -15,5 +15,8 @@ class Database
         }
         mysqli_select_db($this->connection, $this->databasename);
         mysqli_query($this->connection, "SET NAMES 'utf8'");
+    }
+     public function getConnection() {
+        return $this->connection;
     }
 }
