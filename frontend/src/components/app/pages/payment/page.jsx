@@ -118,7 +118,7 @@ const SelectMethodPage = (item) => {
   useEffect(() => {
     async function loadImages() {
       const imagePaths = import.meta.glob(
-        "../../BackEnd/php/images/tat_ca_san_pham/**/*.{jpg,jpeg,png,gif,svg,webp}"
+        "../../../../../../api/BackEnd/images/tat_ca_san_pham/**/*.{jpg,jpeg,png,gif,svg,webp}"
       );
       const imagePromises = Object.values(imagePaths).map((importer) =>
         importer()
@@ -152,12 +152,12 @@ const SelectMethodPage = (item) => {
   //       try {
   //         let response;
   //         if (!isNaN(parseFloat(id))) {
-  //           const url = `http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/Data.php?&url=tat_ca_san_pham&variable=${encodeURIComponent(
+  //           const url = `http://localhost/kimdong_bookstore/api/BackEnd/php/Data.php?&url=tat_ca_san_pham&variable=${encodeURIComponent(
   //             id
   //           )}`;
   //           response = await fetch(url);
   //         } else {
-  //           const url = `http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/getAllStore.php?phone=${encodeURIComponent(
+  //           const url = `http://localhost/kimdong_bookstore/api/BackEnd/php/getAllStore.php?phone=${encodeURIComponent(
   //             item.ID
   //           )}`;
   //           response = await fetch(url);
@@ -180,7 +180,7 @@ const SelectMethodPage = (item) => {
   const fetchDataStore = async () => {
     try {
       const response = await fetch(
-        `http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/getAllStore.php?phone=${encodeURIComponent(
+        `http://localhost/kimdong_bookstore/api/BackEnd/php/getAllStore.php?id=${encodeURIComponent(
           item.ID
         )}`
       );
@@ -200,7 +200,7 @@ const SelectMethodPage = (item) => {
         if (match) {
           const id = match[1];
           const response = await fetch(
-            `http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/getdataFromID.php?variable=${encodeURIComponent(
+            `http://localhost/kimdong_bookstore/api/BackEnd/php/getdataFromID.php?variable=${encodeURIComponent(
               id
             )}`
           );
@@ -224,7 +224,7 @@ const SelectMethodPage = (item) => {
 
   const fetchDataID = async () => {
     try {
-      const url = `http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/Data.php?&url=tat_ca_san_pham&variable=${encodeURIComponent(
+      const url = `http://localhost/kimdong_bookstore/api/BackEnd/php/Data.php?&url=tat_ca_san_pham&variable=${encodeURIComponent(
         id
       )}`;
       let response = await fetch(url);
@@ -258,7 +258,7 @@ const SelectMethodPage = (item) => {
     const indexStore = clickStore.findIndex((value) => value === true);
     if (indexStore !== -1) {
       fetch(
-        `http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/deleteStore.php?id=${encodeURIComponent(
+        `http://localhost/kimdong_bookstore/api/BackEnd/php/deleteStore.php?id=${encodeURIComponent(
           indexStore
         )}`
       )
@@ -327,7 +327,7 @@ const SelectMethodPage = (item) => {
           }, 0)
         : 0;
 
-    const url = `http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/order.php?ho_va_ten=${encodeURIComponent(
+    const url = `http://localhost/kimdong_bookstore/api/BackEnd/php/order.php?ho_va_ten=${encodeURIComponent(
       name
     )}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(
       phone

@@ -147,11 +147,11 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
   };
 
   const selectOption = (option, id) => {
-    console.log(`http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/updateStatusOrder.php?id=${encodeURIComponent(
+    console.log(`http://localhost/kimdong_bookstore/api/BackEnd/php/updateStatusOrder.php?id=${encodeURIComponent(
       id
     )}&status=${encodeURIComponent(option)}`);
     fetch(
-      `http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/updateStatusOrder.php?id=${encodeURIComponent(
+      `http://localhost/kimdong_bookstore/api/BackEnd/php/updateStatusOrder.php?id=${encodeURIComponent(
         id
       )}&status=${encodeURIComponent(option)}`
     );
@@ -186,7 +186,7 @@ const PaginationHelper = ({ data = [], checkedItems, handleCheckboxChange, forma
               {element.email}
             </th>
             <th className="px-2 text-center font-normal">
-              {formatPrice(element.phone)}
+              {element.phone}
             </th>
             <th className="px-2 text-center font-normal">
               {formatPrice(element.total)}

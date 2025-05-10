@@ -63,7 +63,7 @@ export default function Edit() {
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
-        fetch(`http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/Data.php?&url=${encodeURIComponent("tat_ca_san_pham")}&variable=${encodeURIComponent(value)}`)
+        fetch(`http://localhost/kimdong_bookstore/api/BackEnd/php/Data.php?&url=${encodeURIComponent("tat_ca_san_pham")}&variable=${encodeURIComponent(value)}`)
             .then((response) => response.json())
             .then((data) => {
                 setData(data);
@@ -212,7 +212,7 @@ export default function Edit() {
     
     async function loadAndProcessImages() {
         try {
-            const imagePaths = import.meta.glob('./php/images/tat_ca_san_pham/**/*.{jpg,jpeg,png,gif,svg,webp}');
+            const imagePaths = import.meta.glob('../../../../../../api/BackEnd/images/tat_ca_san_pham/**/*.{jpg,jpeg,png,gif,svg,webp}');
             const imagePromises = Object.values(imagePaths).map(importer => importer());
             const loadedImages = await Promise.all(imagePromises);
             const img = loadedImages.map(module => module.default);
@@ -231,7 +231,7 @@ export default function Edit() {
             );
     
             const convertedFiles = (await Promise.all(fileConversionPromises)).filter(Boolean);
-            
+
             setFiles(convertedFiles);
         } catch (error) {
             console.error('Error in image processing:', error);

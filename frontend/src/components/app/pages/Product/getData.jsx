@@ -7,7 +7,7 @@ export function useData(img = [], url, variable) {
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const response = await fetch(`http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/Data.php?&url=${encodeURIComponent(url)}&variable=${encodeURIComponent(variable)}`);
+            const response = await fetch(`http://localhost/kimdong_bookstore/api/BackEnd/php/Data.php?&url=${encodeURIComponent(url)}&variable=${encodeURIComponent(variable)}`);
             const result = await response.json();
             setData(result);
         } catch (error) {

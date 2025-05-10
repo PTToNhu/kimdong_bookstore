@@ -9,6 +9,7 @@ import { LoginAdmin } from "./loginAdmin";
 import { useState, useEffect } from "react";
 import { verifyToken } from "../../BackEnd/verifyAdmin";
 import { SignupForm } from "./sign_upAdmin";
+import User  from "./User";
 export default function Admin() {
   const [Token, setToken] = useState("");
 
@@ -48,7 +49,7 @@ export default function Admin() {
           <Navbar />
             <span onClick={() => {
                     sessionStorage.clear();
-                    window.location.reload();
+                    window.location = "/admin";
                 }           
             } className="absolute right-10 top-10 px-6 py-2 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transform hover:scale-105 transition duration-300 cursor-pointer">
                 Đăng xuất
@@ -60,6 +61,7 @@ export default function Admin() {
               <Route path="/post/:Status?" element={<Post />} />
               <Route path="/post/edit/:number?" element={<Edit />} />
               <Route path="/order/" element={<Order />} />
+              <Route path="/User/" element={<User />} />
             </Routes>
           </div>
         </div>

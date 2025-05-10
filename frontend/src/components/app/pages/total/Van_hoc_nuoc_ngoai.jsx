@@ -9,7 +9,7 @@ export default function Van_hoc_nuoc_ngoai(item) {
   useEffect(() => {
     async function loadImages() {
       const imagePaths = import.meta.glob(
-        "../../BackEnd/php/images/tat_ca_san_pham/**/*.{jpg,jpeg,png,gif,svg,webp}"
+        "../../../../../../api/BackEnd/images/van_hoc_nuoc_ngoai/**/*.{jpg,jpeg,png,gif,svg,webp}"
       );
       const imagePromises = Object.values(imagePaths).map((importer) =>
         importer()

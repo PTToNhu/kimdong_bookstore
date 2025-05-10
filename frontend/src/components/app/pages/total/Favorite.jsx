@@ -7,11 +7,9 @@ export const Favorite = (item) => {
   const [img, setImages] = useState([]);
   const [favourite, setFavourite] = useState([]);
 
-
-
   useEffect(() => {
     async function loadImages() {
-      const imagePaths = import.meta.glob('../../BackEnd/php/images/tat_ca_san_pham/**/*.{jpg,jpeg,png,gif,svg,webp}');
+      const imagePaths = import.meta.glob('../../../../../../api/BackEnd/images/tat_ca_san_pham/**/*.{jpg,jpeg,png,gif,svg,webp}');
       const imagePromises = Object.values(imagePaths).map(importer => importer());
       const loadedImages = await Promise.all(imagePromises);
       setImages(loadedImages.map(module => module.default));
@@ -30,16 +28,13 @@ export const Favorite = (item) => {
   }
 
   const fetchDataID = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/getAllFavorite.php?phone=${encodeURIComponent(
-          item.ID
-        )}`
-      );
-      const data = await response.json();
-      setFavourite(data);
-    } catch (error) {
-    }
+    const response = await fetch(
+      `http://localhost/kimdong_bookstore/api/BackEnd/php/getAllFavorite.php?phone=${encodeURIComponent(
+        item.ID
+      )}`
+    );
+    const data = await response.json();
+    setFavourite(data);
   };
 
   const fetchData = async () => {
@@ -50,7 +45,7 @@ export const Favorite = (item) => {
     if (favoritesArray.length > 0) {
       const promises = favoritesArray.map(async (element_id) => {
         const response = await fetch(
-          `http://localhost/kimdong_bookstore/frontend/src/components/app/BackEnd/php/php/getdataFromID.php?variable=${encodeURIComponent(
+          `http://localhost/kimdong_bookstore/api/BackEnd/php/getdataFromID.php?variable=${encodeURIComponent(
             element_id
           )}`
         );
@@ -74,13 +69,13 @@ export const Favorite = (item) => {
     }
   }, [getCookie("Favorite"), item.ID]);
 
-
   let image = useState([]);
 
   const getImg = (img) => {
     let result = [];
     if (favourite.length > 0)
       favourite.forEach((element) => {
+
         const filteredImages = img.filter((ele) => {
           const fileName = ele.split("/");
           const pathParts = fileName[fileName.length - 1].split("_");
